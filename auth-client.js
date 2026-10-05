@@ -7,7 +7,7 @@
 const API_BASE =
   location.hostname === "127.0.0.1" || location.hostname === "localhost"
     ? "http://127.0.0.1:5000"
-    : "https://flaren-backend.onrender.com"; /* we'll change this after deploy */
+    : "https://flaren.onrender.com"; /* we'll change this after deploy */
 
 const TOKEN_KEY = "flaren_token";
 
