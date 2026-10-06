@@ -332,6 +332,21 @@ async function registerNtfyPush() {
   }
 }
 
+
+function showNotification(title, body) {
+  if (notificationPermission() !== "granted") return;
+  try {
+    const n = new Notification(title, {
+      body: body || "",
+      icon: "images/logo.png",
+      badge: "images/logo.png",
+      tag: "flaren-task",
+      renotify: true
+    });
+    n.onclick = () => { window.focus(); n.close(); };
+  } catch (e) { /* ignore */ }
+}
+
 /* ---------- task reminder engine ---------- */
 function taskDateTime(t) {
   if (!t.dueDate) return null;
