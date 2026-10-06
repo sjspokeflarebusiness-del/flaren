@@ -199,6 +199,22 @@ function escapeHTML(str) {
     .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;").replaceAll("'", "&#039;");
 }
+/* ---------- Waking-up indicator for cold starts ---------- */
+let _wakeToast = null;
+window.__flarenWakingUp = function (show) {
+  if (show) {
+    if (_wakeToast) return;
+    _wakeToast = document.createElement("div");
+    _wakeToast.className = "toast waking";
+    _wakeToast.innerHTML = `
+      <span class="waking-spinner"></span>
+      Waking up server… first time takes ~30 sec
+    `;
+    document.body.appendChild(_wakeToast);
+  } else {
+    if (_wakeToast) { _wakeToast.remove(); _wakeToast = null; }
+  }
+};
 function toast(msg) {
   const el = document.createElement("div");
   el.className = "toast";
