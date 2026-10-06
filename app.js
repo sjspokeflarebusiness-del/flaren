@@ -1587,8 +1587,12 @@ function renderSettings(el) {
       </div>
 
       <p style="color:var(--muted-2);font-size:12px;margin-top:14px">
-        Flaren must send the notification through ntfy for it to arrive when the app is closed.
+         Flaren must send the notification through ntfy for it to arrive when the app is closed.
       </p>
+    </div>
+
+    <div style="margin-top:22px; display:flex; gap:10px;">
+      <button class="btn btn-primary btn-lg" id="saveSettings">Save settings</button>
     </div>
   `;
 
