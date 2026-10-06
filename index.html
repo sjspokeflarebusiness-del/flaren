@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flaren — Your digital world, one workspace</title>
   <link rel="icon" type="image/png" href="images/logo.png" />
-  <meta name="description" content="Flaren is a fast, cinematic workspace that keeps your services, notes and tasks in one place." />
+  <meta name="description" content="Flaren is a fast, cinematic workspace with services, notes, tasks, focus timer, calendar, water tracker, workout tracker and a built-in assistant." />
   <meta name="theme-color" content="#070A14" />
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="images/logo.png" />
@@ -76,7 +76,7 @@
       </h1>
 
       <p class="hero-sub anim-fadeup" style="animation-delay:.5s">
-        Services, notes, tasks, focus timer, calendar, hydration and a built-in assistant — all in one fast, cinematic dashboard. No tabs. No chaos.
+        Services, notes, tasks, focus timer, calendar, hydration, workouts, and a built-in assistant — all in one fast, cinematic dashboard. No tabs. No chaos.
       </p>
 
       <div class="hero-actions anim-fadeup" style="animation-delay:.65s">
@@ -120,7 +120,7 @@
   <section class="section" id="features">
     <div class="section-head">
       <span class="chip">Features</span>
-      <h2>Nine tools. <span class="grad">One workspace.</span></h2>
+      <h2>Ten tools. <span class="grad">One workspace.</span></h2>
       <p>Everything you open in a browser tab — now in one place.</p>
     </div>
 
@@ -146,9 +146,14 @@
         <p>Month, week and day views. Recurring events. Colour-coded with reminders.</p>
       </article>
       <article class="feature-card">
-        <div class="feature-icon flame">💧</div>
-        <h3>Water Tracker</h3>
-        <p>Drink up, grow a plant. An honest garden that reflects what you did.</p>
+  <div class="feature-icon flame">💧</div>
+  <h3>Water Tracker</h3>
+  <p>Drink up, grow a plant. An honest garden that reflects what you did.</p>
+</article>
+      <article class="feature-card">
+        <div class="feature-icon flame">🔥</div>
+        <h3>Workout Tracker</h3>
+        <p>6 levels from Beginner to Elite. Honest streaks. A flame that grows.</p>
       </article>
       <article class="feature-card">
         <div class="feature-icon cyan">🤖</div>
@@ -249,6 +254,11 @@
         <summary>Can I back up my data?</summary>
         <p>Yes. Settings → Export data. Save the file. Import it later on any device.</p>
       </details>
+
+      <details class="faq-item">
+        <summary>What is the workout tracker?</summary>
+        <p>Six levels from Beginner to Elite. Pick your level, log what you did, and grow a flame. Honest streaks — miss a day and it resets.</p>
+      </details>
       <details class="faq-item">
         <summary>Will you steal my passwords?</summary>
         <p>Never. Flaren only stores links. It never asks for passwords. It only opens the official service in a new tab.</p>
@@ -262,7 +272,7 @@
       <img class="brand-logo-img" src="images/logo.png" alt="" />
       <strong>Flaren</strong>
     </div>
-    <p class="footer-copy">© <span id="year"></span> Flaren — Built with care.</p>
+    <p class="footer-copy">© <span id="year"></span> Flaren — One workspace for everything.</p>
     <a class="btn btn-primary" href="app.html">Launch App →</a>
   </footer>
 
@@ -315,6 +325,15 @@
         line3: "No distractions.",
         sub: "A built-in Pomodoro that actually helps you finish what you started. Track sessions, minutes, and streaks — no apps to install.",
         pair: "water"     /* shown on the right */
+      },
+
+            workout: {
+        chip: "🔥 Workout tracker",
+        line1: "Six levels.",
+        line2: "One flame.",
+        line3: "Train every day.",
+        sub: "From 'can't do a single push-up' to elite. Log workouts, grow a flame, build a streak. Honest — no fake rewards.",
+        pair: "focus"
       },
       water: {
         chip: "💧 Water tracker",
@@ -369,7 +388,7 @@
 
     /* Auto-cycle every 8 seconds until the user clicks */
     let heroAuto = setInterval(() => {
-      const keys = ["calendar", "focus", "water"];
+      const keys = ["calendar", "focus", "water", "workout"];
       const next = keys[(keys.indexOf(heroCurrent) + 1) % keys.length];
       applyHero(next);
       heroCurrent = next;
