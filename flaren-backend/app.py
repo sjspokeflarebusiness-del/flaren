@@ -151,7 +151,7 @@ def ntfy_register(uid):
     return jsonify({"ok": True, "topic": topic})
 
 
-@app.post("/api/check-reminders")
+@app.route("/api/check-reminders", methods=["GET", "POST"])
 def check_reminders():
     """
     Called by cron-job.org or UptimeRobot every 1-5 minutes.
