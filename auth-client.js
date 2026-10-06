@@ -30,11 +30,28 @@ async function api(path, { method = "GET", body = null, auth = false } = {}) {
     if (t) headers["Authorization"] = "Bearer " + t;
   }
 
-  const res = await fetch(API_BASE + path, {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : undefined
-  });
+  /* Show a "waking up" toast if the request takes more than 3 seconds */
+  let wakingTimer = setTimeout(() => {
+    if (typeof window !== "undefined" && window.__flarenWakingUp) {
+      window.__flarenWakingUp(true);
+    }
+  }, 3000);
+
+  let res;
+  try {
+    res = await fetch(API_BASE + path, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined
+    });
+  } catch (err) {
+    clearTimeout(wakingTimer);
+    if (window.__flarenWakingUp) window.__flarenWakingUp(false);
+    throw new Error("Network error — check your connection");
+  }
+
+  clearTimeout(wakingTimer);
+  if (window.__flarenWakingUp) window.__flarenWakingUp(false);
 
   let data = null;
   try { data = await res.json(); } catch {}
@@ -45,7 +62,6 @@ async function api(path, { method = "GET", body = null, auth = false } = {}) {
   }
   return data;
 }
-
 /* ---------- API surface ---------- */
 const FlarenAPI = {
   health:    ()                => api("/api/health"),
