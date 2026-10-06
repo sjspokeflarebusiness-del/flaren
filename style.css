@@ -3662,3 +3662,28 @@ textarea:focus-visible, select:focus-visible {
 @media (max-width: 420px) {
   .game-card canvas { border-radius: 12px; }
 }
+/* ---------- Waking-up toast ---------- */
+.toast.waking {
+  background: linear-gradient(135deg, rgba(255,122,24,.2), rgba(236,72,153,.15));
+  border: 1px solid rgba(255,122,24,.5);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+  max-width: 320px;
+  padding: 14px 18px;
+}
+.waking-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,122,24,.3);
+  border-top-color: #FF7A18;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
