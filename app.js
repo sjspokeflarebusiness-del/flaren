@@ -1656,13 +1656,6 @@ function renderSettings(el) {
     saveData(); applyTheme(); toast("Settings saved");
   });
 
-     /* --- Show the ntfy topic code --- */
-  const topicEl = document.getElementById("ntfyTopicCode");
-  if (topicEl) {
-    const topic = getOrCreateNtfyTopic();
-    topicEl.textContent = topic;
-    if (signedIn()) registerNtfyPush();
-  }
 
   /* --- Copy topic button --- */
   const copyBtn = document.getElementById("copyNtfy");
