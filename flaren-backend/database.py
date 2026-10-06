@@ -35,6 +35,15 @@ SCHEMA_SQLITE = """
         created_at  INTEGER NOT NULL,
         PRIMARY KEY (user_id, token)
     );
+    CREATE TABLE IF NOT EXISTS ntfy_topics (
+        user_id     INTEGER PRIMARY KEY,
+        topic       TEXT NOT NULL,
+        created_at  INTEGER NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS reminder_log (
+        reminder_key TEXT PRIMARY KEY,
+        sent_at      INTEGER NOT NULL
+    );
 """
 
 SCHEMA_POSTGRES = """
@@ -55,6 +64,15 @@ SCHEMA_POSTGRES = """
         token       TEXT NOT NULL,
         created_at  BIGINT NOT NULL,
         PRIMARY KEY (user_id, token)
+    );
+    CREATE TABLE IF NOT EXISTS ntfy_topics (
+        user_id     INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+        topic       TEXT NOT NULL,
+        created_at  BIGINT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS reminder_log (
+        reminder_key TEXT PRIMARY KEY,
+        sent_at      INTEGER NOT NULL
     );
 """
 
@@ -202,3 +220,70 @@ def get_push_tokens(user_id):
         else:
             rows = db.execute("SELECT token FROM push_tokens WHERE user_id = ?", (user_id,)).fetchall()
             return [r["token"] for r in rows]
+
+
+
+# ---------- ntfy push ----------
+def save_ntfy_topic(user_id, topic):
+    with get_db() as db:
+        if USE_POSTGRES:
+            cur = db.cursor()
+            cur.execute("""
+                INSERT INTO ntfy_topics (user_id, topic, created_at)
+                VALUES (%s, %s, %s)
+                ON CONFLICT (user_id) DO UPDATE SET topic = EXCLUDED.topic
+            """, (user_id, topic, int(time.time())))
+        else:
+            db.execute("""
+                INSERT OR REPLACE INTO ntfy_topics (user_id, topic, created_at)
+                VALUES (?, ?, ?)
+            """, (user_id, topic, int(time.time())))
+
+
+def get_ntfy_topic(user_id):
+    with get_db() as db:
+        if USE_POSTGRES:
+            cur = db.cursor()
+            cur.execute("SELECT topic FROM ntfy_topics WHERE user_id = %s", (user_id,))
+            row = cur.fetchone()
+        else:
+            row = db.execute("SELECT topic FROM ntfy_topics WHERE user_id = ?", (user_id,)).fetchone()
+        return row["topic"] if row else None
+
+
+def get_all_ntfy_topics():
+    with get_db() as db:
+        if USE_POSTGRES:
+            cur = db.cursor()
+            cur.execute("SELECT user_id, topic FROM ntfy_topics")
+            return [dict(r) for r in cur.fetchall()]
+        else:
+            rows = db.execute("SELECT user_id, topic FROM ntfy_topics").fetchall()
+            return [dict(r) for r in rows]
+
+
+def was_reminder_sent(key):
+    with get_db() as db:
+        if USE_POSTGRES:
+            cur = db.cursor()
+            cur.execute("SELECT 1 FROM reminder_log WHERE reminder_key = %s", (key,))
+            return cur.fetchone() is not None
+        else:
+            row = db.execute("SELECT 1 FROM reminder_log WHERE reminder_key = ?", (key,)).fetchone()
+            return row is not None
+
+
+def mark_reminder_sent(key):
+    with get_db() as db:
+        if USE_POSTGRES:
+            cur = db.cursor()
+            cur.execute("""
+                INSERT INTO reminder_log (reminder_key, sent_at)
+                VALUES (%s, %s)
+                ON CONFLICT (reminder_key) DO NOTHING
+            """, (key, int(time.time())))
+        else:
+            db.execute("""
+                INSERT OR IGNORE INTO reminder_log (reminder_key, sent_at)
+                VALUES (?, ?)
+            """, (key, int(time.time())))
