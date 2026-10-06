@@ -2,6 +2,8 @@
 import os
 import json
 from functools import wraps
+import requests
+import time
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -130,6 +132,97 @@ def push_token(uid):
         return jsonify({"error": "token required"}), 400
     database.save_push_token(uid, token)
     return jsonify({"ok": True})
+
+
+# =========================================================
+# NTFY PUSH NOTIFICATIONS
+# =========================================================
+
+@app.post("/api/ntfy/register")
+@require_auth
+def ntfy_register(uid):
+    data = request.get_json(silent=True) or {}
+    topic = (data.get("topic") or "").strip()
+    if not topic or len(topic) < 6 or len(topic) > 64:
+        return jsonify({"error": "topic must be 6-64 chars"}), 400
+    if not all(c.isalnum() or c in "-_" for c in topic):
+        return jsonify({"error": "topic can only contain letters, numbers, - and _"}), 400
+    database.save_ntfy_topic(uid, topic)
+    return jsonify({"ok": True, "topic": topic})
+
+
+@app.post("/api/check-reminders")
+def check_reminders():
+    """
+    Called by cron-job.org or UptimeRobot every 1-5 minutes.
+    Checks all users' tasks with reminders that are now due,
+    and sends push notifications via ntfy.sh.
+    """
+    import json
+    from datetime import datetime, timezone
+
+    now_ts = int(time.time())
+    sent = 0
+    checked_users = 0
+
+    topics = database.get_all_ntfy_topics()
+    checked_users = len(topics)
+
+    for row in topics:
+        user_id = row["user_id"]
+        topic = row["topic"]
+
+        sync = database.get_sync(user_id)
+        if not sync:
+            continue
+
+        try:
+            payload = json.loads(sync["payload"])
+        except Exception:
+            continue
+
+        tasks = payload.get("tasks", [])
+        for task in tasks:
+            if task.get("completed"):
+                continue
+            if not task.get("reminder"):
+                continue
+            due_date = task.get("dueDate")
+            due_time = task.get("dueTime") or "09:00"
+            if not due_date:
+                continue
+
+            try:
+                dt = datetime.strptime(f"{due_date} {due_time}", "%Y-%m-%d %H:%M")
+                dt = dt.replace(tzinfo=timezone.utc)
+                due_ts = int(dt.timestamp())
+            except Exception:
+                continue
+
+            if due_ts <= now_ts and due_ts > now_ts - 300:
+                reminder_key = f"task-{task.get('id')}-{due_date}-{due_time}"
+                if database.was_reminder_sent(reminder_key):
+                    continue
+
+                try:
+                    requests.post(
+                        f"https://ntfy.sh/{topic}",
+                        data=(task.get("description") or "Task reminder from Flaren").encode("utf-8"),
+                        headers={
+                            "Title": "⏰ " + task.get("title", "Task"),
+                            "Priority": "high",
+                            "Tags": "alarm_clock",
+                            "Click": "https://sjspokeflarebusiness-del.github.io/flaren/app.html"
+                        },
+                        timeout=5
+                    )
+                    database.mark_reminder_sent(reminder_key)
+                    sent += 1
+                except Exception as e:
+                    print("ntfy send error:", e)
+
+    return jsonify({"sent": sent, "users_checked": checked_users, "at": now_ts})
+
 
 
 @app.errorhandler(404)
