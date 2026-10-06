@@ -161,56 +161,59 @@
     return todayProgress() >= 1;
   }
 
-  /* ---------- Flame SVG ---------- */
   function flameSVG(pct) {
-    /* pct 0..1+ */
     const p = Math.max(0, Math.min(1.5, pct));
-    const height = 60 + p * 100;         /* body height */
-    const width  = 50 + p * 50;
-    const glow   = 0.3 + Math.min(1, p) * 0.7;
+
+    /* Flame scales from 0.4 to 1.0 as pct goes 0 -> 1 */
+    const scale = 0.4 + Math.min(1, p) * 0.6;
+    const glow  = 0.3 + Math.min(1, p) * 0.7;
 
     return `
-      <svg viewBox="0 0 200 280" class="flame-svg" style="filter:drop-shadow(0 0 ${20*glow}px rgba(255,122,24,${glow}));">
+      <svg viewBox="0 0 200 320" class="flame-svg" style="filter:drop-shadow(0 0 ${24 * glow}px rgba(255,122,24,${glow}));">
         <defs>
-          <radialGradient id="flameCore" cx="50%" cy="70%" r="60%">
-            <stop offset="0%" stop-color="#FFEAA7"/>
-            <stop offset="35%" stop-color="#FFB347"/>
-            <stop offset="70%" stop-color="#FF7A18"/>
+          <radialGradient id="flameOuter" cx="50%" cy="80%" r="70%">
+            <stop offset="0%"   stop-color="#FFEAA7"/>
+            <stop offset="30%"  stop-color="#FFB347"/>
+            <stop offset="65%"  stop-color="#FF7A18"/>
             <stop offset="100%" stop-color="#C1351F"/>
           </radialGradient>
+          <radialGradient id="flameInner" cx="50%" cy="70%" r="50%">
+            <stop offset="0%"   stop-color="#FFF7DB"/>
+            <stop offset="60%"  stop-color="#FFEAA7"/>
+            <stop offset="100%" stop-color="#FFB347"/>
+          </radialGradient>
           ${p > 1.0 ? `
-            <radialGradient id="flameBlue" cx="50%" cy="80%" r="50%">
-              <stop offset="0%" stop-color="#7FDBFF"/>
-              <stop offset="100%" stop-color="#22D3EE"/>
-            </radialGradient>` : ""}
+          <radialGradient id="flameBlue" cx="50%" cy="75%" r="50%">
+            <stop offset="0%"   stop-color="#E0F7FF"/>
+            <stop offset="60%"  stop-color="#7FDBFF"/>
+            <stop offset="100%" stop-color="#22D3EE"/>
+          </radialGradient>` : ""}
         </defs>
 
-        <!-- ground ember -->
-        <ellipse cx="100" cy="260" rx="${30 + p * 20}" ry="6" fill="#FF7A18" opacity="${0.15 + Math.min(1,p)*0.35}"/>
+        <ellipse cx="100" cy="295" rx="${44 * scale}" ry="7" fill="#FF7A18" opacity="${0.15 + Math.min(1, p) * 0.35}"/>
 
-        <!-- main flame shape -->
-        <path class="flame-flicker" d="
-          M100 ${260 - height}
-          C 70 ${230 - height*0.4}, 55 ${180 - height*0.3}, 70 160
-          C 75 130, 90 120, 95 90
-          C 100 60, 95 30, 100 10
-          C 110 40, 120 60, 130 90
-          C 140 120, 145 150, 140 180
-          C 150 200, 140 235, 100 260
-          Z"
-          fill="url(#flameCore)"/>
+        <g transform="translate(100 290) scale(${scale}) translate(-100 -290)">
+          <path class="flame-flicker"
+                d="M100 40
+                   C 130 90, 150 140, 145 185
+                   C 140 225, 130 260, 100 285
+                   C 70 260, 60 225, 55 185
+                   C 50 140, 70 90, 100 40 Z"
+                fill="url(#flameOuter)"/>
 
-        <!-- inner core -->
-        <path class="flame-core" d="
-          M100 ${250 - height * 0.65}
-          C 88 ${230 - height * 0.3}, 82 ${195 - height * 0.2}, 92 175
-          C 96 155, 100 140, 100 120
-          C 102 145, 110 160, 112 180
-          C 118 200, 112 230, 100 250
-          Z"
-          fill="#FFEAA7" opacity="0.75"/>
+          <path class="flame-core"
+                d="M100 110
+                   C 118 145, 128 175, 124 205
+                   C 120 235, 112 260, 100 275
+                   C 88 260, 80 235, 76 205
+                   C 72 175, 82 145, 100 110 Z"
+                fill="url(#flameInner)"
+                opacity="0.85"/>
 
-        ${p > 1.0 ? `<ellipse class="flame-blue" cx="100" cy="210" rx="24" ry="34" fill="url(#flameBlue)" opacity="0.85"/>` : ""}
+          ${p > 1.0 ? `
+            <ellipse class="flame-blue" cx="100" cy="220" rx="26" ry="40" fill="url(#flameBlue)" opacity="0.85"/>
+          ` : ""}
+        </g>
       </svg>
     `;
   }
@@ -296,18 +299,34 @@
         </div>
       </div>
 
+            ${data.todayLogs && Object.keys(data.todayLogs).length > 0 ? `
+      <div class="wo-undobar">
+        <button class="btn btn-secondary" id="woUndo">↶ Undo last log</button>
+        <button class="btn btn-secondary" id="woReset">Reset today</button>
+        ${todayComplete() ? `<span class="wo-complete-badge">✓ Day complete</span>` : ""}
+      </div>
+      ` : ""}
+
       <div class="wo-history-card">
         <h3>Last 30 days 🔥</h3>
         <p class="wo-sub">Bigger flame = more you did that day.</p>
         <div class="wo-heatmap">
           ${renderHeatmap()}
         </div>
-        <div class="wo-stats">
-          <div class="wo-stat"><div class="wo-stat-num">${data.streak || 0}</div><div class="wo-stat-lbl">Day streak</div></div>
-          <div class="wo-stat"><div class="wo-stat-num">${(data.history || []).filter(h => h.complete).length}</div><div class="wo-stat-lbl">Days completed</div></div>
-          <div class="wo-stat"><div class="wo-stat-num">${lvl.id}/6</div><div class="wo-stat-lbl">Current level</div></div>
+              <div class="wo-stats">
+          <div class="wo-stat">
+            <div class="wo-stat-num">${(data.streak || 0) + (todayComplete() ? 1 : 0)}</div>
+            <div class="wo-stat-lbl">Day streak</div>
+          </div>
+          <div class="wo-stat">
+            <div class="wo-stat-num">${(data.history || []).filter(h => h.complete).length + (todayComplete() ? 1 : 0)}</div>
+            <div class="wo-stat-lbl">Days completed</div>
+          </div>
+          <div class="wo-stat">
+            <div class="wo-stat-num">${lvl.id}/6</div>
+            <div class="wo-stat-lbl">Current level</div>
+          </div>
         </div>
-      </div>
     `;
 
     /* Bind actions */
@@ -321,8 +340,36 @@
       if (!n || n <= 0) return;
       logAmount(b.dataset.id, n);
     }));
+
+    const undoBtn = document.getElementById("woUndo");
+    if (undoBtn) undoBtn.addEventListener("click", undoLastLog);
+    const resetBtn = document.getElementById("woReset");
+    if (resetBtn) resetBtn.addEventListener("click", () => {
+      if (!confirm("Reset today's log? This will clear all of today's entries.")) return;
+      data.todayLogs = {};
+      save();
+      draw(document.getElementById("pageContent"));
+    });
     $("#woChangeLevel", el).addEventListener("click", () => openLevelPicker());
   }
+
+   function undoLastLog() {
+    /* Remove the most recent single log entry by deleting one task's last add.
+       We track by popping the highest-value task's last increment. */
+    const keys = Object.keys(data.todayLogs);
+    if (!keys.length) return;
+    const last = keys[keys.length - 1];
+    const lvl = currentLevel();
+    const task = lvl.tasks.find(t => t.id === last);
+    if (!task) return;
+    const step = task.unit === "reps" ? 5 : (task.unit === "km" ? 1 : 5);
+    data.todayLogs[last] = Math.max(0, (data.todayLogs[last] || 0) - step);
+    if (data.todayLogs[last] === 0) delete data.todayLogs[last];
+    save();
+    draw(document.getElementById("pageContent"));
+    if (typeof toast === "function") toast("Undone");
+  }
+  
 
   function logAmount(taskId, amount) {
     rollDayIfNeeded();
