@@ -203,6 +203,7 @@
           <li>Notes &amp; tasks</li>
           <li>Light &amp; dark theme</li>
           <li>Data export / import</li>
+          <li>Cloud sync (launch offer)</li>
         </ul>
         <a href="app.html" class="btn btn-ghost btn-lg">Start free</a>
       </article>
@@ -213,7 +214,7 @@
         <div class="price"><span>$5</span><small>/ month</small></div>
         <ul>
           <li>Everything in Free</li>
-          <li>Cloud sync (soon)</li>
+          <li>Unlimited cloud sync</li>
           <li>Custom backgrounds</li>
           <li>Priority support</li>
         </ul>
@@ -314,89 +315,7 @@
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(()=>{}));
     }
-        /* ============================================
-       Flaren hero switcher
-       ============================================ */
-    const heroFeatures = {
-      focus: {
-        chip: "⏱️ Focus timer",
-        line1: "One task.",
-        line2: "25 minutes.",
-        line3: "No distractions.",
-        sub: "A built-in Pomodoro that actually helps you finish what you started. Track sessions, minutes, and streaks — no apps to install.",
-        pair: "water"     /* shown on the right */
-      },
 
-            workout: {
-        chip: "🔥 Workout tracker",
-        line1: "Six levels.",
-        line2: "One flame.",
-        line3: "Train every day.",
-        sub: "From 'can't do a single push-up' to elite. Log workouts, grow a flame, build a streak. Honest — no fake rewards.",
-        pair: "focus"
-      },
-      water: {
-        chip: "💧 Water tracker",
-        line1: "Drink up.",
-        line2: "Grow a plant.",
-        line3: "Every single day.",
-        sub: "Log your water. Watch a real plant grow today. Miss a day and the garden remembers honestly — no fake blooms.",
-        pair: "focus"
-      },
-      calendar: {
-        chip: "📅 Calendar",
-        line1: "Plan your days.",
-        line2: "Colour your events.",
-        line3: "Never miss a thing.",
-        sub: "Month, week, day views. Recurring events, colours, reminders. Your calendar finally lives in the same place as your tasks.",
-        pair: "focus"
-      }
-    };
-
-    let heroCurrent = "calendar";
-    let heroPair = null;
-
-    function applyHero(featureKey) {
-      const f = heroFeatures[featureKey];
-      if (!f) return;
-
-      const heroEl = document.querySelector(".hero-v2");
-      heroEl.classList.add("switching");
-
-      setTimeout(() => {
-        document.getElementById("heroChip").textContent = f.chip;
-        document.getElementById("heroLine1").textContent = f.line1;
-        document.getElementById("heroLine2").textContent = f.line2;
-        document.getElementById("heroLine3").textContent = f.line3;
-        document.getElementById("heroSub").textContent = f.sub;
-        heroEl.classList.remove("switching");
-      }, 220);
-    }
-
-    document.querySelectorAll(".hero-planet").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const target = btn.dataset.feature;
-        if (!heroFeatures[target]) return;
-        heroCurrent = target;
-        applyHero(target);
-        /* highlight the clicked one */
-        document.querySelectorAll(".hero-planet").forEach(b => {
-          b.setAttribute("aria-selected", b === btn ? "true" : "false");
-        });
-      });
-    });
-
-    /* Auto-cycle every 8 seconds until the user clicks */
-    let heroAuto = setInterval(() => {
-      const keys = ["calendar", "focus", "water", "workout"];
-      const next = keys[(keys.indexOf(heroCurrent) + 1) % keys.length];
-      applyHero(next);
-      heroCurrent = next;
-    }, 8000);
-
-    document.querySelectorAll(".hero-planet").forEach(btn => {
-      btn.addEventListener("click", () => clearInterval(heroAuto), { once: true });
-    });
   </script>
 </body>
 </html>
