@@ -320,11 +320,7 @@ async function registerNtfyPush() {
   if (!signedIn() || !currentUser) return null;
   const topic = getOrCreateNtfyTopic();
   try {
-    await window.FlarenAPI.api("/api/ntfy/register", {
-      method: "POST",
-      body: { topic },
-      auth: true
-    });
+      await window.FlarenAPI.ntfyRegister(topic);
     return topic;
   } catch (err) {
     console.warn("ntfy register failed:", err);
