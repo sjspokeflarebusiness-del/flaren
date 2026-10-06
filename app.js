@@ -400,6 +400,7 @@ function renderShell() {
           ${menuBtn("focus", "⏱️", "Focus")}
           ${menuBtn("calendar", "📅", "Calendar")}
           ${menuBtn("water", "💧", "Water")}
+          ${menuBtn("workout", "🔥", "Workout")}
           ${menuBtn("ask", "🤖", "Ask Flaren")}
           ${menuBtn("games", "🎮", "Games")}
           ${menuBtn("settings", "⚙️", "Settings")}
@@ -489,6 +490,7 @@ function renderPage() {
   if (currentPage !== "focus"    && window.FlarenPomodoro) window.FlarenPomodoro.stop();
   if (currentPage !== "calendar" && window.FlarenCalendar) window.FlarenCalendar.stop();
   if (currentPage !== "water"    && window.FlarenWater)    window.FlarenWater.stop();
+  if (currentPage !== "workout"  && window.FlarenWorkout)  window.FlarenWorkout.stop();
   if (currentPage !== "ask"      && window.FlarenAsk)      window.FlarenAsk.stop();
 
   const pageContent = $("#pageContent");
@@ -501,6 +503,7 @@ function renderPage() {
     focus: renderFocus,
     calendar: renderCalendar,
     water: renderWater,
+    workout: renderWorkout,
     ask: renderAsk,
     games: renderGames,
     settings: renderSettings
@@ -1281,7 +1284,16 @@ function renderWater(el) {
     el.innerHTML = `<div class="empty">Water module failed to load.</div>`;
   }
 }
-
+/* =========================================================
+   WORKOUT — delegate to workout.js
+   ========================================================= */
+function renderWorkout(el) {
+  if (window.FlarenWorkout) {
+    window.FlarenWorkout.render(el);
+  } else {
+    el.innerHTML = `<div class="empty">Workout module failed to load.</div>`;
+  }
+}
 /* =========================================================
    ASK FLAREN — delegate to ask.js
    ========================================================= */
