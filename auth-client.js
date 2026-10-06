@@ -71,7 +71,8 @@ const FlarenAPI = {
   me:        ()                => api("/api/me",       { auth: true }),
   pushSync:  (payload)         => api("/api/sync",     { method: "POST", body: { payload }, auth: true }),
   pullSync:  ()                => api("/api/sync",     { auth: true }),
-  pushToken: (token)           => api("/api/push-token", { method: "POST", body: { token }, auth: true })
+  pushToken: (token)           => api("/api/push-token", { method: "POST", body: { token }, auth: true }),
+  ntfyRegister: (topic)        => api("/api/ntfy/register", { method: "POST", body: { topic }, auth: true })
 };
 
 window.FlarenAPI = FlarenAPI;
