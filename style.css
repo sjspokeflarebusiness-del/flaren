@@ -3762,3 +3762,230 @@ textarea:focus-visible, select:focus-visible {
   .launch-banner-landing .launch-text strong { font-size: 14px; }
   .launch-banner-landing .launch-text span { font-size: 12px; }
 }
+/* =========================================================
+   WORKOUT TRACKER
+   ========================================================= */
+.wo-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.wo-flame-card,
+.wo-log-card,
+.wo-history-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.wo-flame-card {
+  background:
+    radial-gradient(circle at 50% 80%, rgba(255,122,24,.15), transparent 60%),
+    var(--surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.wo-flame-wrap {
+  width: 100%;
+  max-width: 220px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 20px;
+}
+
+.flame-svg {
+  width: 100%;
+  height: auto;
+}
+
+.flame-flicker {
+  transform-origin: 100px 260px;
+  animation: flameFlicker 1.8s ease-in-out infinite;
+}
+@keyframes flameFlicker {
+  0%,100% { transform: scaleY(1) scaleX(1); }
+  30%     { transform: scaleY(1.04) scaleX(0.98); }
+  60%     { transform: scaleY(0.98) scaleX(1.02); }
+}
+.flame-core {
+  transform-origin: 100px 250px;
+  animation: flameFlicker 1.2s ease-in-out infinite reverse;
+}
+.flame-blue {
+  animation: bluePulse 2s ease-in-out infinite;
+}
+@keyframes bluePulse {
+  0%,100% { opacity: .7; transform: scale(1); }
+  50%     { opacity: 1; transform: scale(1.08); }
+}
+
+.wo-progress { width: 100%; }
+.wo-progress-bar {
+  height: 12px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.wo-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #FFB347, #FF7A18, #C1351F);
+  border-radius: 999px;
+  transition: width .6s cubic-bezier(.16,1,.3,1);
+  box-shadow: 0 0 12px rgba(255,122,24,.6);
+  animation: heartbeat 1.6s ease-in-out infinite;
+}
+@keyframes heartbeat {
+  0%,100% { box-shadow: 0 0 10px rgba(255,122,24,.5); }
+  50%     { box-shadow: 0 0 20px rgba(255,122,24,.9); }
+}
+.wo-progress-lbl {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 13px;
+}
+.wo-progress-lbl strong { color: var(--flame-1); }
+.wo-progress-lbl span { color: var(--muted); }
+
+.wo-log-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+.wo-tagline { color: var(--muted); font-size: 13px; margin-bottom: 18px; }
+
+.wo-tasks { display: flex; flex-direction: column; gap: 14px; }
+
+.wo-task {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  transition: border-color .25s, background .25s;
+}
+.wo-task.done {
+  border-color: rgba(34,197,94,.5);
+  background: rgba(34,197,94,.06);
+}
+
+.wo-task-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.wo-task-icon { font-size: 20px; }
+.wo-task-label { flex: 1; font-weight: 600; font-size: 14px; }
+.wo-task-target { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+
+.wo-task-bar {
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.wo-task-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #FFB347, #FF7A18);
+  border-radius: 999px;
+  transition: width .5s cubic-bezier(.16,1,.3,1);
+}
+
+.wo-task-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.wo-history-card { margin-top: 20px; }
+.wo-history-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.wo-sub { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+
+.wo-heatmap {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+  gap: 6px;
+  margin-bottom: 20px;
+}
+.wo-heat-cell {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  background: rgba(255,122,24, calc(0.08 + var(--intensity, 0) * 0.85));
+  border: 1px solid rgba(255,122,24, calc(0.15 + var(--intensity, 0) * 0.5));
+  box-shadow: 0 0 calc(var(--intensity, 0) * 12px) rgba(255,122,24, calc(var(--intensity, 0) * 0.6));
+  transition: transform .2s var(--ease);
+}
+.wo-heat-cell:hover { transform: scale(1.12); }
+.wo-heat-cell.today {
+  box-shadow: 0 0 0 2px var(--flame-1), 0 0 calc(var(--intensity, 0) * 12px) rgba(255,122,24,.6);
+}
+
+.wo-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.wo-stat {
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+}
+.wo-stat-num {
+  font-size: 28px;
+  font-weight: 500;
+  background: var(--grad-flame);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-variant-numeric: tabular-nums;
+}
+.wo-stat-lbl {
+  color: var(--muted-2);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.wo-level-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: rgba(255,255,255,.02);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  color: var(--text);
+  font-family: inherit;
+  transition: all .2s var(--ease);
+}
+.wo-level-option:hover {
+  border-color: var(--flame-1);
+  background: rgba(255,122,24,.06);
+}
+.wo-level-option.sel {
+  border-color: var(--flame-1);
+  background: linear-gradient(135deg, rgba(255,122,24,.15), rgba(236,72,153,.08));
+}
+.wo-level-option strong { display: block; font-size: 14px; margin-bottom: 3px; }
+.wo-level-option small { display: block; color: var(--muted); font-size: 12px; }
+
+@media (max-width: 900px) {
+  .wo-layout { grid-template-columns: 1fr; }
+  .wo-flame-wrap { max-width: 160px; }
+}
+@media (max-width: 640px) {
+  .wo-heatmap { grid-template-columns: repeat(auto-fill, minmax(24px, 1fr)); }
+  .wo-stats { grid-template-columns: 1fr; }
+}
