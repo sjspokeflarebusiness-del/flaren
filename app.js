@@ -304,6 +304,34 @@ async function requestNotificationPermission() {
   } catch { return false; }
 }
 
+
+/* ---------- NTFY PUSH SUBSCRIPTION ---------- */
+function getOrCreateNtfyTopic() {
+  let topic = localStorage.getItem("flaren_ntfy_topic");
+  if (!topic) {
+    const rnd = () => Math.random().toString(36).slice(2, 10);
+    topic = "flaren-" + rnd() + rnd();
+    localStorage.setItem("flaren_ntfy_topic", topic);
+  }
+  return topic;
+}
+
+async function registerNtfyPush() {
+  if (!signedIn() || !currentUser) return null;
+  const topic = getOrCreateNtfyTopic();
+  try {
+    await window.FlarenAPI.api("/api/ntfy/register", {
+      method: "POST",
+      body: { topic },
+      auth: true
+    });
+    return topic;
+  } catch (err) {
+    console.warn("ntfy register failed:", err);
+    return null;
+  }
+}
+
 function showNotification(title, body) {
   if (notificationPermission() !== "granted") return;
   try {
@@ -1597,6 +1625,28 @@ function renderSettings(el) {
     showNotification("🔔 Flaren test", "This is what a reminder looks like.");
     playNotificationSound();
   });
+
+     /* --- Show the ntfy topic code --- */
+  const topicEl = document.getElementById("ntfyTopicCode");
+  if (topicEl) {
+    const topic = getOrCreateNtfyTopic();
+    topicEl.textContent = topic;
+    if (signedIn()) registerNtfyPush();
+  }
+
+  /* --- Copy topic button --- */
+  const copyBtn = document.getElementById("copyNtfy");
+  if (copyBtn) {
+    copyBtn.addEventListener("click", () => {
+      const topic = getOrCreateNtfyTopic();
+      navigator.clipboard.writeText(topic).then(() => {
+        toast("Code copied to clipboard");
+      }).catch(() => {
+        toast("Copy failed — please copy manually");
+      });
+    });
+  }
+
 
   $("#saveSettings").addEventListener("click", () => {
     state.settings.username = $("#setName").value.trim() || "User";
