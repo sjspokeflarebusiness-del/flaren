@@ -1,6 +1,6 @@
 /* Flaren service worker — installable + offline + notification relay */
 
-const CACHE_NAME = "flaren-v11";
+const CACHE_NAME = "flaren-v12";
 const ASSETS = [
   "./",
   "./index.html",
