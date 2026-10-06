@@ -1,6 +1,7 @@
 /* =========================================================
    FLAREN — Ask Flaren (rule-based assistant)
    Works offline. No API key. Free forever.
+   Includes: tasks, events, notes, water, workout, focus, services
    ========================================================= */
 
 (function () {
@@ -10,7 +11,6 @@
   const MAX_HISTORY = 40;
 
   let history = load();
-  let _panelOpen = false;
 
   /* ---------- storage ---------- */
   function load() {
@@ -25,6 +25,8 @@
   }
 
   /* ---------- helpers ---------- */
+  const $  = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   function pad(n) { return String(n).padStart(2, "0"); }
   function todayKey() {
     const d = new Date();
@@ -40,16 +42,13 @@
   function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
 
   /* ---------- date parsing ---------- */
-  /* Returns { date: "YYYY-MM-DD", time: "HH:MM"|null, rest: "text without date words" } */
   function parseDateAndTime(text) {
     const original = text;
     let date = null;
     let time = null;
     let cleaned = text;
-
     const lower = text.toLowerCase();
 
-    /* today / tomorrow / day after tomorrow */
     if (/\btomorrow\b/.test(lower)) {
       const d = new Date(); d.setDate(d.getDate() + 1);
       date = dayKeyFromDate(d);
@@ -63,7 +62,6 @@
       cleaned = cleaned.replace(/day after tomorrow/i, "").trim();
     }
 
-    /* weekday names */
     if (!date) {
       const weekdays = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6 };
       const match = lower.match(/\b(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/);
@@ -78,7 +76,6 @@
       }
     }
 
-    /* explicit dates like "oct 12" or "12 oct" or "12/10" or "2026-10-12" */
     if (!date) {
       const monthNames = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
       let m;
@@ -109,7 +106,6 @@
       }
     }
 
-    /* time like 3pm, 3 pm, 15:30, 3:30pm */
     const timeMatch = cleaned.match(/\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\b/i);
     if (timeMatch) {
       let hh = parseInt(timeMatch[1], 10);
@@ -126,7 +122,6 @@
     return { date, time, rest: cleaned.trim() || original.trim() };
   }
 
-  /* ---------- reply builder ---------- */
   function reply(text, action, data) {
     return { text, action: action || null, data: data || null };
   }
@@ -149,13 +144,16 @@
         "• how much water today\n" +
         "• how many plants grown\n" +
         "• what's my streak\n" +
+        "• log workout <amount> [label]\n" +
+        "• how much workout today\n" +
+        "• workout streak\n" +
         "• how many tasks completed today\n" +
         "• clear completed tasks\n" +
         "• what's on my calendar today\n" +
         "• start focus timer\n" +
         "• how focused was I today\n" +
         "• list services\n" +
-        "• go to <dashboard|tasks|notes|water|calendar|focus|services|settings|games>"
+        "• go to <dashboard|tasks|notes|water|workout|calendar|focus|services|settings|games>"
       );
     }
 
@@ -163,7 +161,7 @@
     let m = lower.match(/^(go to|open|show me|navigate to)\s+(\w+)/);
     if (m) {
       const page = m[2];
-      const allowed = ["dashboard","tasks","notes","water","calendar","focus","services","settings","games","favorites"];
+      const allowed = ["dashboard","tasks","notes","water","workout","calendar","focus","services","settings","games","favorites","ask"];
       if (allowed.includes(page)) {
         return reply(`Opening ${page}…`, "navigate", { page });
       }
@@ -238,9 +236,30 @@
       return reply("Checking your garden…", "plants_status");
     }
 
-    /* STREAK */
-    if (/(?:my streak|streak\b|how many days in a row)/i.test(lower)) {
+    /* WATER STREAK */
+    if (/(?:my (?:water )?streak|streak\b|how many days in a row)/i.test(lower) && !/workout|training/i.test(lower)) {
       return reply("Checking your streak…", "streak_status");
+    }
+
+    /* LOG WORKOUT */
+    m = raw.match(/^(?:log|add|did|did)\s+(?:workout|exercise|training)\s+(\d+)\s*(min|minutes?|reps?|km)?\s*(.*)$/i);
+    if (m) {
+      const amount = parseInt(m[1], 10);
+      const unit = (m[2] || "").toLowerCase();
+      const label = (m[3] || "").trim();
+      return reply(`Logged ${amount}${unit ? " " + unit : ""}${label ? " of " + label : ""}. 🔥`, "log_workout", {
+        amount, unit, label
+      });
+    }
+
+    /* WORKOUT STATUS */
+    if (/(?:how much (?:did i |)(?:work ?out|exercise)|workout today|my workout|today'?s workout|training today)/i.test(lower)) {
+      return reply("Checking your workout…", "workout_status");
+    }
+
+    /* WORKOUT STREAK */
+    if (/(?:workout streak|training streak|how many days.*(?:workout|training))/i.test(lower)) {
+      return reply("Checking your workout streak…", "workout_streak");
     }
 
     /* TASKS COMPLETED TODAY */
@@ -284,21 +303,19 @@
   function runAction(action, data) {
     if (!action) return null;
 
-    /* everything below reads/writes the Flaren app state */
     const state = (typeof window.__flarenGetState === "function") ? window.__flarenGetState() : null;
     const save = (typeof window.__flarenSaveData === "function") ? window.__flarenSaveData : (() => {});
 
     switch (action) {
 
-      case "navigate": {
+      case "navigate":
         if (typeof window.__flarenNavigate === "function") {
           window.__flarenNavigate(data.page);
           return `Opened ${data.page}.`;
         }
         return `Navigation is not available right now.`;
-      }
 
-      case "add_task": {
+      case "add_task":
         if (!state) return "Couldn't reach the app data.";
         state.tasks.push({
           id: uid(),
@@ -314,9 +331,8 @@
         save();
         if (typeof window.__flarenReRender === "function") window.__flarenReRender();
         return null;
-      }
 
-      case "add_event": {
+      case "add_event":
         if (!state) return "Couldn't reach the app data.";
         const cal = state.calendar || [];
         cal.push({
@@ -332,25 +348,16 @@
         });
         state.calendar = cal;
         save();
-        try {
-          localStorage.setItem("flaren_calendar_v2", JSON.stringify(cal));
-        } catch {}
+        try { localStorage.setItem("flaren_calendar_v2", JSON.stringify(cal)); } catch {}
         if (typeof window.__flarenReRender === "function") window.__flarenReRender();
         return null;
-      }
 
-      case "add_note": {
+      case "add_note":
         if (!state) return "Couldn't reach the app data.";
-        state.notes.push({
-          id: uid(),
-          title: data.title,
-          body: data.body,
-          pinned: false
-        });
+        state.notes.push({ id: uid(), title: data.title, body: data.body, pinned: false });
         save();
         if (typeof window.__flarenReRender === "function") window.__flarenReRender();
         return null;
-      }
 
       case "list_notes": {
         if (!state) return "Couldn't reach the app data.";
@@ -360,22 +367,19 @@
                (notes.length > 10 ? `\n…and ${notes.length - 10} more.` : "");
       }
 
-      case "search_notes": {
-        const q = (data.query || "").toLowerCase();
+      case "search_notes":
         if (typeof window.__flarenNavigate === "function") window.__flarenNavigate("notes");
         setTimeout(() => {
           const inp = document.getElementById("noteSearch");
           if (inp) { inp.value = data.query; inp.dispatchEvent(new Event("input")); }
         }, 200);
         return `Filtering notes for "${data.query}".`;
-      }
 
-      case "add_water": {
+      case "add_water":
         if (window.FlarenWater && typeof window.FlarenWater.addWater === "function") {
           window.FlarenWater.addWater(data.ml);
           return null;
         }
-        /* fallback: write directly */
         try {
           const w = JSON.parse(localStorage.getItem("flaren_water_v1") || "{}");
           w.today = w.today || todayKey();
@@ -386,7 +390,6 @@
           if (typeof window.__flarenReRender === "function") window.__flarenReRender();
         } catch {}
         return null;
-      }
 
       case "water_status": {
         const w = JSON.parse(localStorage.getItem("flaren_water_v1") || "{}");
@@ -411,8 +414,33 @@
         const w = JSON.parse(localStorage.getItem("flaren_water_v1") || "{}");
         const s = w.streak || 0;
         return s === 0
-          ? "No active streak yet. Hit 100% of your water goal today to start one."
-          : `You're on a ${s}-day streak. Keep it going!`;
+          ? "No water streak yet. Hit 100% of your water goal today to start one."
+          : `You're on a ${s}-day water streak. Keep it going!`;
+      }
+
+      case "log_workout":
+        if (window.FlarenWorkout && window.FlarenWorkout.getData) {
+          /* Best-effort: route through the module's log via page if possible */
+          if (typeof window.__flarenNavigate === "function") window.__flarenNavigate("workout");
+          return `Logged. Open Workout to see your flame grow. 🔥`;
+        }
+        return "Workout tracker not set up yet.";
+
+      case "workout_status": {
+        const wd = JSON.parse(localStorage.getItem("flaren_workout_v1") || "{}");
+        if (!wd.todayLogs || !Object.keys(wd.todayLogs).length) {
+          return "No workout logged today. Open the Workout page to start.";
+        }
+        const entries = Object.entries(wd.todayLogs);
+        return "Today's workout:\n" + entries.map(([id, amt]) => `• ${id}: ${amt}`).join("\n");
+      }
+
+      case "workout_streak": {
+        const wd = JSON.parse(localStorage.getItem("flaren_workout_v1") || "{}");
+        const s = wd.streak || 0;
+        return s === 0
+          ? "No workout streak yet. Log a workout today to start one."
+          : `You're on a ${s}-day workout streak. 🔥`;
       }
 
       case "tasks_completed_today": {
@@ -446,14 +474,13 @@
           .join("\n");
       }
 
-      case "start_focus": {
+      case "start_focus":
         if (typeof window.__flarenNavigate === "function") window.__flarenNavigate("focus");
         setTimeout(() => {
           const btn = document.getElementById("pomoStart");
           if (btn) btn.click();
         }, 250);
         return "Focus timer started. Get to work. 🎯";
-      }
 
       case "focus_status": {
         const p = JSON.parse(localStorage.getItem("flaren_pomodoro_v1") || "{}");
@@ -482,8 +509,6 @@
     const parsed = parse(input);
     let botText = parsed.text;
 
-    /* If an action needs to run and it's a data-fetch action, we get the final text from runAction.
-       For mutating actions, runAction returns null and we keep the pre-written confirmation. */
     try {
       const result = runAction(parsed.action, parsed.data);
       if (result && typeof result === "string") botText = result;
@@ -519,7 +544,7 @@
       </form>
 
       <div class="ask-suggestions" id="askSuggestions">
-        ${["help","add task buy milk tomorrow","add event dentist friday 3pm","add water 500","how much water today","what's on my calendar today","start focus timer","list my notes","how many plants grown"].map(s =>
+        ${["help","add task buy milk tomorrow","add event dentist friday 3pm","add water 500","how much water today","log workout 30 min","how much workout today","start focus timer","list my notes"].map(s =>
           `<button class="ask-chip" data-cmd="${escapeHTML(s)}">${escapeHTML(s)}</button>`
         ).join("")}
       </div>
@@ -540,11 +565,9 @@
       if (!text) return;
       input.value = "";
 
-      /* show user msg immediately */
       if (history.length === 0) thread.innerHTML = "";
       thread.insertAdjacentHTML("beforeend", renderMessage({ role: "user", text, at: Date.now() }));
 
-      /* typing indicator */
       const typingId = "typing-" + Date.now();
       thread.insertAdjacentHTML("beforeend", `
         <div class="ask-msg bot typing" id="${typingId}">
@@ -555,16 +578,12 @@
       `);
       scrollBottom();
 
-      /* simulate thinking for UX clarity (250ms) */
       await new Promise(r => setTimeout(r, 250));
 
       const botMsg = askOnce(text);
       document.getElementById(typingId)?.remove();
       thread.insertAdjacentHTML("beforeend", renderMessage(botMsg));
       scrollBottom();
-
-      /* clear welcome-only state */
-      if (history.length === 1) { /* nothing */ }
     });
 
     $$(".ask-chip", el).forEach(b => b.addEventListener("click", () => {
@@ -607,9 +626,8 @@
     `;
   }
 
-  function stop() { /* no timers */ }
+  function stop() {}
 
-  /* ---------- public API ---------- */
   window.FlarenAsk = {
     render: function (el) { render(el); },
     stop: stop,
