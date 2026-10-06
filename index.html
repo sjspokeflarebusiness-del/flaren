@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flaren — Your digital world, one workspace</title>
+  <link rel="icon" type="image/png" href="images/logo.png" />
+  <meta name="description" content="Flaren is a fast, cinematic workspace that keeps your services, notes and tasks in one place." />
+  <meta name="theme-color" content="#070A14" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="images/logo.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="landing-body">
+
+  <!-- Background glow orbs -->
+  <div class="bg-orbs" aria-hidden="true">
+    <span class="orb orb-flame"></span>
+    <span class="orb orb-cyan"></span>
+    <span class="orb orb-deep"></span>
+  </div>
+
+  <!-- Top nav -->
+  <header class="nav glass" id="topNav">
+    <a class="brand" href="index.html">
+      <img class="brand-logo-img" src="images/logo.png" alt="Flaren" />
+      <span class="brand-text">Flaren</span>
+    </a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="app.html" class="btn btn-primary btn-sm">Launch App</a>
+    </nav>
+
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- Mobile slide-down menu -->
+  <div class="mobile-menu glass" id="mobileMenu">
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="app.html" class="btn btn-primary" style="margin-top:12px">Launch App →</a>
+  </div>
+
+    <!-- HERO -->
+  <section class="hero hero-v2">
+
+    <!-- Big animated background -->
+    <div class="hero-bg-anim" aria-hidden="true">
+      <span class="bg-blob blob-a"></span>
+      <span class="bg-blob blob-b"></span>
+      <span class="bg-blob blob-c"></span>
+    </div>
+
+    <!-- Grid overlay -->
+    <div class="hero-grid-overlay" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <span class="chip anim-fadeup" style="animation-delay:.05s">🔥 Your digital workspace</span>
+
+      <h1 class="hero-title">
+        <span class="line anim-fadeup" style="animation-delay:.15s">Your digital world,</span>
+        <span class="line grad anim-fadeup" style="animation-delay:.25s">organized in one</span>
+        <span class="line anim-fadeup" style="animation-delay:.35s">beautiful workspace.</span>
+      </h1>
+
+      <p class="hero-sub anim-fadeup" style="animation-delay:.5s">
+        Services, notes, tasks, focus timer, calendar, hydration and a built-in assistant — all in one fast, cinematic dashboard. No tabs. No chaos.
+      </p>
+
+      <div class="hero-actions anim-fadeup" style="animation-delay:.65s">
+        <a class="btn btn-primary btn-lg" href="app.html">
+          Launch App — Free
+          <span class="btn-arrow">→</span>
+        </a>
+        <a class="btn btn-ghost btn-lg" href="#features">See features</a>
+      </div>
+
+      <p class="hero-hint anim-fadeup" style="animation-delay:.8s">
+        <span class="dot-live"></span> No account needed · Runs in your browser · Works offline
+      </p>
+    </div>
+
+    <!-- Preview card -->
+    <div class="hero-preview glass anim-fadeup" style="animation-delay:.55s">
+      <div class="preview-topbar">
+        <span class="dot red"></span><span class="dot amber"></span><span class="dot green"></span>
+        <div class="preview-url">flaren.app/dashboard</div>
+      </div>
+      <div class="preview-body">
+        <div class="preview-side"></div>
+        <div class="preview-main">
+          <div class="preview-search"></div>
+          <div class="preview-grid">
+            <div class="preview-card"></div>
+            <div class="preview-card"></div>
+            <div class="preview-card"></div>
+            <div class="preview-card"></div>
+            <div class="preview-card"></div>
+            <div class="preview-card"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+   <!-- FEATURES -->
+  <section class="section" id="features">
+    <div class="section-head">
+      <span class="chip">Features</span>
+      <h2>Nine tools. <span class="grad">One workspace.</span></h2>
+      <p>Everything you open in a browser tab — now in one place.</p>
+    </div>
+
+    <div class="features-grid">
+      <article class="feature-card">
+        <div class="feature-icon flame">🧩</div>
+        <h3>All your services</h3>
+        <p>Google, GitHub, WhatsApp, your bank — one click and you're there.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon cyan">📝</div>
+        <h3>Notes &amp; Tasks</h3>
+        <p>Pin what matters. Track tasks with priority, due dates and reminders.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon flame">⏱️</div>
+        <h3>Focus Timer</h3>
+        <p>A built-in Pomodoro with session counts, streaks and notifications.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon cyan">📅</div>
+        <h3>Calendar</h3>
+        <p>Month, week and day views. Recurring events. Colour-coded with reminders.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon flame">💧</div>
+        <h3>Water Tracker</h3>
+        <p>Drink up, grow a plant. An honest garden that reflects what you did.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon cyan">🤖</div>
+        <h3>Ask Flaren</h3>
+        <p>A built-in assistant. "Add task buy milk tomorrow 6pm" — and it just does it.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon flame">🔎</div>
+        <h3>Instant Search</h3>
+        <p>Search the web with Google, Bing or DuckDuckGo right from your dashboard.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon cyan">📦</div>
+        <h3>Cloud Sync</h3>
+        <p>Sign in on any device and your workspace comes with you. Works offline too.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon flame">🌗</div>
+        <h3>Theme &amp; Privacy</h3>
+        <p>Light or dark. All data stays yours. Export or import anytime.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="section" id="pricing">
+    <div class="section-head">
+      <span class="chip">Pricing</span>
+      <h2>Start free. <span class="grad">Upgrade when ready.</span></h2>
+      <p>No credit card. No account. Cancel anytime.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <article class="pricing-card">
+        <h3>Free</h3>
+        <div class="price"><span>$0</span><small>/ forever</small></div>
+        <ul>
+          <li>Unlimited services</li>
+          <li>Notes &amp; tasks</li>
+          <li>Light &amp; dark theme</li>
+          <li>Data export / import</li>
+        </ul>
+        <a href="app.html" class="btn btn-ghost btn-lg">Start free</a>
+      </article>
+
+      <article class="pricing-card highlight">
+        <span class="ribbon">Most popular</span>
+        <h3>Pro</h3>
+        <div class="price"><span>$5</span><small>/ month</small></div>
+        <ul>
+          <li>Everything in Free</li>
+          <li>Cloud sync (soon)</li>
+          <li>Custom backgrounds</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="app.html" class="btn btn-primary btn-lg">Choose Pro</a>
+      </article>
+
+      <article class="pricing-card">
+        <h3>Team</h3>
+        <div class="price"><span>$15</span><small>/ month</small></div>
+        <ul>
+          <li>Everything in Pro</li>
+          <li>Shared dashboards</li>
+          <li>Team services</li>
+          <li>Admin controls</li>
+        </ul>
+        <a href="app.html" class="btn btn-ghost btn-lg">Choose Team</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="section-head">
+      <span class="chip">FAQ</span>
+      <h2>Questions? <span class="grad">Answered.</span></h2>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Do I need an account?</summary>
+        <p>No. The free version works entirely in your browser. Your data stays on your device.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Where is my data stored?</summary>
+        <p>In your browser's local storage. Nothing is sent to a server in the free version.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can I back up my data?</summary>
+        <p>Yes. Settings → Export data. Save the file. Import it later on any device.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Will you steal my passwords?</summary>
+        <p>Never. Flaren only stores links. It never asks for passwords. It only opens the official service in a new tab.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-brand">
+      <img class="brand-logo-img" src="images/logo.png" alt="" />
+      <strong>Flaren</strong>
+    </div>
+    <p class="footer-copy">© <span id="year"></span> Flaren — Built with care.</p>
+    <a class="btn btn-primary" href="app.html">Launch App →</a>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    /* Hamburger */
+    const burger = document.getElementById("hamburger");
+    const mobileMenu = document.getElementById("mobileMenu");
+    burger.addEventListener("click", () => {
+      const open = mobileMenu.classList.toggle("open");
+      burger.classList.toggle("open", open);
+      burger.setAttribute("aria-expanded", open);
+    });
+    mobileMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
+      mobileMenu.classList.remove("open");
+      burger.classList.remove("open");
+      burger.setAttribute("aria-expanded", "false");
+    }));
+
+    /* Scroll reveal */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add("in-view"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".feature-card, .pricing-card, .section-head, .faq-item").forEach(el => {
+      el.classList.add("reveal");
+      io.observe(el);
+    });
+
+    /* Sticky nav shadow */
+    const nav = document.getElementById("topNav");
+    window.addEventListener("scroll", () => {
+      nav.classList.toggle("scrolled", window.scrollY > 20);
+    });
+
+    /* PWA service worker */
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(()=>{}));
+    }
+        /* ============================================
+       Flaren hero switcher
+       ============================================ */
+    const heroFeatures = {
+      focus: {
+        chip: "⏱️ Focus timer",
+        line1: "One task.",
+        line2: "25 minutes.",
+        line3: "No distractions.",
+        sub: "A built-in Pomodoro that actually helps you finish what you started. Track sessions, minutes, and streaks — no apps to install.",
+        pair: "water"     /* shown on the right */
+      },
+      water: {
+        chip: "💧 Water tracker",
+        line1: "Drink up.",
+        line2: "Grow a plant.",
+        line3: "Every single day.",
+        sub: "Log your water. Watch a real plant grow today. Miss a day and the garden remembers honestly — no fake blooms.",
+        pair: "focus"
+      },
+      calendar: {
+        chip: "📅 Calendar",
+        line1: "Plan your days.",
+        line2: "Colour your events.",
+        line3: "Never miss a thing.",
+        sub: "Month, week, day views. Recurring events, colours, reminders. Your calendar finally lives in the same place as your tasks.",
+        pair: "focus"
+      }
+    };
+
+    let heroCurrent = "calendar";
+    let heroPair = null;
+
+    function applyHero(featureKey) {
+      const f = heroFeatures[featureKey];
+      if (!f) return;
+
+      const heroEl = document.querySelector(".hero-v2");
+      heroEl.classList.add("switching");
+
+      setTimeout(() => {
+        document.getElementById("heroChip").textContent = f.chip;
+        document.getElementById("heroLine1").textContent = f.line1;
+        document.getElementById("heroLine2").textContent = f.line2;
+        document.getElementById("heroLine3").textContent = f.line3;
+        document.getElementById("heroSub").textContent = f.sub;
+        heroEl.classList.remove("switching");
+      }, 220);
+    }
+
+    document.querySelectorAll(".hero-planet").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const target = btn.dataset.feature;
+        if (!heroFeatures[target]) return;
+        heroCurrent = target;
+        applyHero(target);
+        /* highlight the clicked one */
+        document.querySelectorAll(".hero-planet").forEach(b => {
+          b.setAttribute("aria-selected", b === btn ? "true" : "false");
+        });
+      });
+    });
+
+    /* Auto-cycle every 8 seconds until the user clicks */
+    let heroAuto = setInterval(() => {
+      const keys = ["calendar", "focus", "water"];
+      const next = keys[(keys.indexOf(heroCurrent) + 1) % keys.length];
+      applyHero(next);
+      heroCurrent = next;
+    }, 8000);
+
+    document.querySelectorAll(".hero-planet").forEach(btn => {
+      btn.addEventListener("click", () => clearInterval(heroAuto), { once: true });
+    });
+  </script>
+</body>
+</html>

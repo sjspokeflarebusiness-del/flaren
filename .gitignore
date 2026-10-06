@@ -1,0 +1,40 @@
+# Secrets — never push
+flaren-backend/.env
+*.env
+!.env.example
+
+# Database — never push
+flaren-backend/data/
+*.db
+*.sqlite
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env/
+pip-log.txt
+
+# Node (safety)
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/settings.json
+.idea/
+
+# Build artifacts
+dist/
+build/
+*.log
+
+# Test files (safe to ignore)
+reg.json
+login.json
+sync.json
+*.json.tmp
