@@ -1640,39 +1640,6 @@ function renderSettings(el) {
     state.settings.notificationSound = $("#setSound").checked;
     saveData(); applyTheme(); toast("Settings saved");
   });
-
-
-  $("#exportBtn").addEventListener("click", () => {
-    const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "flaren-backup.json";
-    a.click();
-  });
-
-  $("#importBtn").addEventListener("click", () => $("#importFile").click());
-  $("#importFile").addEventListener("change", e => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      try {
-        const data = JSON.parse(reader.result);
-        state = { ...DEFAULT_DATA, ...data };
-        saveData(); renderPage(); toast("Data imported");
-      } catch { toast("Invalid file"); }
-    };
-    reader.readAsText(file);
-  });
-
-  $("#resetBtn").addEventListener("click", () => {
-    if (!confirm("This will delete ALL your data. Continue?")) return;
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem(NOTIFIED_KEY);
-    state = loadData();
-    notifiedSet = loadNotifiedSet();
-    renderPage(); toast("Reset complete");
-  });
 }
 
 /* =========================================================
