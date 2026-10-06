@@ -3687,3 +3687,78 @@ textarea:focus-visible, select:focus-visible {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+/* =========================================================
+   LANDING PAGE LAUNCH BANNER (centered, no underline)
+   ========================================================= */
+.launch-banner-landing {
+  display: flex !important;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 24px !important;
+  margin: 0 auto 40px !important;
+  max-width: 640px;
+  text-align: left;
+  background: linear-gradient(135deg, rgba(255,122,24,.12), rgba(236,72,153,.08));
+  border: 1px solid rgba(255,122,24,.35);
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none !important;
+}
+.launch-banner-landing * {
+  text-decoration: none !important;
+}
+.launch-banner-landing::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 15% 50%, rgba(255,179,71,.18), transparent 55%);
+  pointer-events: none;
+  animation: launchGlow 4s ease-in-out infinite alternate;
+}
+.launch-banner-landing .launch-fire {
+  font-size: 30px;
+  flex: none;
+  position: relative;
+  z-index: 1;
+  animation: firePulse 1.8s ease-in-out infinite;
+}
+.launch-banner-landing .launch-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+.launch-banner-landing .launch-text strong {
+  font-size: 15px;
+  font-weight: 700;
+  color: #FFB347 !important;
+  -webkit-text-fill-color: #FFB347;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  letter-spacing: -0.01em;
+  text-decoration: none !important;
+  display: block;
+}
+.launch-banner-landing .launch-text span {
+  font-size: 13px;
+  color: #8A94AD !important;
+  line-height: 1.45;
+  text-decoration: none !important;
+  display: block;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .launch-banner-landing {
+    padding: 14px 16px !important;
+    gap: 12px;
+    margin-bottom: 28px !important;
+  }
+  .launch-banner-landing .launch-fire { font-size: 24px; }
+  .launch-banner-landing .launch-text strong { font-size: 14px; }
+  .launch-banner-landing .launch-text span { font-size: 12px; }
+}
