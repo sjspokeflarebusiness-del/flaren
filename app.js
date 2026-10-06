@@ -318,6 +318,34 @@ function showNotification(title, body) {
   } catch (e) { /* ignore */ }
 }
 
+
+/* ---------- NTFY PUSH SUBSCRIPTION ---------- */
+function getOrCreateNtfyTopic() {
+  let topic = localStorage.getItem("flaren_ntfy_topic");
+  if (!topic) {
+    const rnd = () => Math.random().toString(36).slice(2, 10);
+    topic = "flaren-" + rnd() + rnd();
+    localStorage.setItem("flaren_ntfy_topic", topic);
+  }
+  return topic;
+}
+
+async function registerNtfyPush() {
+  if (!signedIn() || !currentUser) return null;
+  const topic = getOrCreateNtfyTopic();
+  try {
+    await window.FlarenAPI.api("/api/ntfy/register", {
+      method: "POST",
+      body: { topic },
+      auth: true
+    });
+    return topic;
+  } catch (err) {
+    console.warn("ntfy register failed:", err);
+    return null;
+  }
+}
+
 /* ---------- task reminder engine ---------- */
 function taskDateTime(t) {
   if (!t.dueDate) return null;
@@ -1519,30 +1547,39 @@ function renderSettings(el) {
       </label>
     </div>
 
-    <div class="list-item">
+        <div class="list-item">
       <h4>Notifications</h4>
       <p style="color:var(--muted);font-size:13px;margin:8px 0 12px">Status: ${permLabel}</p>
+
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         ${perm !== "granted" && perm !== "unsupported" ? `<button class="btn btn-primary" id="enableNotif">Enable notifications</button>` : ""}
         <button class="btn btn-secondary" id="testNotif">Send test notification</button>
       </div>
-      <p style="color:var(--muted-2);font-size:12px;margin-top:10px">
-        Flaren can only notify you while a Flaren tab is open. To get reminders even when Flaren is closed, you will need the cloud version (coming soon).
-      </p>
-    </div>
 
-    <div class="list-item">
-      <h4>Data</h4>
-      <div class="card-actions" style="margin-top:10px">
-        <button class="btn btn-secondary" id="exportBtn">Export data</button>
-        <button class="btn btn-secondary" id="importBtn">Import data</button>
-        <button class="btn btn-danger" id="resetBtn">Reset everything</button>
+      <!-- NEW: The Guide for Closed-App Notifications -->
+      <div style="margin-top:20px; padding:16px; background:rgba(34,211,238,.06); border:1px solid rgba(34,211,238,.25); border-radius:12px;">
+        <p style="font-size:13px; font-weight:700; margin:0 0 8px; color:var(--text);">📲 Get alerts even when Flaren is closed:</p>
+        <p style="font-size:12px; color:var(--muted); margin:0 0 12px;">To receive reminders on your phone when the app is shut, install the free <strong>ntfy</strong> app and subscribe to your personal code.</p>
+
+        <p style="font-size:12px; font-weight:600; margin:0 0 6px;">Your code:</p>
+        <div style="display:flex; gap:8px; align-items:center; margin-bottom:14px;">
+          <code id="ntfyTopicCode" style="flex:1; padding:10px; background:rgba(0,0,0,.4); border-radius:8px; font-size:13px; overflow:hidden; text-overflow:ellipsis; color:var(--cyan-1); font-weight:700;">Loading…</code>
+          <button class="btn btn-small btn-secondary" id="copyNtfy">Copy</button>
+        </div>
+
+        <p style="font-size:12px; font-weight:600; margin:0 0 6px;">1. Get the app:</p>
+        <div style="display:flex; gap:8px; margin-bottom:12px;">
+          <a href="https://play.google.com/store/apps/details?id=io.heckel.ntfy" target="_blank" class="btn btn-small btn-secondary" style="flex:1; justify-content:center;">Android</a>
+          <a href="https://apps.apple.com/us/app/ntfy/id1625396347" target="_blank" class="btn btn-small btn-secondary" style="flex:1; justify-content:center;">iPhone</a>
+        </div>
+
+        <p style="font-size:12px; font-weight:600; margin:0 0 6px;">2. Open ntfy, tap +, paste your code.</p>
+        <p style="font-size:12px; color:var(--muted); margin:0;">3. Done. Test it by creating a task due in 2 minutes.</p>
       </div>
-      <input type="file" id="importFile" accept=".json" style="display:none" />
-    </div>
 
-    <div style="margin-top:22px; display:flex; gap:10px;">
-      <button class="btn btn-primary btn-lg" id="saveSettings">Save settings</button>
+      <p style="color:var(--muted-2);font-size:12px;margin-top:14px">
+        Flaren must send the notification through ntfy for it to arrive when the app is closed.
+      </p>
     </div>
   `;
 
@@ -1568,6 +1605,27 @@ function renderSettings(el) {
     state.settings.notificationSound = $("#setSound").checked;
     saveData(); applyTheme(); toast("Settings saved");
   });
+
+     /* --- Show the ntfy topic code --- */
+  const topicEl = document.getElementById("ntfyTopicCode");
+  if (topicEl) {
+    const topic = getOrCreateNtfyTopic();
+    topicEl.textContent = topic;
+    if (signedIn()) registerNtfyPush();
+  }
+
+  /* --- Copy topic button --- */
+  const copyBtn = document.getElementById("copyNtfy");
+  if (copyBtn) {
+    copyBtn.addEventListener("click", () => {
+      const topic = getOrCreateNtfyTopic();
+      navigator.clipboard.writeText(topic).then(() => {
+        toast("Code copied to clipboard");
+      }).catch(() => {
+        toast("Copy failed — please copy manually");
+      });
+    });
+  }
 
   $("#exportBtn").addEventListener("click", () => {
     const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
