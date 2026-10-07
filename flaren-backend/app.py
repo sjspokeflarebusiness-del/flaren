@@ -1,4 +1,4 @@
-"""Flaren backend — Flask API."""
+F"""Flaren backend — Flask API."""
 import os
 import json
 from functools import wraps
@@ -150,6 +150,37 @@ def ntfy_register(uid):
     database.save_ntfy_topic(uid, topic)
     return jsonify({"ok": True, "topic": topic})
 
+@app.post("/api/pill-reminder")
+@require_auth
+def pill_reminder(uid):
+    """Called by the frontend when a pill is due — sends an ntfy push."""
+    data = request.get_json(silent=True) or {}
+    pill_name = (data.get("pillName") or "").strip()
+    dose = (data.get("dose") or "").strip()
+    time_str = (data.get("time") or "").strip()
+    if not pill_name:
+        return jsonify({"error": "pillName required"}), 400
+
+    topic = database.get_ntfy_topic(uid)
+    if not topic:
+        return jsonify({"ok": False, "reason": "no topic registered"}), 200
+
+    try:
+        requests.post(
+            f"https://ntfy.sh/{topic}",
+            data=(f"{dose or 'Take now'} — scheduled for {time_str}".encode("utf-8")),
+            headers={
+                "Title": "💊 " + pill_name,
+                "Priority": "high",
+                "Tags": "pill",
+                "Click": "https://sjspokeflarebusiness-del.github.io/flaren/app.html"
+            },
+            timeout=5
+        )
+    except Exception as e:
+        print("pill ntfy send failed:", e)
+
+    return jsonify({"ok": True})
 
 @app.route("/api/check-reminders", methods=["GET", "POST"])
 def check_reminders():
