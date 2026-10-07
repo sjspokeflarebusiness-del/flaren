@@ -70,23 +70,30 @@
     </div>
 
     <!-- MIDDLE: The spin wheel -->
-    <div class="wheel-wrap">
-      <div class="wheel-hint reveal-blur" data-delay="1.05">
-        <span class="wheel-hint-dot"></span> Grab and spin
-      </div>
+ <div class="wheel-wrap">
+  <div class="wheel-hint">
+    <span class="wheel-hint-dot"></span> Grab and spin
+  </div>
 
-      <div class="wheel-scene" id="wheelScene">
-        <div class="wheel-halo"></div>
-        <div class="wheel-glow"></div>
-<div class="wheel-streaks">
-  <span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span>
-</div>
-<div class="wheel-particles">
-  <span></span><span></span><span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span><span></span><span></span>
+  <div class="wheel-scene" id="wheelScene">
+    <div class="wheel-halo"></div>
+    <div class="wheel-glow"></div>
+
+    <div class="wheel-ring" id="wheelRing">
+      <button class="wheel-chip" data-label="Services">🧩<span>Services</span></button>
+      <button class="wheel-chip" data-label="Notes">📝<span>Notes</span></button>
+      <button class="wheel-chip" data-label="Focus">⏱<span>Focus</span></button>
+      <button class="wheel-chip" data-label="Calendar">📅<span>Calendar</span></button>
+      <button class="wheel-chip" data-label="Water">💧<span>Water</span></button>
+      <button class="wheel-chip" data-label="Workout">🔥<span>Workout</span></button>
+      <button class="wheel-chip" data-label="Pills">💊<span>Pills</span></button>
+      <button class="wheel-chip" data-label="Health">🥗<span>Health</span></button>
+    </div>
+
+    <div class="wheel-center">
+      <img src="images/logo.png" alt="Flaren" />
+    </div>
+  </div>
 </div>
 
        <!-- The rotating ring of chips -->
