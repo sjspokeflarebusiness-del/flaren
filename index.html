@@ -6,316 +6,303 @@
   <title>Flaren — Your digital world, one workspace</title>
   <link rel="icon" type="image/png" href="images/logo.png" />
   <meta name="description" content="Flaren is a fast, cinematic workspace with services, notes, tasks, focus timer, calendar, water tracker, workout tracker and a built-in assistant." />
-  <meta name="theme-color" content="#070A14" />
+  <meta name="theme-color" content="#000000" />
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="images/logo.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css" />
   <script defer src="https://cloud.umami.is/script.js" data-website-id="323ddd38-4d0a-4665-8b9a-eb2e2bde48c3"></script>
 </head>
-<body class="landing-body">
+<body class="landing-body glass-landing">
 
-  <!-- Background glow orbs -->
+  <!-- Atmospheric orbs -->
   <div class="bg-orbs" aria-hidden="true">
     <span class="orb orb-flame"></span>
     <span class="orb orb-cyan"></span>
     <span class="orb orb-deep"></span>
   </div>
 
-  <!-- Top nav -->
-  <header class="nav glass" id="topNav">
-    <a class="brand" href="index.html">
-      <img class="brand-logo-img" src="images/logo.png" alt="Flaren" />
-      <span class="brand-text">Flaren</span>
+  <!-- Floating glass navbar -->
+  <header class="glass-nav">
+    <a class="glass-brand" href="index.html">
+      <img src="images/logo.png" alt="Flaren" />
     </a>
 
-    <nav class="nav-links" id="navLinks">
+    <nav class="glass-nav-pill">
+      <a href="#capabilities">Capabilities</a>
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
-      <a href="app.html" class="btn btn-primary btn-sm">Launch App</a>
+      <a class="glass-nav-cta" href="app.html?try=1">
+        Try Flaren
+        <span class="arrow">↗</span>
+      </a>
     </nav>
 
-    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="glass-spacer"></div>
   </header>
 
-  <!-- Mobile slide-down menu -->
-  <div class="mobile-menu glass" id="mobileMenu">
-    <a href="#features">Features</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#faq">FAQ</a>
-    <a href="app.html" class="btn btn-primary" style="margin-top:12px">Launch App →</a>
-  </div>
+  <!-- HERO -->
+  <section class="glass-hero">
 
-    <!-- HERO -->
-  <section class="hero hero-v2">
+    <div class="glass-hero-content">
 
-    <!-- Big animated background -->
-    <div class="hero-bg-anim" aria-hidden="true">
-      <span class="bg-blob blob-a"></span>
-      <span class="bg-blob blob-b"></span>
-      <span class="bg-blob blob-c"></span>
-    </div>
+      <!-- Badge -->
+      <div class="glass-badge anim-blur" style="animation-delay:.4s">
+        <span class="glass-badge-tag">Launch</span>
+        <span class="glass-badge-text">One Workspace · Zero Tabs · 100% Offline Capable</span>
+      </div>
 
-    <!-- Grid overlay -->
-    <div class="hero-grid-overlay" aria-hidden="true"></div>
-
-    <div class="hero-content">
-      <span class="chip anim-fadeup" style="animation-delay:.05s">🔥 Your digital workspace</span>
-
-      <h1 class="hero-title">
-        <span class="line anim-fadeup" style="animation-delay:.15s">Your digital world,</span>
-        <span class="line grad anim-fadeup" style="animation-delay:.25s">organized in one</span>
-        <span class="line anim-fadeup" style="animation-delay:.35s">beautiful workspace.</span>
+      <!-- Headline -->
+      <h1 class="glass-headline anim-blur" style="animation-delay:.55s">
+        Your Digital World <em>Organized</em> In One Workspace
       </h1>
 
-      <p class="hero-sub anim-fadeup" style="animation-delay:.5s">
-        Services, notes, tasks, focus timer, calendar, hydration, workouts, and a built-in assistant — all in one fast, cinematic dashboard. No tabs. No chaos.
+      <!-- Subtext -->
+      <p class="glass-sub anim-blur" style="animation-delay:.8s">
+        Services, notes, tasks, focus timer, calendar, water tracker, and an intelligent assistant — all in one fast, cinematic dashboard.
       </p>
 
-      <div class="hero-actions anim-fadeup" style="animation-delay:.65s">
-        <a class="btn btn-primary btn-lg" href="app.html">
-          Launch App — Free
-          <span class="btn-arrow">→</span>
+      <!-- CTAs -->
+      <div class="glass-ctas anim-blur" style="animation-delay:1.1s">
+        <a class="glass-btn-primary" href="app.html?try=1">
+          Try Flaren — No signup
+          <span class="arrow">↗</span>
         </a>
-        <a class="btn btn-ghost btn-lg" href="#features">See features</a>
+        <a class="glass-btn-ghost" href="#capabilities">
+          <span class="play-circle">▶</span>
+          Explore features
+        </a>
       </div>
 
-      <p class="hero-hint anim-fadeup" style="animation-delay:.8s">
-        <span class="dot-live"></span> No account needed · Runs in your browser · Works offline
-      </p>
+      <!-- Floating stat cards -->
+      <div class="glass-stats anim-blur" style="animation-delay:1.35s">
+        <div class="glass-stat-card">
+          <div class="glass-stat-icon flame">⏱</div>
+          <div class="glass-stat-num">0 Tabs</div>
+          <div class="glass-stat-label">Unified command centre</div>
+        </div>
+        <div class="glass-stat-card">
+          <div class="glass-stat-icon cyan">🌐</div>
+          <div class="glass-stat-num">10-in-1</div>
+          <div class="glass-stat-label">Integrated daily tools</div>
+        </div>
+      </div>
+
     </div>
 
-    <!-- Preview card -->
-    <div class="hero-preview glass anim-fadeup" style="animation-delay:.55s">
-      <div class="preview-topbar">
-        <span class="dot red"></span><span class="dot amber"></span><span class="dot green"></span>
-        <div class="preview-url">flaren.app/dashboard</div>
-      </div>
-      <div class="preview-body">
-        <div class="preview-side"></div>
-        <div class="preview-main">
-          <div class="preview-search"></div>
-          <div class="preview-grid">
-            <div class="preview-card"></div>
-            <div class="preview-card"></div>
-            <div class="preview-card"></div>
-            <div class="preview-card"></div>
-            <div class="preview-card"></div>
-            <div class="preview-card"></div>
-          </div>
-        </div>
+    <!-- Bottom marquee -->
+    <div class="glass-marquee anim-blur" style="animation-delay:1.55s">
+      <div class="glass-marquee-pill">Replaces scattered apps with fluid, instant local performance</div>
+      <div class="glass-marquee-row">
+        <span>Pomodoro</span>
+        <span>Hydration</span>
+        <span>Smart Assistant</span>
+        <span>Daily Calendar</span>
+        <span>Cloud Sync</span>
       </div>
     </div>
 
   </section>
 
-   <!-- FEATURES -->
-  <section class="section" id="features">
-    <div class="section-head">
-      <span class="chip">Features</span>
-      <h2>Ten tools. <span class="grad">One workspace.</span></h2>
-      <p>Everything you open in a browser tab — now in one place.</p>
-    </div>
+  <!-- CAPABILITIES -->
+  <section class="glass-section" id="capabilities">
+    <div class="glass-section-inner">
 
-    <div class="features-grid">
-      <article class="feature-card">
-        <div class="feature-icon flame">🧩</div>
-        <h3>All your services</h3>
-        <p>Google, GitHub, WhatsApp, your bank — one click and you're there.</p>
-      </article>
-      <article class="feature-card">
-        <div class="feature-icon cyan">📝</div>
-        <h3>Notes &amp; Tasks</h3>
-        <p>Pin what matters. Track tasks with priority, due dates and reminders.</p>
-      </article>
-      <article class="feature-card">
-        <div class="feature-icon flame">⏱️</div>
-        <h3>Focus Timer</h3>
-        <p>A built-in Pomodoro with session counts, streaks and notifications.</p>
-      </article>
-      <article class="feature-card">
-        <div class="feature-icon cyan">📅</div>
-        <h3>Calendar</h3>
-        <p>Month, week and day views. Recurring events. Colour-coded with reminders.</p>
-      </article>
-      <article class="feature-card">
-  <div class="feature-icon flame">💧</div>
-  <h3>Water Tracker</h3>
-  <p>Drink up, grow a plant. An honest garden that reflects what you did.</p>
-</article>
-      <article class="feature-card">
-        <div class="feature-icon flame">🔥</div>
-        <h3>Workout Tracker</h3>
-        <p>6 levels from Beginner to Elite. Honest streaks. A flame that grows.</p>
-      </article>
-      <article class="feature-card">
-        <div class="feature-icon cyan">🤖</div>
-        <h3>Ask Flaren</h3>
-        <p>A built-in assistant. "Add task buy milk tomorrow 6pm" — and it just does it.</p>
-      </article>
-      <article class="feature-card">
-        <div class="feature-icon flame">🔎</div>
-        <h3>Instant Search</h3>
-        <p>Search the web with Google, Bing or DuckDuckGo right from your dashboard.</p>
-      </article>
-      <article class="feature-card">
-        <div class="feature-icon cyan">📦</div>
-        <h3>Cloud Sync</h3>
-        <p>Sign in on any device and your workspace comes with you. Works offline too.</p>
-      </article>
-      <article class="feature-card">
-        <div class="feature-icon flame">🌗</div>
-        <h3>Theme &amp; Privacy</h3>
-        <p>Light or dark. All data stays yours. Export or import anytime.</p>
-      </article>
+      <div class="glass-section-head anim-blur">
+        <div class="glass-eyebrow">// Capabilities &amp; Architecture</div>
+        <h2 class="glass-h2">
+          Studio craft,<br/>
+          engineered to perform
+        </h2>
+      </div>
+
+      <div class="glass-cards">
+        <article class="glass-card anim-blur" style="animation-delay:.1s">
+          <div class="glass-card-head">
+            <div class="glass-card-icon flame">🎨</div>
+            <div class="glass-card-chips">
+              <span>Liquid Glass</span>
+              <span>Cinematic Motion</span>
+              <span>Dark / Flame Theme</span>
+              <span>Responsive</span>
+            </div>
+          </div>
+          <div class="glass-card-foot">
+            <h3>Visual Identity</h3>
+            <p>Every view is precision-tuned — glowing flame accents, zero clutter, and dark cinematic surfaces that feel unmistakably bespoke.</p>
+          </div>
+        </article>
+
+        <article class="glass-card anim-blur" style="animation-delay:.2s">
+          <div class="glass-card-head">
+            <div class="glass-card-icon cyan">⚙</div>
+            <div class="glass-card-chips">
+              <span>Local-first</span>
+              <span>PWA Offline</span>
+              <span>Cloud Sync</span>
+              <span>Fast</span>
+            </div>
+          </div>
+          <div class="glass-card-foot">
+            <h3>Local-First Engine</h3>
+            <p>Runs directly in your browser with persistent client-side state and instant offline readiness. No waiting for server round-trips.</p>
+          </div>
+        </article>
+
+        <article class="glass-card anim-blur" style="animation-delay:.3s">
+          <div class="glass-card-head">
+            <div class="glass-card-icon amber">💡</div>
+            <div class="glass-card-chips">
+              <span>Natural Language</span>
+              <span>Workouts</span>
+              <span>Hydration Plant</span>
+              <span>Calendar</span>
+            </div>
+          </div>
+          <div class="glass-card-foot">
+            <h3>Habit Compounding</h3>
+            <p>Integrated gamification: watch your workout flame grow and nurture your hydration garden as you execute daily tasks.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="glass-section-foot">
+        <div>© <span id="year"></span> Flaren — Crafted for high-focus individuals.</div>
+        <a href="app.html?try=1">Open App Environment ↗</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="glass-section" id="features">
+    <div class="glass-section-inner">
+
+      <div class="glass-section-head anim-blur">
+        <div class="glass-eyebrow">// Features</div>
+        <h2 class="glass-h2">Ten tools.<br/>One workspace.</h2>
+      </div>
+
+      <div class="glass-features">
+        <div class="glass-feature anim-blur" style="animation-delay:.05s"><span class="fi">🧩</span><div><strong>All your services</strong><p>One click and you're there.</p></div></div>
+        <div class="glass-feature anim-blur" style="animation-delay:.1s"><span class="fi">📝</span><div><strong>Notes &amp; Tasks</strong><p>Priorities, due dates, reminders.</p></div></div>
+        <div class="glass-feature anim-blur" style="animation-delay:.15s"><span class="fi">⏱</span><div><strong>Focus Timer</strong><p>Pomodoro with streaks.</p></div></div>
+        <div class="glass-feature anim-blur" style="animation-delay:.2s"><span class="fi">📅</span><div><strong>Calendar</strong><p>Month, week, day, recurring.</p></div></div>
+        <div class="glass-feature anim-blur" style="animation-delay:.25s"><span class="fi">💧</span><div><strong>Water Tracker</strong><p>Grow a plant, honest streak.</p></div></div>
+        <div class="glass-feature anim-blur" style="animation-delay:.3s"><span class="fi">🔥</span><div><strong>Workout Tracker</strong><p>6 levels, a flame that grows.</p></div></div>
+        <div class="glass-feature anim-blur" style="animation-delay:.35s"><span class="fi">🤖</span><div><strong>Ask Flaren</strong><p>Type a command, it does it.</p></div></div>
+        <div class="glass-feature anim-blur" style="animation-delay:.4s"><span class="fi">🔎</span><div><strong>Instant Search</strong><p>Google, Bing, DuckDuckGo.</p></div></div>
+        <div class="glass-feature anim-blur" style="animation-delay:.45s"><span class="fi">📦</span><div><strong>Cloud Sync</strong><p>Same workspace, any device.</p></div></div>
+        <div class="glass-feature anim-blur" style="animation-delay:.5s"><span class="fi">🌗</span><div><strong>Theme &amp; Privacy</strong><p>Light or dark. Always yours.</p></div></div>
+      </div>
+
     </div>
   </section>
 
   <!-- PRICING -->
-  <section class="section" id="pricing">
-    <div class="section-head">
-      <span class="chip">Pricing</span>
-      <h2>Start free. <span class="grad">Upgrade when ready.</span></h2>
-      <p>No credit card. No account. Cancel anytime.</p>
-    </div>
+  <section class="glass-section" id="pricing">
+    <div class="glass-section-inner">
 
-        <div class="launch-banner-landing">
-        <span class="launch-fire">🔥</span>
-        <div class="launch-text">
-          <strong>Launch offer — all Pro features are free.</strong>
-          <span>Calendar, focus timer, water tracker, cloud sync and more. Free for all users during launch. No card required.</span>
+      <div class="glass-section-head anim-blur">
+        <div class="glass-eyebrow">// Pricing</div>
+        <h2 class="glass-h2">Start free.<br/>Upgrade when ready.</h2>
+      </div>
+
+      <div class="glass-pricing">
+        <div class="glass-price-card anim-blur" style="animation-delay:.1s">
+          <h3>Free</h3>
+          <div class="glass-price">$0<span>/forever</span></div>
+          <ul>
+            <li>All services — unlimited</li>
+            <li>Notes &amp; tasks</li>
+            <li>Light &amp; dark theme</li>
+            <li>Data export / import</li>
+          </ul>
+          <a href="app.html?try=1">Start free</a>
+        </div>
+
+        <div class="glass-price-card glass-price-highlight anim-blur" style="animation-delay:.2s">
+          <span class="glass-ribbon">Most popular</span>
+          <h3>Pro</h3>
+          <div class="glass-price">$5<span>/month</span></div>
+          <ul>
+            <li>Everything in Free</li>
+            <li>Cloud sync</li>
+            <li>Focus, calendar, water, workout</li>
+            <li>Ask Flaren AI</li>
+          </ul>
+          <a href="app.html?try=1">Choose Pro</a>
+        </div>
+
+        <div class="glass-price-card anim-blur" style="animation-delay:.3s">
+          <h3>Team</h3>
+          <div class="glass-price">$15<span>/month</span></div>
+          <ul>
+            <li>Everything in Pro</li>
+            <li>Shared dashboards</li>
+            <li>Team services</li>
+            <li>Admin controls</li>
+          </ul>
+          <a href="app.html?try=1">Choose Team</a>
         </div>
       </div>
 
-    <div class="pricing-grid">
-      <article class="pricing-card">
-        <h3>Free</h3>
-        <div class="price"><span>$0</span><small>/ forever</small></div>
-        <ul>
-          <li>Unlimited services</li>
-          <li>Notes &amp; tasks</li>
-          <li>Light &amp; dark theme</li>
-          <li>Data export / import</li>
-          <li>Cloud sync (launch offer)</li>
-        </ul>
-        <a href="app.html" class="btn btn-ghost btn-lg">Start free</a>
-      </article>
-
-      <article class="pricing-card highlight">
-        <span class="ribbon">Most popular</span>
-        <h3>Pro</h3>
-        <div class="price"><span>$5</span><small>/ month</small></div>
-        <ul>
-          <li>Everything in Free</li>
-          <li>Unlimited cloud sync</li>
-          <li>Custom backgrounds</li>
-          <li>Priority support</li>
-        </ul>
-        <a href="app.html" class="btn btn-primary btn-lg">Choose Pro</a>
-      </article>
-
-      <article class="pricing-card">
-        <h3>Team</h3>
-        <div class="price"><span>$15</span><small>/ month</small></div>
-        <ul>
-          <li>Everything in Pro</li>
-          <li>Shared dashboards</li>
-          <li>Team services</li>
-          <li>Admin controls</li>
-        </ul>
-        <a href="app.html" class="btn btn-ghost btn-lg">Choose Team</a>
-      </article>
     </div>
   </section>
 
   <!-- FAQ -->
-  <section class="section" id="faq">
-    <div class="section-head">
-      <span class="chip">FAQ</span>
-      <h2>Questions? <span class="grad">Answered.</span></h2>
-    </div>
+  <section class="glass-section" id="faq">
+    <div class="glass-section-inner">
 
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary>Do I need an account?</summary>
-        <p>No. The free version works entirely in your browser. Your data stays on your device.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Where is my data stored?</summary>
-        <p>In your browser's local storage. Nothing is sent to a server in the free version.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Can I back up my data?</summary>
-        <p>Yes. Settings → Export data. Save the file. Import it later on any device.</p>
-      </details>
+      <div class="glass-section-head anim-blur">
+        <div class="glass-eyebrow">// FAQ</div>
+        <h2 class="glass-h2">Questions?<br/>Answered.</h2>
+      </div>
 
-      <details class="faq-item">
-        <summary>What is the workout tracker?</summary>
-        <p>Six levels from Beginner to Elite. Pick your level, log what you did, and grow a flame. Honest streaks — miss a day and it resets.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Will you steal my passwords?</summary>
-        <p>Never. Flaren only stores links. It never asks for passwords. It only opens the official service in a new tab.</p>
-      </details>
+      <div class="glass-faq">
+        <details><summary>Do I need an account?</summary><p>No. The free version works entirely in your browser. Your data stays on your device.</p></details>
+        <details><summary>Where is my data stored?</summary><p>In your browser's local storage. If you sign in, it's also backed up on our server.</p></details>
+        <details><summary>Can I back up my data?</summary><p>Yes. Settings → Export data. Save the file. Import it later on any device.</p></details>
+        <details><summary>What is the workout tracker?</summary><p>Six levels from Beginner to Elite. Pick your level, log what you did, and grow a flame. Honest streaks — miss a day and it resets.</p></details>
+        <details><summary>Will you steal my passwords?</summary><p>Never. Flaren only stores links. It never asks for passwords. It only opens the official service in a new tab.</p></details>
+      </div>
+
     </div>
   </section>
 
   <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-brand">
-      <img class="brand-logo-img" src="images/logo.png" alt="" />
-      <strong>Flaren</strong>
-    </div>
-    <p class="footer-copy">© <span id="year"></span> Flaren — One workspace for everything.</p>
-    <a class="btn btn-primary" href="app.html">Launch App →</a>
+  <footer class="glass-footer">
+    <img src="images/logo.png" alt="Flaren" />
+    <strong>Flaren</strong>
+    <span>·</span>
+    <span>© <span id="year2"></span> Flaren</span>
+    <a href="app.html?try=1">Try Flaren ↗</a>
   </footer>
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById("year2").textContent = new Date().getFullYear();
 
-    /* Hamburger */
-    const burger = document.getElementById("hamburger");
-    const mobileMenu = document.getElementById("mobileMenu");
-    burger.addEventListener("click", () => {
-      const open = mobileMenu.classList.toggle("open");
-      burger.classList.toggle("open", open);
-      burger.setAttribute("aria-expanded", open);
-    });
-    mobileMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
-      mobileMenu.classList.remove("open");
-      burger.classList.remove("open");
-      burger.setAttribute("aria-expanded", "false");
-    }));
-
-    /* Scroll reveal */
+    /* Reveal on scroll */
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) { e.target.classList.add("in-view"); io.unobserve(e.target); }
       });
     }, { threshold: 0.12 });
-    document.querySelectorAll(".feature-card, .pricing-card, .section-head, .faq-item").forEach(el => {
+    document.querySelectorAll(".glass-card, .glass-feature, .glass-price-card, .glass-section-head, .glass-faq details").forEach(el => {
       el.classList.add("reveal");
       io.observe(el);
     });
 
-    /* Sticky nav shadow */
-    const nav = document.getElementById("topNav");
-    window.addEventListener("scroll", () => {
-      nav.classList.toggle("scrolled", window.scrollY > 20);
-    });
-
-    /* PWA service worker */
+    /* PWA */
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(()=>{}));
     }
-
   </script>
 </body>
 </html>
