@@ -21,7 +21,6 @@
 </head>
 <body class="landing-body glass-landing">
 
-  <!-- Fixed cinematic background -->
   <div class="cine-bg" aria-hidden="true">
     <span class="cine-orb o1"></span>
     <span class="cine-orb o2"></span>
@@ -31,99 +30,100 @@
     <div class="cine-noise"></div>
   </div>
 
-  <!-- Floating glass navbar -->
   <header class="cine-nav">
     <a class="cine-brand" href="index.html">
       <img src="images/logo.png" alt="Flaren" />
     </a>
-
     <nav class="cine-nav-pill">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
-      <a class="cine-nav-cta" href="app.html?try=1">
-        Try Flaren <span class="arrow">↗</span>
-      </a>
+      <a class="cine-nav-cta" href="app.html?try=1">Try Flaren <span class="arrow">↗</span></a>
     </nav>
-
     <a class="cine-nav-mobile-cta" href="app.html?try=1">Try ↗</a>
   </header>
 
-  <!-- HERO -->
+  <!-- ===== HERO ===== -->
   <section class="cine-hero">
 
-    <!-- ===== Orbiting flame scene ===== -->
-    <div class="orbit-scene">
-      <div class="orbit-center">
-        <div class="orbit-halo"></div>
-        <img src="images/logo.png" alt="Flaren" class="orbit-logo" />
-      </div>
-
-      <div class="orbit-ring" data-radius-desktop="170" data-radius-mobile="118">
-        <div class="orbit-chip" style="--i:0">
-          <span class="chip-emoji">🧩</span>
-          <span class="chip-label">Services</span>
-        </div>
-        <div class="orbit-chip" style="--i:1">
-          <span class="chip-emoji">📝</span>
-          <span class="chip-label">Notes</span>
-        </div>
-        <div class="orbit-chip" style="--i:2">
-          <span class="chip-emoji">⏱</span>
-          <span class="chip-label">Focus</span>
-        </div>
-        <div class="orbit-chip" style="--i:3">
-          <span class="chip-emoji">📅</span>
-          <span class="chip-label">Calendar</span>
-        </div>
-        <div class="orbit-chip" style="--i:4">
-          <span class="chip-emoji">💧</span>
-          <span class="chip-label">Water</span>
-        </div>
-        <div class="orbit-chip" style="--i:5">
-          <span class="chip-emoji">🔥</span>
-          <span class="chip-label">Workout</span>
-        </div>
-        <div class="orbit-chip" style="--i:6">
-          <span class="chip-emoji">💊</span>
-          <span class="chip-label">Pills</span>
-        </div>
-        <div class="orbit-chip" style="--i:7">
-          <span class="chip-emoji">🥗</span>
-          <span class="chip-label">Health</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== Copy ===== -->
+    <!-- TOP: Copy -->
     <div class="cine-hero-content">
-      <div class="cine-badge reveal-blur" data-delay="0.9">
+      <div class="cine-badge reveal-blur" data-delay="0.15">
         <span class="cine-badge-tag">Launch</span>
         <span class="cine-badge-text">12 tools · Zero tabs · Free forever</span>
       </div>
 
       <h1 class="cine-headline">
-        <span class="reveal-blur" data-delay="1.0">Your Digital World</span>
-        <em class="reveal-blur" data-delay="1.15">Organized</em>
-        <span class="reveal-blur" data-delay="1.3">In One Workspace</span>
+        <span class="reveal-blur" data-delay="0.3">Your Digital World</span>
+        <em class="reveal-blur" data-delay="0.45">Organized</em>
+        <span class="reveal-blur" data-delay="0.6">In One Workspace</span>
       </h1>
 
-      <p class="cine-sub reveal-blur" data-delay="1.45">
+      <p class="cine-sub reveal-blur" data-delay="0.75">
         Services, notes, tasks, focus timer, calendar, water, workout, pill reminder, health guide and an assistant — all in one fast, cinematic dashboard.
       </p>
 
-      <div class="cine-ctas reveal-blur" data-delay="1.6">
-        <a class="cine-btn-primary" href="app.html?try=1">
-          Try Flaren — No signup <span class="arrow">↗</span>
-        </a>
-        <a class="cine-btn-ghost" href="#features">
-          <span class="play-circle">▶</span> Explore features
-        </a>
+      <div class="cine-ctas reveal-blur" data-delay="0.9">
+        <a class="cine-btn-primary" href="app.html?try=1">Try Flaren — No signup <span class="arrow">↗</span></a>
+        <a class="cine-btn-ghost" href="#features"><span class="play-circle">▶</span> Explore features</a>
       </div>
     </div>
 
-    <!-- ===== Marquee ===== -->
-    <div class="cine-marquee reveal-blur" data-delay="1.8">
+    <!-- MIDDLE: The spin wheel -->
+    <div class="wheel-wrap">
+      <div class="wheel-hint reveal-blur" data-delay="1.05">
+        <span class="wheel-hint-dot"></span> Grab and spin
+      </div>
+
+      <div class="wheel-scene" id="wheelScene">
+        <div class="wheel-halo"></div>
+        <div class="wheel-glow"></div>
+
+        <!-- The rotating ring of chips -->
+        <div class="wheel-ring" id="wheelRing">
+          <button class="wheel-chip" style="--i:0" data-label="Services">
+            <span class="chip-emoji">🧩</span>
+            <span class="chip-label">Services</span>
+          </button>
+          <button class="wheel-chip" style="--i:1" data-label="Notes">
+            <span class="chip-emoji">📝</span>
+            <span class="chip-label">Notes</span>
+          </button>
+          <button class="wheel-chip" style="--i:2" data-label="Focus">
+            <span class="chip-emoji">⏱</span>
+            <span class="chip-label">Focus</span>
+          </button>
+          <button class="wheel-chip" style="--i:3" data-label="Calendar">
+            <span class="chip-emoji">📅</span>
+            <span class="chip-label">Calendar</span>
+          </button>
+          <button class="wheel-chip" style="--i:4" data-label="Water">
+            <span class="chip-emoji">💧</span>
+            <span class="chip-label">Water</span>
+          </button>
+          <button class="wheel-chip" style="--i:5" data-label="Workout">
+            <span class="chip-emoji">🔥</span>
+            <span class="chip-label">Workout</span>
+          </button>
+          <button class="wheel-chip" style="--i:6" data-label="Pills">
+            <span class="chip-emoji">💊</span>
+            <span class="chip-label">Pills</span>
+          </button>
+          <button class="wheel-chip" style="--i:7" data-label="Health">
+            <span class="chip-emoji">🥗</span>
+            <span class="chip-label">Health</span>
+          </button>
+        </div>
+
+        <!-- The non-spinning flame center -->
+        <div class="wheel-center">
+          <img src="images/logo.png" alt="Flaren" />
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM: Marquee -->
+    <div class="cine-marquee reveal-blur" data-delay="1.2">
       <div class="cine-marquee-track">
         <span>Pomodoro</span><span>·</span>
         <span>Hydration</span><span>·</span>
@@ -145,7 +145,7 @@
     </div>
   </section>
 
-  <!-- COUNTER -->
+  <!-- Counter -->
   <section class="cine-section cine-counter-section">
     <div class="cine-section-inner">
       <div class="cine-counters">
@@ -165,14 +165,13 @@
     </div>
   </section>
 
-  <!-- FEATURES -->
+  <!-- Features -->
   <section class="cine-section" id="features">
     <div class="cine-section-inner">
       <div class="cine-section-head reveal-blur">
         <div class="cine-eyebrow">// Features</div>
         <h2 class="cine-h2">Twelve tools.<br/>One workspace.</h2>
       </div>
-
       <div class="cine-features">
         <div class="cine-feature reveal-blur" data-delay="0.02"><span class="fi">🧩</span><div><strong>All your services</strong><p>One click and you're there.</p></div></div>
         <div class="cine-feature reveal-blur" data-delay="0.06"><span class="fi">📝</span><div><strong>Notes &amp; Tasks</strong><p>Priorities, due dates, reminders.</p></div></div>
@@ -190,14 +189,13 @@
     </div>
   </section>
 
-  <!-- PRICING -->
+  <!-- Pricing -->
   <section class="cine-section" id="pricing">
     <div class="cine-section-inner">
       <div class="cine-section-head reveal-blur">
         <div class="cine-eyebrow">// Pricing</div>
         <h2 class="cine-h2">Start free.<br/>Upgrade when ready.</h2>
       </div>
-
       <div class="cine-pricing">
         <div class="cine-price-card reveal-blur" data-delay="0.05">
           <h3>Free</h3>
@@ -247,7 +245,6 @@
         <div class="cine-eyebrow">// FAQ</div>
         <h2 class="cine-h2">Questions?<br/>Answered.</h2>
       </div>
-
       <div class="cine-faq">
         <details class="reveal-blur"><summary>Do I need an account?</summary><p>No. The free version works entirely in your browser. Your data stays on your device.</p></details>
         <details class="reveal-blur" data-delay="0.05"><summary>Where is my data stored?</summary><p>In your browser's local storage. If you sign in, it's also backed up on our server.</p></details>
@@ -258,7 +255,6 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer class="cine-footer">
     <img src="images/logo.png" alt="Flaren" />
     <strong>Flaren</strong>
@@ -304,8 +300,98 @@
     }, { threshold: 0.4 });
     document.querySelectorAll(".cine-counter-num").forEach(el => counterIO.observe(el));
 
-    fitOrbit();
-    window.addEventListener("resize", fitOrbit);
+    /* ============ INTERACTIVE SPIN WHEEL ============ */
+    (function () {
+      const scene = document.getElementById("wheelScene");
+      const ring  = document.getElementById("wheelRing");
+      if (!scene || !ring) return;
+
+      let angle = 0;
+      let velocity = 0.35;              /* base auto-spin velocity (deg per frame) */
+      const AUTO_TARGET = 0.35;         /* restore to this after slowing */
+      let isDragging = false;
+      let lastX = 0, lastY = 0, lastT = 0;
+      let lastAngle = 0, lastMoveT = 0;
+
+      function center() {
+        const r = scene.getBoundingClientRect();
+        return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+      }
+
+      function angleFromPoint(x, y) {
+        const c = center();
+        return Math.atan2(y - c.y, x - c.x) * 180 / Math.PI;
+      }
+
+      function start(clientX, clientY) {
+        isDragging = true;
+        lastX = clientX; lastY = clientY;
+        lastAngle = angleFromPoint(clientX, clientY);
+        lastMoveT = performance.now();
+        scene.classList.add("grabbing");
+        velocity = 0;
+      }
+
+      function move(clientX, clientY) {
+        if (!isDragging) return;
+        const a = angleFromPoint(clientX, clientY);
+        let delta = a - lastAngle;
+        if (delta > 180) delta -= 360;
+        if (delta < -180) delta += 360;
+        angle += delta;
+
+        const now = performance.now();
+        const dt = Math.max(1, now - lastMoveT);
+        velocity = delta / dt * 16;        /* convert to deg per frame at 60fps */
+        lastAngle = a;
+        lastMoveT = now;
+      }
+
+      function end() {
+        if (!isDragging) return;
+        isDragging = false;
+        scene.classList.remove("grabbing");
+      }
+
+      scene.addEventListener("mousedown", (e) => { e.preventDefault(); start(e.clientX, e.clientY); });
+      window.addEventListener("mousemove", (e) => move(e.clientX, e.clientY));
+      window.addEventListener("mouseup", end);
+
+      scene.addEventListener("touchstart", (e) => {
+        if (e.touches.length !== 1) return;
+        const t = e.touches[0];
+        start(t.clientX, t.clientY);
+      }, { passive: true });
+      scene.addEventListener("touchmove", (e) => {
+        if (e.touches.length !== 1) return;
+        const t = e.touches[0];
+        move(t.clientX, t.clientY);
+      }, { passive: true });
+      scene.addEventListener("touchend", end);
+
+      function loop() {
+        if (!isDragging) {
+          /* friction + auto-spin restore */
+          velocity *= 0.985;
+          velocity += (AUTO_TARGET - velocity) * 0.006;
+          angle += velocity;
+        }
+        ring.style.transform = `rotate(${angle}deg)`;
+        /* counter-rotate each chip so the emoji stays upright */
+        ring.querySelectorAll(".wheel-chip").forEach(chip => {
+          const i = parseFloat(chip.dataset.i);
+          chip.style.transform =
+            `rotate(${i * 45}deg) translateY(var(--r-neg)) rotate(${-i * 45}deg) rotate(${-angle}deg)`;
+        });
+        requestAnimationFrame(loop);
+      }
+      loop();
+
+      /* store i on each chip for the loop above */
+      ring.querySelectorAll(".wheel-chip").forEach(chip => {
+        chip.dataset.i = chip.style.getPropertyValue("--i") || "0";
+      });
+    })();
 
     /* ============ PWA ============ */
     if ("serviceWorker" in navigator) {
