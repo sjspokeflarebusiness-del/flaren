@@ -300,98 +300,87 @@
     }, { threshold: 0.4 });
     document.querySelectorAll(".cine-counter-num").forEach(el => counterIO.observe(el));
 
-    /* ============ INTERACTIVE SPIN WHEEL ============ */
-    (function () {
-      const scene = document.getElementById("wheelScene");
-      const ring  = document.getElementById("wheelRing");
-      if (!scene || !ring) return;
+   /* ============ GRAB-TO-SPIN WHEEL ============ */
+(function () {
+  const scene = document.getElementById("wheelScene");
+  const ring  = document.getElementById("wheelRing");
+  if (!scene || !ring) return;
 
-      let angle = 0;
-      let velocity = 0.35;              /* base auto-spin velocity (deg per frame) */
-      const AUTO_TARGET = 0.35;         /* restore to this after slowing */
-      let isDragging = false;
-      let lastX = 0, lastY = 0, lastT = 0;
-      let lastAngle = 0, lastMoveT = 0;
+  let dragging = false;
+  let startAngle = 0;
+  let startRotation = 0;
+  let currentRotation = 0;
 
-      function center() {
-        const r = scene.getBoundingClientRect();
-        return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
-      }
+  function readRotation() {
+    const m = new DOMMatrixReadOnly(getComputedStyle(ring).transform);
+    return Math.atan2(m.b, m.a) * 180 / Math.PI;
+  }
 
-      function angleFromPoint(x, y) {
-        const c = center();
-        return Math.atan2(y - c.y, x - c.x) * 180 / Math.PI;
-      }
+  function center() {
+    const r = scene.getBoundingClientRect();
+    return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+  }
+  function angleFromPoint(x, y) {
+    const c = center();
+    return Math.atan2(y - c.y, x - c.x) * 180 / Math.PI;
+  }
 
-      function start(clientX, clientY) {
-        isDragging = true;
-        lastX = clientX; lastY = clientY;
-        lastAngle = angleFromPoint(clientX, clientY);
-        lastMoveT = performance.now();
-        scene.classList.add("grabbing");
-        velocity = 0;
-      }
+  function start(x, y) {
+    dragging = true;
+    scene.classList.add("grabbing");
+    startAngle = angleFromPoint(x, y);
+    startRotation = readRotation();
+    currentRotation = startRotation;
+    ring.style.animation = "none";
+    ring.style.transform = `rotate(${currentRotation}deg)`;
+    ring.querySelectorAll(".wheel-chip").forEach(c => {
+      c.style.animation = "none";
+      c.style.rotate = `${-currentRotation}deg`;
+    });
+  }
 
-      function move(clientX, clientY) {
-        if (!isDragging) return;
-        const a = angleFromPoint(clientX, clientY);
-        let delta = a - lastAngle;
-        if (delta > 180) delta -= 360;
-        if (delta < -180) delta += 360;
-        angle += delta;
+  function move(x, y) {
+    if (!dragging) return;
+    const a = angleFromPoint(x, y);
+    const delta = a - startAngle;
+    currentRotation = startRotation + delta;
+    ring.style.transform = `rotate(${currentRotation}deg)`;
+    ring.querySelectorAll(".wheel-chip").forEach(c => {
+      c.style.rotate = `${-currentRotation}deg`;
+    });
+  }
 
-        const now = performance.now();
-        const dt = Math.max(1, now - lastMoveT);
-        velocity = delta / dt * 16;        /* convert to deg per frame at 60fps */
-        lastAngle = a;
-        lastMoveT = now;
-      }
-
-      function end() {
-        if (!isDragging) return;
-        isDragging = false;
-        scene.classList.remove("grabbing");
-      }
-
-      scene.addEventListener("mousedown", (e) => { e.preventDefault(); start(e.clientX, e.clientY); });
-      window.addEventListener("mousemove", (e) => move(e.clientX, e.clientY));
-      window.addEventListener("mouseup", end);
-
-      scene.addEventListener("touchstart", (e) => {
-        if (e.touches.length !== 1) return;
-        const t = e.touches[0];
-        start(t.clientX, t.clientY);
-      }, { passive: true });
-      scene.addEventListener("touchmove", (e) => {
-        if (e.touches.length !== 1) return;
-        const t = e.touches[0];
-        move(t.clientX, t.clientY);
-      }, { passive: true });
-      scene.addEventListener("touchend", end);
-
-      function loop() {
-        if (!isDragging) {
-          /* friction + auto-spin restore */
-          velocity *= 0.985;
-          velocity += (AUTO_TARGET - velocity) * 0.006;
-          angle += velocity;
-        }
-        ring.style.transform = `rotate(${angle}deg)`;
-        /* counter-rotate each chip so the emoji stays upright */
-        ring.querySelectorAll(".wheel-chip").forEach(chip => {
-          const i = parseFloat(chip.dataset.i);
-          chip.style.transform =
-            `rotate(${i * 45}deg) translateY(var(--r-neg)) rotate(${-i * 45}deg) rotate(${-angle}deg)`;
-        });
-        requestAnimationFrame(loop);
-      }
-      loop();
-
-      /* store i on each chip for the loop above */
-      ring.querySelectorAll(".wheel-chip").forEach(chip => {
-        chip.dataset.i = chip.style.getPropertyValue("--i") || "0";
+  function end() {
+    if (!dragging) return;
+    dragging = false;
+    scene.classList.remove("grabbing");
+    setTimeout(() => {
+      if (dragging) return;
+      ring.style.animation = "";
+      ring.style.transform = "";
+      ring.querySelectorAll(".wheel-chip").forEach(c => {
+        c.style.animation = "";
+        c.style.rotate = "";
       });
-    })();
+    }, 1200);
+  }
+
+  scene.addEventListener("mousedown", e => { e.preventDefault(); start(e.clientX, e.clientY); });
+  window.addEventListener("mousemove", e => move(e.clientX, e.clientY));
+  window.addEventListener("mouseup", end);
+
+  scene.addEventListener("touchstart", e => {
+    if (e.touches.length !== 1) return;
+    const t = e.touches[0];
+    start(t.clientX, t.clientY);
+  }, { passive: true });
+  scene.addEventListener("touchmove", e => {
+    if (e.touches.length !== 1) return;
+    const t = e.touches[0];
+    move(t.clientX, t.clientY);
+  }, { passive: true });
+  scene.addEventListener("touchend", end);
+})();
 
     /* ============ PWA ============ */
     if ("serviceWorker" in navigator) {
