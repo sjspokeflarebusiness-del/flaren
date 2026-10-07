@@ -5267,7 +5267,7 @@ textarea:focus-visible, select:focus-visible {
 }
 
 /* =========================================================
-   SPIN WHEEL
+   SPIN WHEEL v3 — physics + shakram mode + particles
    ========================================================= */
 .wheel-wrap {
   display: flex;
@@ -5305,6 +5305,7 @@ textarea:focus-visible, select:focus-visible {
 
 .wheel-scene {
   --r: 148px;
+  --spin: 0;              /* 0..1 — set by JS, drives effect intensity */
   position: relative;
   width: 340px;
   height: 340px;
@@ -5316,6 +5317,7 @@ textarea:focus-visible, select:focus-visible {
 }
 .wheel-scene.grabbing { cursor: grabbing; }
 
+/* --- Halo (always on) --- */
 .wheel-halo {
   position: absolute;
   inset: 30px;
@@ -5331,6 +5333,7 @@ textarea:focus-visible, select:focus-visible {
   50%     { transform: scale(1.05); opacity: 1; }
 }
 
+/* --- Conic glow (always on) --- */
 .wheel-glow {
   position: absolute;
   inset: 40px;
@@ -5354,12 +5357,109 @@ textarea:focus-visible, select:focus-visible {
   to   { transform: rotate(360deg); }
 }
 
+/* --- Shakram streaks: light trails that intensify with spin speed --- */
+.wheel-streaks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: calc(0.15 + var(--spin) * 0.85);
+  transition: opacity .2s linear;
+}
+.wheel-streaks span {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 4px;
+  height: 40px;
+  margin: -20px 0 0 -2px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, transparent, rgba(255,122,24,.9), transparent);
+  filter: blur(3px);
+  transform-origin: 50% 50%;
+  animation: streakSpin 32s linear infinite;
+}
+.wheel-streaks span:nth-child(1) { transform: rotate(  0deg) translateY(-148px); }
+.wheel-streaks span:nth-child(2) { transform: rotate( 45deg) translateY(-148px); }
+.wheel-streaks span:nth-child(3) { transform: rotate( 90deg) translateY(-148px); }
+.wheel-streaks span:nth-child(4) { transform: rotate(135deg) translateY(-148px); }
+.wheel-streaks span:nth-child(5) { transform: rotate(180deg) translateY(-148px); background: linear-gradient(180deg, transparent, rgba(34,211,238,.9), transparent); }
+.wheel-streaks span:nth-child(6) { transform: rotate(225deg) translateY(-148px); background: linear-gradient(180deg, transparent, rgba(34,211,238,.9), transparent); }
+.wheel-streaks span:nth-child(7) { transform: rotate(270deg) translateY(-148px); background: linear-gradient(180deg, transparent, rgba(34,211,238,.9), transparent); }
+.wheel-streaks span:nth-child(8) { transform: rotate(315deg) translateY(-148px); background: linear-gradient(180deg, transparent, rgba(34,211,238,.9), transparent); }
+@keyframes streakSpin {
+  from { rotate: 0deg; }
+  to   { rotate: 360deg; }
+}
+
+/* --- Particle burst: 24 particles that fire when spinning fast --- */
+.wheel-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  opacity: calc(var(--spin) * var(--spin));   /* quadratic — only at high speed */
+  transition: opacity .25s linear;
+}
+.wheel-particles span {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: #FF7A18;
+  box-shadow: 0 0 10px currentColor;
+  color: #FF7A18;
+  animation: particleFly 1.4s cubic-bezier(.16,1,.3,1) infinite;
+}
+.wheel-particles span:nth-child(odd) { background: #22D3EE; color: #22D3EE; }
+.wheel-particles span:nth-child(3n)  { background: #EC4899; color: #EC4899; }
+.wheel-particles span:nth-child(5n)  { background: #F59E0B; color: #F59E0B; }
+
+.wheel-particles span:nth-child(1)  { animation-delay: 0s;    --a:   0deg; --d: 110px; }
+.wheel-particles span:nth-child(2)  { animation-delay: .1s;   --a:  15deg; --d: 130px; }
+.wheel-particles span:nth-child(3)  { animation-delay: .2s;   --a:  30deg; --d: 105px; }
+.wheel-particles span:nth-child(4)  { animation-delay: .3s;   --a:  45deg; --d: 120px; }
+.wheel-particles span:nth-child(5)  { animation-delay: .4s;   --a:  60deg; --d: 140px; }
+.wheel-particles span:nth-child(6)  { animation-delay: .5s;   --a:  75deg; --d: 115px; }
+.wheel-particles span:nth-child(7)  { animation-delay: .6s;   --a:  90deg; --d: 125px; }
+.wheel-particles span:nth-child(8)  { animation-delay: .7s;   --a: 105deg; --d: 108px; }
+.wheel-particles span:nth-child(9)  { animation-delay: .8s;   --a: 120deg; --d: 135px; }
+.wheel-particles span:nth-child(10) { animation-delay: .9s;   --a: 135deg; --d: 112px; }
+.wheel-particles span:nth-child(11) { animation-delay: 1.0s;  --a: 150deg; --d: 128px; }
+.wheel-particles span:nth-child(12) { animation-delay: 1.1s;  --a: 165deg; --d: 118px; }
+.wheel-particles span:nth-child(13) { animation-delay: .05s;  --a: 180deg; --d: 122px; }
+.wheel-particles span:nth-child(14) { animation-delay: .15s;  --a: 195deg; --d: 132px; }
+.wheel-particles span:nth-child(15) { animation-delay: .25s;  --a: 210deg; --d: 106px; }
+.wheel-particles span:nth-child(16) { animation-delay: .35s;  --a: 225deg; --d: 124px; }
+.wheel-particles span:nth-child(17) { animation-delay: .45s;  --a: 240deg; --d: 138px; }
+.wheel-particles span:nth-child(18) { animation-delay: .55s;  --a: 255deg; --d: 110px; }
+.wheel-particles span:nth-child(19) { animation-delay: .65s;  --a: 270deg; --d: 126px; }
+.wheel-particles span:nth-child(20) { animation-delay: .75s;  --a: 285deg; --d: 114px; }
+.wheel-particles span:nth-child(21) { animation-delay: .85s;  --a: 300deg; --d: 130px; }
+.wheel-particles span:nth-child(22) { animation-delay: .95s;  --a: 315deg; --d: 116px; }
+.wheel-particles span:nth-child(23) { animation-delay: 1.05s; --a: 330deg; --d: 134px; }
+.wheel-particles span:nth-child(24) { animation-delay: 1.15s; --a: 345deg; --d: 108px; }
+
+@keyframes particleFly {
+  0% {
+    transform: rotate(var(--a)) translateY(0) scale(.4);
+    opacity: 0;
+  }
+  15% { opacity: 1; }
+  100% {
+    transform: rotate(var(--a)) translateY(calc(var(--d) * -1)) scale(1.3);
+    opacity: 0;
+  }
+}
+
+/* --- Ring + chips --- */
 .wheel-ring {
   position: absolute;
   inset: 0;
   animation: wheelSpin 32s linear infinite;
   will-change: transform;
-  z-index: 2;
+  z-index: 3;
 }
 @keyframes wheelSpin {
   from { transform: rotate(0deg); }
@@ -5383,7 +5483,10 @@ textarea:focus-visible, select:focus-visible {
   gap: 2px;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: inset 0 1px 1px rgba(255,255,255,.18), 0 8px 20px rgba(0,0,0,.5);
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.18),
+    0 8px 20px rgba(0,0,0,.5),
+    0 0 calc(var(--spin) * 30px) rgba(255,122,24, calc(var(--spin) * 0.9));
   transition: box-shadow .3s;
   will-change: transform;
 }
@@ -5406,7 +5509,10 @@ textarea:focus-visible, select:focus-visible {
 }
 
 .wheel-chip:hover {
-  box-shadow: inset 0 1px 1px rgba(255,255,255,.28), 0 8px 20px rgba(0,0,0,.55), 0 0 24px rgba(255,122,24,.7);
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.28),
+    0 8px 20px rgba(0,0,0,.55),
+    0 0 24px rgba(255,122,24,.7);
 }
 
 .wheel-chip .chip-emoji { font-size: 20px; line-height: 1; }
@@ -5418,6 +5524,7 @@ textarea:focus-visible, select:focus-visible {
   color: rgba(255,255,255,.85);
 }
 
+/* --- Center flame --- */
 .wheel-center {
   position: absolute;
   top: 50%;
@@ -5426,14 +5533,20 @@ textarea:focus-visible, select:focus-visible {
   height: 92px;
   transform: translate(-50%, -50%);
   border-radius: 22px;
-  background: radial-gradient(circle at 50% 50%, rgba(255,122,24,.4), transparent 70%), rgba(10,10,15,.92);
+  background: radial-gradient(circle at 50% 50%, rgba(255,122,24,.4), transparent 70%),
+              rgba(10,10,15,.92);
   border: 1px solid rgba(255,255,255,.18);
   display: grid;
   place-items: center;
-  z-index: 3;
+  z-index: 5;
   pointer-events: none;
-  box-shadow: inset 0 1px 1px rgba(255,255,255,.2), 0 0 36px rgba(255,122,24,.6), 0 16px 32px rgba(0,0,0,.6);
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.2),
+    0 0 36px rgba(255,122,24,.6),
+    0 0 calc(var(--spin) * 60px) rgba(236,72,153, calc(var(--spin) * 0.9)),
+    0 16px 32px rgba(0,0,0,.6);
   animation: centerEnter .9s cubic-bezier(.16,1,.3,1) both;
+  transition: box-shadow .25s linear;
 }
 @keyframes centerEnter {
   from { opacity: 0; transform: translate(-50%,-50%) scale(.4); }
@@ -5445,6 +5558,18 @@ textarea:focus-visible, select:focus-visible {
   object-fit: contain;
   border-radius: 18px;
   filter: drop-shadow(0 0 14px rgba(255,122,24,.8));
+}
+
+@media (max-width: 720px) {
+  .wheel-scene { --r: 118px; width: 280px; height: 280px; }
+  .wheel-chip { width: 58px; height: 58px; margin: -29px 0 0 -29px; }
+  .wheel-chip .chip-emoji { font-size: 17px; }
+  .wheel-chip .chip-label { font-size: 7.5px; }
+  .wheel-center { width: 78px; height: 78px; border-radius: 18px; }
+  .wheel-center img { width: 62px; height: 62px; border-radius: 14px; }
+  .wheel-hint { font-size: 10px; }
+  .wheel-streaks span:nth-child(n) { transform: rotate(calc((n - 1) * 45deg)) translateY(-118px); }
+  .wheel-particles span { --d: 90px; }
 }
 
 /* Hero copy */
