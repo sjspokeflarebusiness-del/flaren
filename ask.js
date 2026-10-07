@@ -152,7 +152,10 @@
         "• what's on my calendar today\n" +
         "• start focus timer\n" +
         "• how focused was I today\n" +
-        "• list services\n" +
+        "• list services\n"+
+        "• add pill <name> at <time>\n" +
+        "• list my pills\n" +
+        "• foods for <condition>\n" +
         "• go to <dashboard|tasks|notes|water|workout|calendar|focus|services|settings|games>"
       );
     }
@@ -285,6 +288,29 @@
     /* FOCUS STATS */
     if (/(?:how focused|focus stats|how many focus|focus today)/i.test(lower)) {
       return reply("Checking your focus stats…", "focus_status");
+    }
+    /* ADD PILL */
+    m = raw.match(/^(?:add|create|new)\s+pill\s+(.+?)(?:\s+at\s+(\d{1,2}(?::\d{2})?\s*(?:am|pm)?))?$/i);
+    if (m) {
+      const name = m[1].trim();
+      const time = m[2] || "08:00";
+      const parsed = parseDateAndTime(time);
+      return reply(`Pill added: "${name}" at ${parsed.time || "08:00"}.`, "add_pill", {
+        name,
+        dose: "",
+        time: parsed.time || "08:00"
+      });
+    }
+
+    /* LIST PILLS */
+    if (/^(?:list|show)\s+(?:my\s+)?pills\b/i.test(lower)) {
+      return reply("Here are your pills.", "list_pills");
+    }
+
+    /* FOODS FOR CONDITION */
+    m = raw.match(/^foods?\s+for\s+(.+)$/i);
+    if (m) {
+      return reply(`Looking up foods for "${m[1]}"…`, "foods_for", { condition: m[1] });
     }
 
     /* SERVICES */
@@ -488,6 +514,56 @@
         const min = p.todayFocusMinutes || 0;
         if (count === 0) return "No focus sessions yet today.";
         return `Today: ${count} session${count === 1 ? "" : "s"} — ${min} minutes focused.`;
+      }
+      case "add_pill": {
+        try {
+          const pd = JSON.parse(localStorage.getItem("flaren_pills_v1") || "{}");
+          pd.pills = pd.pills || [];
+          pd.pills.push({
+            id: Math.random().toString(36).slice(2, 10),
+            name: data.name,
+            dose: data.dose || "",
+            times: [data.time || "08:00"],
+            notes: "",
+            streak: 0
+          });
+          pd.reminders = true;
+          localStorage.setItem("flaren_pills_v1", JSON.stringify(pd));
+        } catch {}
+        return `Pill added: "${data.name}" — open the Pills page to see it.`;
+      }
+
+      case "list_pills": {
+        try {
+          const pd = JSON.parse(localStorage.getItem("flaren_pills_v1") || "{}");
+          const pills = pd.pills || [];
+          if (!pills.length) return "You haven't added any medications yet.";
+          return "Your medications:\n" + pills.map(p =>
+            `• ${p.name}${p.dose ? " (" + p.dose + ")" : ""} at ${(p.times || []).join(", ")}`
+          ).join("\n");
+        } catch { return "Couldn't load pills."; }
+      }
+
+      case "foods_for": {
+        const q = (data.condition || "").toLowerCase();
+        const map = {
+          "diabetes": ["Berries", "Apples", "Guavas", "Okra", "Spinach", "Broccoli", "Bitter Gourd"],
+          "blood pressure": ["Bananas", "Pomegranates", "Oranges", "Beetroot", "Spinach", "Tomatoes", "Celery"],
+          "cholesterol": ["Avocados", "Apples", "Pears", "Eggplant", "Garlic", "Carrots"],
+          "constipation": ["Prunes", "Figs", "Pears", "Papaya", "Sweet Potatoes", "Broccoli", "Carrots"],
+          "reflux": ["Bananas", "Melons", "Papaya", "Fennel", "Cucumbers", "Green Beans"],
+          "inflammation": ["Strawberries", "Blackberries", "Cherries", "Turmeric", "Spinach", "Ginger"],
+          "immunity": ["Guavas", "Oranges", "Lemons", "Kiwis", "Bell Peppers", "Broccoli", "Kale"],
+          "bones": ["Prunes", "Figs", "Kiwis", "Collard Greens", "Spinach", "Bok Choy"],
+          "uti": ["Cranberries", "Blueberries", "Celery", "Parsley", "Cucumbers"],
+          "liver": ["Grapefruit", "Avocados", "Lemons", "Artichokes", "Beetroot", "Brussels Sprouts"],
+          "memory": ["Blueberries", "Blackberries", "Grapes", "Spinach", "Broccoli", "Beetroot"]
+        };
+        let key = null;
+        for (const k of Object.keys(map)) if (q.includes(k)) { key = k; break; }
+        if (!key) return `I don't have a food guide for "${data.condition}" yet. Open the Health page for the full list.`;
+        return `${key.charAt(0).toUpperCase() + key.slice(1)} — supportive foods:\n• ` + map[key].join("\n• ") +
+               `\n\nConsult a doctor before changing your diet.`;
       }
 
       case "list_services": {
