@@ -318,113 +318,87 @@
     document.querySelectorAll(".cine-counter-num").forEach(el => counterIO.observe(el));
 
    /* ============ GRAB-TO-SPIN WHEEL (with physics) ============ */
+/* ============ WHEEL — simple JS placement ============ */
 (function () {
   const scene = document.getElementById("wheelScene");
   const ring  = document.getElementById("wheelRing");
   if (!scene || !ring) return;
 
-  let rotation = 22.5;
-  let velocity = 0;                 /* degrees per frame */
-  const AUTO = 0.35;                /* base auto-spin */
-  const MAX_V = 42;                 /* max spin velocity */
+  const chips = Array.from(ring.querySelectorAll(".wheel-chip"));
+  const N = chips.length;
+  let rotation = 0;
+  let velocity = 0.3;
+  const AUTO = 0.3;
   let dragging = false;
   let startAngle = 0;
   let startRotation = 0;
-  let lastMoveTime = 0;
-  let lastMoveAngle = 0;
+
+  function radius() { return window.innerWidth <= 720 ? 108 : 132; }
 
   function center() {
     const r = scene.getBoundingClientRect();
     return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
   }
-  function angleFromPoint(x, y) {
+  function angleAt(x, y) {
     const c = center();
     return Math.atan2(y - c.y, x - c.x) * 180 / Math.PI;
   }
 
-  function start(x, y) {
+  function draw() {
+    ring.style.transform = `rotate(${rotation}deg)`;
+    const R = radius();
+    for (let i = 0; i < N; i++) {
+      const a = (i / N) * 360 - rotation;
+      chips[i].style.transform =
+        `rotate(${a}deg) translateY(-${R}px) rotate(${-a}deg)`;
+    }
+  }
+
+  function frame() {
+    if (!dragging) {
+      velocity *= 0.995;
+      velocity += (AUTO - velocity) * 0.01;
+      rotation += velocity;
+    }
+    draw();
+    requestAnimationFrame(frame);
+  }
+
+  function down(x, y) {
     dragging = true;
     scene.classList.add("grabbing");
-    startAngle = angleFromPoint(x, y);
+    startAngle = angleAt(x, y);
     startRotation = rotation;
-    lastMoveTime = performance.now();
-    lastMoveAngle = startAngle;
   }
-
   function move(x, y) {
     if (!dragging) return;
-    const a = angleFromPoint(x, y);
-    let delta = a - startAngle;
-    if (delta > 180) delta -= 360;
-    if (delta < -180) delta += 360;
-    rotation = startRotation + delta;
-
-    /* measure instantaneous velocity */
-    const now = performance.now();
-    const dt = Math.max(1, now - lastMoveTime);
-    const dAngle = a - lastMoveAngle;
-    let vDelta = dAngle;
-    if (vDelta > 180) vDelta -= 360;
-    if (vDelta < -180) vDelta += 360;
-    velocity = Math.max(-MAX_V, Math.min(MAX_V, vDelta / dt * 16));
-
-    lastMoveTime = now;
-    lastMoveAngle = a;
+    let d = angleAt(x, y) - startAngle;
+    if (d > 180) d -= 360;
+    if (d < -180) d += 360;
+    rotation = startRotation + d;
+    draw();
   }
-
-  function end() {
-    if (!dragging) return;
+  function up() {
     dragging = false;
     scene.classList.remove("grabbing");
   }
 
-  /* ---- Main loop: apply physics every frame ---- */
-  function frame() {
-    if (!dragging) {
-      /* friction — decays over ~8 seconds */
-      velocity *= 0.995;
-      /* gentle pull back to auto-spin */
-      velocity += (AUTO - velocity) * 0.008;
-      rotation += velocity;
-    }
-    ring.style.transform = `rotate(${rotation}deg)`;
-
-    /* update --spin: 0 at rest, 1 at half-speed max */
-    const speed = Math.min(1, Math.abs(velocity) / 15);
-    scene.style.setProperty("--spin", speed.toFixed(3));
-
-    /* counter-rotate chips so emojis stay upright */
-    const chips = ring.querySelectorAll(".wheel-chip");
-    const angleToCancel = -rotation;
-    chips.forEach(c => { c.style.rotate = `${angleToCancel}deg`; });
-
-    /* particles + streaks already use --spin via CSS */
-
-    requestAnimationFrame(frame);
-  }
-
-  scene.addEventListener("mousedown", e => { e.preventDefault(); start(e.clientX, e.clientY); });
+  scene.addEventListener("mousedown", e => { e.preventDefault(); down(e.clientX, e.clientY); });
   window.addEventListener("mousemove", e => move(e.clientX, e.clientY));
-  window.addEventListener("mouseup", end);
+  window.addEventListener("mouseup", up);
 
   scene.addEventListener("touchstart", e => {
     if (e.touches.length !== 1) return;
-    const t = e.touches[0];
-    start(t.clientX, t.clientY);
+    down(e.touches[0].clientX, e.touches[0].clientY);
   }, { passive: true });
   scene.addEventListener("touchmove", e => {
     if (e.touches.length !== 1) return;
-    const t = e.touches[0];
-    move(t.clientX, t.clientY);
+    move(e.touches[0].clientX, e.touches[0].clientY);
   }, { passive: true });
-  scene.addEventListener("touchend", end);
-
-  /* disable the CSS auto-spin animation — JS drives rotation now */
-  ring.style.animation = "none";
+  scene.addEventListener("touchend", up);
 
   frame();
 })();
-
     /* ============ PWA ============ */
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(()=>{}));
