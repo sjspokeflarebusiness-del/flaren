@@ -5258,13 +5258,12 @@ textarea:focus-visible, select:focus-visible {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  padding: 120px 20px 60px;
+  padding: 110px 20px 60px;
   text-align: center;
-  gap: 40px;
+  gap: 32px;
   position: relative;
-  overflow: visible;
 }
 
 /* =========================================================
@@ -5274,9 +5273,8 @@ textarea:focus-visible, select:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  margin: 40px auto 20px;         
-  padding-top: 20px;              
+  gap: 14px;
+  margin: 30px auto 40px;
 }
 
 .wheel-hint {
@@ -5311,15 +5309,12 @@ textarea:focus-visible, select:focus-visible {
   position: relative;
   width: 340px;
   height: 340px;
-  /* ADD this — gives the chips breathing room so the top two aren't clipped */
-  padding: 40px;
-  margin: -40px;
+  /* no negative margins — keep it simple */
   cursor: grab;
   user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
   touch-action: none;
-  box-sizing: content-box;
 }
 .wheel-scene.grabbing { cursor: grabbing; }
 
