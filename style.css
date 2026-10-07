@@ -5067,8 +5067,9 @@ textarea:focus-visible, select:focus-visible {
   .health-foods-lbl { min-width: auto; }
   .pill-card-head { gap: 8px; }
 }
+
 /* =========================================================
-   CINEMATIC LANDING v2 — orbit scene + mobile-first motion
+   CINEMATIC LANDING — clean rewrite
    ========================================================= */
 
 .glass-landing {
@@ -5149,14 +5150,9 @@ textarea:focus-visible, select:focus-visible {
   opacity: .02;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
+.glass-landing > *:not(.cine-bg) { position: relative; z-index: 1; }
 
-/* Above the fixed bg */
-.glass-landing > *:not(.cine-bg) {
-  position: relative;
-  z-index: 1;
-}
-
-/* ---- Glass surface base ---- */
+/* Glass surface */
 .cine-nav-pill,
 .cine-brand,
 .cine-badge,
@@ -5176,7 +5172,6 @@ textarea:focus-visible, select:focus-visible {
 .cine-brand::before,
 .cine-badge::before,
 .cine-feature::before,
-.cine-price-card::before,
 .cine-faq details::before,
 .cine-nav-mobile-cta::before {
   content: "";
@@ -5197,7 +5192,7 @@ textarea:focus-visible, select:focus-visible {
   pointer-events: none;
 }
 
-/* ---- Nav ---- */
+/* Nav */
 .cine-nav {
   position: fixed;
   top: 16px; left: 0; right: 0;
@@ -5255,12 +5250,9 @@ textarea:focus-visible, select:focus-visible {
   font-weight: 700;
   font-size: 13.5px;
   pointer-events: auto;
-  box-shadow: inset 0 1px 1px rgba(255,255,255,.5);
 }
 
-/* =========================================================
-   HERO
-   ========================================================= */
+/* Hero */
 .cine-hero {
   min-height: 100vh;
   min-height: 100dvh;
@@ -5275,7 +5267,7 @@ textarea:focus-visible, select:focus-visible {
 }
 
 /* =========================================================
-   SPIN WHEEL — pure CSS positioning, JS only handles grab
+   SPIN WHEEL
    ========================================================= */
 .wheel-wrap {
   display: flex;
@@ -5328,10 +5320,7 @@ textarea:focus-visible, select:focus-visible {
   position: absolute;
   inset: 30px;
   border-radius: 50%;
-  background: radial-gradient(circle,
-    rgba(255,122,24,.32) 0%,
-    rgba(236,72,153,.16) 40%,
-    transparent 70%);
+  background: radial-gradient(circle, rgba(255,122,24,.32) 0%, rgba(236,72,153,.16) 40%, transparent 70%);
   filter: blur(28px);
   animation: haloBreathe 4.2s ease-in-out infinite;
   pointer-events: none;
@@ -5346,8 +5335,7 @@ textarea:focus-visible, select:focus-visible {
   position: absolute;
   inset: 40px;
   border-radius: 50%;
-  background: conic-gradient(
-    from 0deg,
+  background: conic-gradient(from 0deg,
     transparent 0deg,
     rgba(255,122,24,.35) 40deg,
     transparent 80deg,
@@ -5366,7 +5354,6 @@ textarea:focus-visible, select:focus-visible {
   to   { transform: rotate(360deg); }
 }
 
-/* The rotating ring — CSS handles the auto-spin */
 .wheel-ring {
   position: absolute;
   inset: 0;
@@ -5378,9 +5365,7 @@ textarea:focus-visible, select:focus-visible {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
-.wheel-ring.paused { animation: none; }
 
-/* Each chip: place on a circle using CSS. JS only stops the animation. */
 .wheel-chip {
   position: absolute;
   top: 50%;
@@ -5398,15 +5383,11 @@ textarea:focus-visible, select:focus-visible {
   gap: 2px;
   cursor: pointer;
   font-family: inherit;
-  box-shadow:
-    inset 0 1px 1px rgba(255,255,255,.18),
-    0 8px 20px rgba(0,0,0,.5);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.18), 0 8px 20px rgba(0,0,0,.5);
   transition: box-shadow .3s;
   will-change: transform;
 }
 
-/* The magic: rotate the whole chip around the ring, then counter-rotate
-   so the emoji stays upright. */
 .wheel-chip:nth-child(1) { transform: rotate(  0deg) translateY(calc(var(--r) * -1)) rotate(-  0deg); }
 .wheel-chip:nth-child(2) { transform: rotate( 45deg) translateY(calc(var(--r) * -1)) rotate(- 45deg); }
 .wheel-chip:nth-child(3) { transform: rotate( 90deg) translateY(calc(var(--r) * -1)) rotate(- 90deg); }
@@ -5416,8 +5397,6 @@ textarea:focus-visible, select:focus-visible {
 .wheel-chip:nth-child(7) { transform: rotate(270deg) translateY(calc(var(--r) * -1)) rotate(-270deg); }
 .wheel-chip:nth-child(8) { transform: rotate(315deg) translateY(calc(var(--r) * -1)) rotate(-315deg); }
 
-/* Counter-rotate the chips as the ring spins, so they stay upright.
-   We apply the reverse animation on the chip itself. */
 .wheel-ring:not(.paused) .wheel-chip {
   animation: chipCounterSpin 32s linear infinite;
 }
@@ -5427,16 +5406,10 @@ textarea:focus-visible, select:focus-visible {
 }
 
 .wheel-chip:hover {
-  box-shadow:
-    inset 0 1px 1px rgba(255,255,255,.28),
-    0 8px 20px rgba(0,0,0,.55),
-    0 0 24px rgba(255,122,24,.7);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.28), 0 8px 20px rgba(0,0,0,.55), 0 0 24px rgba(255,122,24,.7);
 }
 
-.wheel-chip .chip-emoji {
-  font-size: 20px;
-  line-height: 1;
-}
+.wheel-chip .chip-emoji { font-size: 20px; line-height: 1; }
 .wheel-chip .chip-label {
   font-size: 8px;
   font-weight: 800;
@@ -5445,7 +5418,6 @@ textarea:focus-visible, select:focus-visible {
   color: rgba(255,255,255,.85);
 }
 
-/* Still flame in center */
 .wheel-center {
   position: absolute;
   top: 50%;
@@ -5454,17 +5426,13 @@ textarea:focus-visible, select:focus-visible {
   height: 92px;
   transform: translate(-50%, -50%);
   border-radius: 22px;
-  background: radial-gradient(circle at 50% 50%, rgba(255,122,24,.4), transparent 70%),
-              rgba(10,10,15,.92);
+  background: radial-gradient(circle at 50% 50%, rgba(255,122,24,.4), transparent 70%), rgba(10,10,15,.92);
   border: 1px solid rgba(255,255,255,.18);
   display: grid;
   place-items: center;
   z-index: 3;
   pointer-events: none;
-  box-shadow:
-    inset 0 1px 1px rgba(255,255,255,.2),
-    0 0 36px rgba(255,122,24,.6),
-    0 16px 32px rgba(0,0,0,.6);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.2), 0 0 36px rgba(255,122,24,.6), 0 16px 32px rgba(0,0,0,.6);
   animation: centerEnter .9s cubic-bezier(.16,1,.3,1) both;
 }
 @keyframes centerEnter {
@@ -5479,20 +5447,7 @@ textarea:focus-visible, select:focus-visible {
   filter: drop-shadow(0 0 14px rgba(255,122,24,.8));
 }
 
-@media (max-width: 720px) {
-  .wheel-scene { --r: 118px; width: 280px; height: 280px; }
-  .wheel-chip { width: 58px; height: 58px; margin: -29px 0 0 -29px; }
-  .wheel-chip .chip-emoji { font-size: 17px; }
-  .wheel-chip .chip-label { font-size: 7.5px; }
-  .wheel-center { width: 78px; height: 78px; border-radius: 18px; }
-  .wheel-center img { width: 62px; height: 62px; border-radius: 14px; }
-  .wheel-hint { font-size: 10px; }
-}
-.wheel-chip { --r-neg: 165px; }
-@media (max-width: 720px) { .wheel-chip { --r-neg: 128px; } }
-/* =========================================================
-   HERO COPY
-   ========================================================= */
+/* Hero copy */
 .cine-hero-content {
   max-width: 900px;
   display: flex;
@@ -5501,7 +5456,6 @@ textarea:focus-visible, select:focus-visible {
   gap: 18px;
   width: 100%;
 }
-
 .cine-badge {
   display: inline-flex;
   align-items: center;
@@ -5521,7 +5475,6 @@ textarea:focus-visible, select:focus-visible {
   padding: 4px 9px;
   border-radius: 999px;
 }
-
 .cine-headline {
   font-family: 'Instrument Serif', Georgia, serif;
   font-weight: 400;
@@ -5541,7 +5494,6 @@ textarea:focus-visible, select:focus-visible {
   background-clip: text;
   color: transparent;
 }
-
 .cine-sub {
   font-size: clamp(13.5px, 1.5vw, 17px);
   font-weight: 300;
@@ -5550,7 +5502,6 @@ textarea:focus-visible, select:focus-visible {
   line-height: 1.55;
   margin: 6px 0 4px;
 }
-
 .cine-ctas {
   display: flex;
   align-items: center;
@@ -5575,8 +5526,6 @@ textarea:focus-visible, select:focus-visible {
   transform: translateY(-2px) scale(1.03);
   box-shadow: 0 20px 55px rgba(255,122,24,.6);
 }
-.cine-btn-primary .arrow { font-weight: 700; }
-
 .cine-btn-ghost {
   display: inline-flex; align-items: center; gap: 10px;
   color: rgba(255,255,255,.9);
@@ -5594,7 +5543,7 @@ textarea:focus-visible, select:focus-visible {
   padding-left: 3px;
 }
 
-/* ---- Marquee ---- */
+/* Marquee */
 .cine-marquee {
   width: 100%;
   max-width: 100vw;
@@ -5625,17 +5574,9 @@ textarea:focus-visible, select:focus-visible {
   100% { transform: translateX(-50%); }
 }
 
-/* =========================================================
-   SECTIONS
-   ========================================================= */
-.cine-section {
-  padding: 80px 20px;
-  position: relative;
-}
-.cine-section-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-}
+/* Sections */
+.cine-section { padding: 80px 20px; position: relative; }
+.cine-section-inner { max-width: 1200px; margin: 0 auto; }
 .cine-section-head { margin-bottom: 48px; }
 .cine-eyebrow {
   font-size: 11px;
@@ -5733,10 +5674,12 @@ textarea:focus-visible, select:focus-visible {
   border-radius: 24px;
   display: flex;
   flex-direction: column;
+  background: rgba(255,255,255,.03);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
   transition: transform .3s cubic-bezier(.16,1,.3,1);
 }
 .cine-price-card::before {
-  /* re-apply the glass border now that overflow is visible */
   content: "";
   position: absolute;
   inset: 0;
@@ -5899,27 +5842,15 @@ textarea:focus-visible, select:focus-visible {
 }
 .cine-footer a:hover { text-decoration: underline; }
 
-/* =========================================================
-   REVEAL ANIMATION
-   ========================================================= */
+/* Reveal animation */
 @keyframes cineReveal {
-  from {
-    opacity: 0;
-    filter: blur(14px);
-    transform: translateY(26px);
-  }
-  to {
-    opacity: 1;
-    filter: blur(0);
-    transform: translateY(0);
-  }
+  from { opacity: 0; filter: blur(14px); transform: translateY(26px); }
+  to   { opacity: 1; filter: blur(0);    transform: translateY(0); }
 }
 .reveal-blur { opacity: 0; }
 .reveal-blur.in-view { animation: cineReveal .85s cubic-bezier(.16,1,.3,1) both; }
 
-/* =========================================================
-   MOBILE (everything tuned for phone)
-   ========================================================= */
+/* Mobile */
 @media (max-width: 720px) {
   .cine-nav { padding: 0 14px; top: 12px; }
   .cine-nav-pill { display: none; }
@@ -5928,13 +5859,14 @@ textarea:focus-visible, select:focus-visible {
 
   .cine-hero { padding: 96px 16px 30px; gap: 22px; }
 
-  .orbit-scene { width: 320px; height: 320px; }
-  .orbit-center { width: 82px; height: 82px; }
-  .orbit-logo { width: 82px; height: 82px; border-radius: 20px; }
-  .orbit-chip { width: 62px; height: 62px; margin: -31px 0 0 -31px; }
-  .orbit-chip .chip-emoji { font-size: 18px; }
-  .orbit-chip .chip-label { font-size: 8px; }
-  
+  .wheel-scene { --r: 118px; width: 280px; height: 280px; }
+  .wheel-chip { width: 58px; height: 58px; margin: -29px 0 0 -29px; }
+  .wheel-chip .chip-emoji { font-size: 17px; }
+  .wheel-chip .chip-label { font-size: 7.5px; }
+  .wheel-center { width: 78px; height: 78px; border-radius: 18px; }
+  .wheel-center img { width: 62px; height: 62px; border-radius: 14px; }
+  .wheel-hint { font-size: 10px; }
+
   .cine-headline { font-size: 40px; letter-spacing: -0.035em; }
   .cine-sub { font-size: 14px; }
   .cine-btn-primary { padding: 13px 22px; font-size: 14.5px; }
@@ -5950,23 +5882,21 @@ textarea:focus-visible, select:focus-visible {
   .cine-marquee-track { gap: 20px; padding-left: 20px; }
   .cine-marquee-track span { font-size: 18px; }
 
-  /* Dim orbs on phones to save battery */
   .cine-orb { opacity: .42; filter: blur(90px); }
   .cine-orb.o3, .cine-orb.o4 { opacity: .28; }
-
-  /* Reduce blur cost on mobile */
   .cine-grid { background-size: 40px 40px; }
 }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .cine-orb,
-  .orbit-logo,
-  .orbit-ring,
-  .orbit-chip,
   .cine-marquee-track,
-  .orbit-halo {
+  .wheel-ring,
+  .wheel-chip,
+  .wheel-halo,
+  .wheel-glow {
     animation: none !important;
   }
   .reveal-blur { opacity: 1 !important; filter: none !important; transform: none !important; animation: none !important; }
-}
+}  
+
