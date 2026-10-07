@@ -401,6 +401,8 @@ function renderShell() {
           ${menuBtn("calendar", "📅", "Calendar")}
           ${menuBtn("water", "💧", "Water")}
           ${menuBtn("workout", "🔥", "Workout")}
+          ${menuBtn("pill", "💊", "Pills")}
+          ${menuBtn("health", "🥗", "Health")}
           ${menuBtn("ask", "🤖", "Ask Flaren")}
           ${menuBtn("games", "🎮", "Games")}
           ${menuBtn("settings", "⚙️", "Settings")}
@@ -492,6 +494,8 @@ function renderPage() {
   if (currentPage !== "water"    && window.FlarenWater)    window.FlarenWater.stop();
   if (currentPage !== "workout"  && window.FlarenWorkout)  window.FlarenWorkout.stop();
   if (currentPage !== "ask"      && window.FlarenAsk)      window.FlarenAsk.stop();
+  if (currentPage !== "pill"     && window.FlarenPill)     window.FlarenPill.stop();
+  if (currentPage !== "health"   && window.FlarenHealth)   window.FlarenHealth.stop();
 
   const pageContent = $("#pageContent");
   const pages = {
@@ -504,6 +508,8 @@ function renderPage() {
     calendar: renderCalendar,
     water: renderWater,
     workout: renderWorkout,
+    pill: renderPill,
+    health: renderHealth,
     ask: renderAsk,
     games: renderGames,
     settings: renderSettings
@@ -1294,6 +1300,30 @@ function renderWorkout(el) {
     el.innerHTML = `<div class="empty">Workout module failed to load.</div>`;
   }
 }
+
+/* =========================================================
+   PILL REMINDER — delegate to pill.js
+   ========================================================= */
+function renderPill(el) {
+  if (window.FlarenPill) {
+    window.FlarenPill.render(el);
+  } else {
+    el.innerHTML = `<div class="empty">Pill module failed to load.</div>`;
+  }
+}
+
+/* =========================================================
+   HEALTH — delegate to health.js
+   ========================================================= */
+function renderHealth(el) {
+  if (window.FlarenHealth) {
+    window.FlarenHealth.render(el);
+  } else {
+    el.innerHTML = `<div class="empty">Health module failed to load.</div>`;
+  }
+}
+
+
 /* =========================================================
    ASK FLAREN — delegate to ask.js
    ========================================================= */
