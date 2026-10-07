@@ -5492,14 +5492,14 @@ textarea:focus-visible, select:focus-visible {
   will-change: transform;
 }
 
-.wheel-chip:nth-child(1) { transform: rotate(  0deg) translateY(calc(var(--r) * -1)) rotate(-  0deg); }
-.wheel-chip:nth-child(2) { transform: rotate( 45deg) translateY(calc(var(--r) * -1)) rotate(- 45deg); }
-.wheel-chip:nth-child(3) { transform: rotate( 90deg) translateY(calc(var(--r) * -1)) rotate(- 90deg); }
-.wheel-chip:nth-child(4) { transform: rotate(135deg) translateY(calc(var(--r) * -1)) rotate(-135deg); }
-.wheel-chip:nth-child(5) { transform: rotate(180deg) translateY(calc(var(--r) * -1)) rotate(-180deg); }
-.wheel-chip:nth-child(6) { transform: rotate(225deg) translateY(calc(var(--r) * -1)) rotate(-225deg); }
-.wheel-chip:nth-child(7) { transform: rotate(270deg) translateY(calc(var(--r) * -1)) rotate(-270deg); }
-.wheel-chip:nth-child(8) { transform: rotate(315deg) translateY(calc(var(--r) * -1)) rotate(-315deg); }
+.wheel-chip:nth-child(1) { transform: rotate(  0deg) translateY(-148px) rotate(-  0deg); }
+.wheel-chip:nth-child(2) { transform: rotate( 45deg) translateY(-148px) rotate(- 45deg); }
+.wheel-chip:nth-child(3) { transform: rotate( 90deg) translateY(-148px) rotate(- 90deg); }
+.wheel-chip:nth-child(4) { transform: rotate(135deg) translateY(-148px) rotate(-135deg); }
+.wheel-chip:nth-child(5) { transform: rotate(180deg) translateY(-148px) rotate(-180deg); }
+.wheel-chip:nth-child(6) { transform: rotate(225deg) translateY(-148px) rotate(-225deg); }
+.wheel-chip:nth-child(7) { transform: rotate(270deg) translateY(-148px) rotate(-270deg); }
+.wheel-chip:nth-child(8) { transform: rotate(315deg) translateY(-148px) rotate(-315deg); }
 
 .wheel-ring:not(.paused) .wheel-chip {
   animation: chipCounterSpin 32s linear infinite;
@@ -5985,13 +5985,21 @@ textarea:focus-visible, select:focus-visible {
 
   .cine-hero { padding: 96px 16px 30px; gap: 22px; }
 
-  .wheel-scene { --r: 118px; width: 280px; height: 280px; }
-  .wheel-chip { width: 58px; height: 58px; margin: -29px 0 0 -29px; }
-  .wheel-chip .chip-emoji { font-size: 17px; }
-  .wheel-chip .chip-label { font-size: 7.5px; }
-  .wheel-center { width: 78px; height: 78px; border-radius: 18px; }
-  .wheel-center img { width: 62px; height: 62px; border-radius: 14px; }
-  .wheel-hint { font-size: 10px; }
+.wheel-scene { width: 280px; height: 280px; }
+.wheel-chip { width: 58px; height: 58px; margin: -29px 0 0 -29px; }
+.wheel-chip:nth-child(1) { transform: rotate(  0deg) translateY(-118px) rotate(-  0deg); }
+.wheel-chip:nth-child(2) { transform: rotate( 45deg) translateY(-118px) rotate(- 45deg); }
+.wheel-chip:nth-child(3) { transform: rotate( 90deg) translateY(-118px) rotate(- 90deg); }
+.wheel-chip:nth-child(4) { transform: rotate(135deg) translateY(-118px) rotate(-135deg); }
+.wheel-chip:nth-child(5) { transform: rotate(180deg) translateY(-118px) rotate(-180deg); }
+.wheel-chip:nth-child(6) { transform: rotate(225deg) translateY(-118px) rotate(-225deg); }
+.wheel-chip:nth-child(7) { transform: rotate(270deg) translateY(-118px) rotate(-270deg); }
+.wheel-chip:nth-child(8) { transform: rotate(315deg) translateY(-118px) rotate(-315deg); }
+.wheel-chip .chip-emoji { font-size: 17px; }
+.wheel-chip .chip-label { font-size: 7.5px; }
+.wheel-center { width: 78px; height: 78px; border-radius: 18px; }
+.wheel-center img { width: 62px; height: 62px; border-radius: 14px; }
+.wheel-hint { font-size: 10px; }
 
   .cine-headline { font-size: 40px; letter-spacing: -0.035em; }
   .cine-sub { font-size: 14px; }
