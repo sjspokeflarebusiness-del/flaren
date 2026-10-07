@@ -5,218 +5,249 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flaren — Your digital world, one workspace</title>
   <link rel="icon" type="image/png" href="images/logo.png" />
-  <meta name="description" content="Flaren is a fast, cinematic workspace with services, notes, tasks, focus timer, calendar, water tracker, workout tracker and a built-in assistant." />
+  <meta name="description" content="Flaren is a fast, cinematic workspace with services, notes, tasks, focus timer, calendar, water tracker, workout tracker, pill reminder, health guide and a built-in assistant." />
   <meta name="theme-color" content="#000000" />
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="images/logo.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css" />
   <script defer src="https://cloud.umami.is/script.js" data-website-id="323ddd38-4d0a-4665-8b9a-eb2e2bde48c3"></script>
 </head>
 <body class="landing-body glass-landing">
 
-  <!-- Atmospheric orbs -->
-  <div class="bg-orbs" aria-hidden="true">
-    <span class="orb orb-flame"></span>
-    <span class="orb orb-cyan"></span>
-    <span class="orb orb-deep"></span>
+  <!-- Fixed cinematic background -->
+  <div class="cine-bg" aria-hidden="true">
+    <span class="cine-orb o1"></span>
+    <span class="cine-orb o2"></span>
+    <span class="cine-orb o3"></span>
+    <span class="cine-orb o4"></span>
+    <div class="cine-grid"></div>
+    <div class="cine-noise"></div>
   </div>
 
   <!-- Floating glass navbar -->
-  <header class="glass-nav">
-    <a class="glass-brand" href="index.html">
+  <header class="cine-nav">
+    <a class="cine-brand" href="index.html">
       <img src="images/logo.png" alt="Flaren" />
     </a>
 
-    <nav class="glass-nav-pill">
+    <nav class="cine-nav-pill">
       <a href="#capabilities">Capabilities</a>
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
-      <a class="glass-nav-cta" href="app.html?try=1">
+      <a class="cine-nav-cta" href="app.html?try=1">
         Try Flaren
         <span class="arrow">↗</span>
       </a>
     </nav>
 
-    <div class="glass-spacer"></div>
+    <div class="cine-spacer"></div>
   </header>
 
   <!-- HERO -->
-  <section class="glass-hero">
+  <section class="cine-hero" id="top">
 
-    <div class="glass-hero-content">
+    <div class="cine-hero-content">
 
-      <!-- Badge -->
-      <div class="glass-badge anim-blur" style="animation-delay:.4s">
-        <span class="glass-badge-tag">Launch</span>
-        <span class="glass-badge-text">One Workspace · Zero Tabs · 100% Offline Capable</span>
+      <div class="cine-badge reveal-blur" data-delay="0.4">
+        <span class="cine-badge-tag">Launch</span>
+        <span class="cine-badge-text">One Workspace · Zero Tabs · 100% Offline Capable</span>
       </div>
 
-      <!-- Headline -->
-      <h1 class="glass-headline anim-blur" style="animation-delay:.55s">
-        Your Digital World <em>Organized</em> In One Workspace
+      <h1 class="cine-headline">
+        <span class="reveal-blur" data-delay="0.55">Your Digital World</span>
+        <em class="reveal-blur" data-delay="0.7">Organized</em>
+        <span class="reveal-blur" data-delay="0.85">In One Workspace</span>
       </h1>
 
-      <!-- Subtext -->
-      <p class="glass-sub anim-blur" style="animation-delay:.8s">
-        Services, notes, tasks, focus timer, calendar, water tracker, and an intelligent assistant — all in one fast, cinematic dashboard.
+      <p class="cine-sub reveal-blur" data-delay="1.0">
+        Services, notes, tasks, focus timer, calendar, water tracker, workout tracker, pill reminder, health guide and an intelligent assistant — all in one fast, cinematic dashboard.
       </p>
 
-      <!-- CTAs -->
-      <div class="glass-ctas anim-blur" style="animation-delay:1.1s">
-        <a class="glass-btn-primary" href="app.html?try=1">
+      <div class="cine-ctas reveal-blur" data-delay="1.2">
+        <a class="cine-btn-primary" href="app.html?try=1">
           Try Flaren — No signup
           <span class="arrow">↗</span>
         </a>
-        <a class="glass-btn-ghost" href="#capabilities">
+        <a class="cine-btn-ghost" href="#capabilities">
           <span class="play-circle">▶</span>
           Explore features
         </a>
       </div>
 
-      <!-- Floating stat cards -->
-      <div class="glass-stats anim-blur" style="animation-delay:1.35s">
-        <div class="glass-stat-card">
-          <div class="glass-stat-icon flame">⏱</div>
-          <div class="glass-stat-num">0 Tabs</div>
-          <div class="glass-stat-label">Unified command centre</div>
+      <div class="cine-stats reveal-blur" data-delay="1.4">
+        <div class="cine-stat-card" data-tilt>
+          <div class="cine-stat-icon flame">⏱</div>
+          <div class="cine-stat-num">0 Tabs</div>
+          <div class="cine-stat-label">Unified command centre</div>
         </div>
-        <div class="glass-stat-card">
-          <div class="glass-stat-icon cyan">🌐</div>
-          <div class="glass-stat-num">10-in-1</div>
-          <div class="glass-stat-label">Integrated daily tools</div>
+        <div class="cine-stat-card" data-tilt>
+          <div class="cine-stat-icon cyan">🌐</div>
+          <div class="cine-stat-num">12-in-1</div>
+          <div class="cine-stat-label">Integrated daily tools</div>
+        </div>
+        <div class="cine-stat-card" data-tilt>
+          <div class="cine-stat-icon amber">🎨</div>
+          <div class="cine-stat-num">100%</div>
+          <div class="cine-stat-label">Offline capable, PWA</div>
         </div>
       </div>
 
     </div>
 
-    <!-- Bottom marquee -->
-    <div class="glass-marquee anim-blur" style="animation-delay:1.55s">
-      <div class="glass-marquee-pill">Replaces scattered apps with fluid, instant local performance</div>
-      <div class="glass-marquee-row">
-        <span>Pomodoro</span>
-        <span>Hydration</span>
-        <span>Smart Assistant</span>
-        <span>Daily Calendar</span>
-        <span>Cloud Sync</span>
+    <div class="cine-marquee reveal-blur" data-delay="1.6">
+      <div class="cine-marquee-track">
+        <span>Pomodoro</span><span>·</span>
+        <span>Hydration</span><span>·</span>
+        <span>Workouts</span><span>·</span>
+        <span>Assistant</span><span>·</span>
+        <span>Calendar</span><span>·</span>
+        <span>Pills</span><span>·</span>
+        <span>Health</span><span>·</span>
+        <span>Cloud Sync</span><span>·</span>
+        <span>Pomodoro</span><span>·</span>
+        <span>Hydration</span><span>·</span>
+        <span>Workouts</span><span>·</span>
+        <span>Assistant</span><span>·</span>
+        <span>Calendar</span><span>·</span>
+        <span>Pills</span><span>·</span>
+        <span>Health</span><span>·</span>
+        <span>Cloud Sync</span><span>·</span>
       </div>
     </div>
 
   </section>
 
-  <!-- CAPABILITIES -->
-  <section class="glass-section" id="capabilities">
-    <div class="glass-section-inner">
+  <!-- LIVE COUNTER -->
+  <section class="cine-section cine-counter-section">
+    <div class="cine-section-inner">
+      <div class="cine-counters">
+        <div class="cine-counter reveal-blur">
+          <div class="cine-counter-num" data-count="12">0</div>
+          <div class="cine-counter-label">Tools in one dashboard</div>
+        </div>
+        <div class="cine-counter reveal-blur" data-delay="0.1">
+          <div class="cine-counter-num" data-count="100">0</div>
+          <div class="cine-counter-label">Percent free forever</div>
+        </div>
+        <div class="cine-counter reveal-blur" data-delay="0.2">
+          <div class="cine-counter-num" data-count="0">0</div>
+          <div class="cine-counter-label">Accounts required to try</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      <div class="glass-section-head anim-blur">
-        <div class="glass-eyebrow">// Capabilities &amp; Architecture</div>
-        <h2 class="glass-h2">
+  <!-- CAPABILITIES -->
+  <section class="cine-section" id="capabilities">
+    <div class="cine-section-inner">
+
+      <div class="cine-section-head reveal-blur">
+        <div class="cine-eyebrow">// Capabilities &amp; Architecture</div>
+        <h2 class="cine-h2">
           Studio craft,<br/>
           engineered to perform
         </h2>
       </div>
 
-      <div class="glass-cards">
-        <article class="glass-card anim-blur" style="animation-delay:.1s">
-          <div class="glass-card-head">
-            <div class="glass-card-icon flame">🎨</div>
-            <div class="glass-card-chips">
+      <div class="cine-cards">
+        <article class="cine-card reveal-blur" data-tilt data-delay="0.05">
+          <div class="cine-card-head">
+            <div class="cine-card-icon flame">🎨</div>
+            <div class="cine-card-chips">
               <span>Liquid Glass</span>
               <span>Cinematic Motion</span>
               <span>Dark / Flame Theme</span>
               <span>Responsive</span>
             </div>
           </div>
-          <div class="glass-card-foot">
+          <div class="cine-card-foot">
             <h3>Visual Identity</h3>
             <p>Every view is precision-tuned — glowing flame accents, zero clutter, and dark cinematic surfaces that feel unmistakably bespoke.</p>
           </div>
         </article>
 
-        <article class="glass-card anim-blur" style="animation-delay:.2s">
-          <div class="glass-card-head">
-            <div class="glass-card-icon cyan">⚙</div>
-            <div class="glass-card-chips">
+        <article class="cine-card reveal-blur" data-tilt data-delay="0.15">
+          <div class="cine-card-head">
+            <div class="cine-card-icon cyan">⚙</div>
+            <div class="cine-card-chips">
               <span>Local-first</span>
               <span>PWA Offline</span>
               <span>Cloud Sync</span>
-              <span>Fast</span>
+              <span>No Build Step</span>
             </div>
           </div>
-          <div class="glass-card-foot">
+          <div class="cine-card-foot">
             <h3>Local-First Engine</h3>
             <p>Runs directly in your browser with persistent client-side state and instant offline readiness. No waiting for server round-trips.</p>
           </div>
         </article>
 
-        <article class="glass-card anim-blur" style="animation-delay:.3s">
-          <div class="glass-card-head">
-            <div class="glass-card-icon amber">💡</div>
-            <div class="glass-card-chips">
+        <article class="cine-card reveal-blur" data-tilt data-delay="0.25">
+          <div class="cine-card-head">
+            <div class="cine-card-icon amber">💡</div>
+            <div class="cine-card-chips">
               <span>Natural Language</span>
               <span>Workouts</span>
               <span>Hydration Plant</span>
-              <span>Calendar</span>
+              <span>Pill Reminders</span>
             </div>
           </div>
-          <div class="glass-card-foot">
+          <div class="cine-card-foot">
             <h3>Habit Compounding</h3>
-            <p>Integrated gamification: watch your workout flame grow and nurture your hydration garden as you execute daily tasks.</p>
+            <p>Integrated gamification: watch your workout flame grow, nurture your hydration garden, and never miss a dose with honest streaks.</p>
           </div>
         </article>
-      </div>
-
-      <div class="glass-section-foot">
-        <div>© <span id="year"></span> Flaren — Crafted for high-focus individuals.</div>
-        <a href="app.html?try=1">Open App Environment ↗</a>
       </div>
 
     </div>
   </section>
 
   <!-- FEATURES -->
-  <section class="glass-section" id="features">
-    <div class="glass-section-inner">
+  <section class="cine-section" id="features">
+    <div class="cine-section-inner">
 
-      <div class="glass-section-head anim-blur">
-        <div class="glass-eyebrow">// Features</div>
-        <h2 class="glass-h2">Ten tools.<br/>One workspace.</h2>
+      <div class="cine-section-head reveal-blur">
+        <div class="cine-eyebrow">// Features</div>
+        <h2 class="cine-h2">Twelve tools.<br/>One workspace.</h2>
       </div>
 
-      <div class="glass-features">
-        <div class="glass-feature anim-blur" style="animation-delay:.05s"><span class="fi">🧩</span><div><strong>All your services</strong><p>One click and you're there.</p></div></div>
-        <div class="glass-feature anim-blur" style="animation-delay:.1s"><span class="fi">📝</span><div><strong>Notes &amp; Tasks</strong><p>Priorities, due dates, reminders.</p></div></div>
-        <div class="glass-feature anim-blur" style="animation-delay:.15s"><span class="fi">⏱</span><div><strong>Focus Timer</strong><p>Pomodoro with streaks.</p></div></div>
-        <div class="glass-feature anim-blur" style="animation-delay:.2s"><span class="fi">📅</span><div><strong>Calendar</strong><p>Month, week, day, recurring.</p></div></div>
-        <div class="glass-feature anim-blur" style="animation-delay:.25s"><span class="fi">💧</span><div><strong>Water Tracker</strong><p>Grow a plant, honest streak.</p></div></div>
-        <div class="glass-feature anim-blur" style="animation-delay:.3s"><span class="fi">🔥</span><div><strong>Workout Tracker</strong><p>6 levels, a flame that grows.</p></div></div>
-        <div class="glass-feature anim-blur" style="animation-delay:.35s"><span class="fi">🤖</span><div><strong>Ask Flaren</strong><p>Type a command, it does it.</p></div></div>
-        <div class="glass-feature anim-blur" style="animation-delay:.4s"><span class="fi">🔎</span><div><strong>Instant Search</strong><p>Google, Bing, DuckDuckGo.</p></div></div>
-        <div class="glass-feature anim-blur" style="animation-delay:.45s"><span class="fi">📦</span><div><strong>Cloud Sync</strong><p>Same workspace, any device.</p></div></div>
-        <div class="glass-feature anim-blur" style="animation-delay:.5s"><span class="fi">🌗</span><div><strong>Theme &amp; Privacy</strong><p>Light or dark. Always yours.</p></div></div>
+      <div class="cine-features">
+        <div class="cine-feature reveal-blur" data-tilt data-delay="0.02"><span class="fi">🧩</span><div><strong>All your services</strong><p>One click and you're there.</p></div></div>
+        <div class="cine-feature reveal-blur" data-tilt data-delay="0.06"><span class="fi">📝</span><div><strong>Notes &amp; Tasks</strong><p>Priorities, due dates, reminders.</p></div></div>
+        <div class="cine-feature reveal-blur" data-tilt data-delay="0.1"><span class="fi">⏱</span><div><strong>Focus Timer</strong><p>Pomodoro with streaks.</p></div></div>
+        <div class="cine-feature reveal-blur" data-tilt data-delay="0.14"><span class="fi">📅</span><div><strong>Calendar</strong><p>Month, week, day, recurring.</p></div></div>
+        <div class="cine-feature reveal-blur" data-tilt data-delay="0.18"><span class="fi">💧</span><div><strong>Water Tracker</strong><p>Grow a plant, honest streak.</p></div></div>
+        <div class="cine-feature reveal-blur" data-tilt data-delay="0.22"><span class="fi">🔥</span><div><strong>Workout Tracker</strong><p>6 levels, a flame that grows.</p></div></div>
+        <div class="cine-feature reveal-blur" data-tilt data-delay="0.26"><span class="fi">💊</span><div><strong>Pill Reminder</strong><p>Notifications + dose streaks.</p></div></div>
+        <div class="cine-feature reveal-blur" data-tilt data-delay="0.3"><span class="fi">🥗</span><div><strong>Health Guide</strong><p>Foods for 20 conditions.</p></div></div>
+        <div class="cine-feature reveal-blur" data-tilt data-delay="0.34"><span class="fi">🤖</span><div><strong>Ask Flaren</strong><p>Type a command, it does it.</p></div></div>
+        <div class="cine-feature reveal-blur" data-tilt data-delay="0.38"><span class="fi">🔎</span><div><strong>Instant Search</strong><p>Google, Bing, DuckDuckGo.</p></div></div>
+        <div class="cine-feature reveal-blur" data-tilt data-delay="0.42"><span class="fi">📦</span><div><strong>Cloud Sync</strong><p>Same workspace, any device.</p></div></div>
+        <div class="cine-feature reveal-blur" data-tilt data-delay="0.46"><span class="fi">🌗</span><div><strong>Theme &amp; Privacy</strong><p>Light or dark. Always yours.</p></div></div>
       </div>
 
     </div>
   </section>
 
   <!-- PRICING -->
-  <section class="glass-section" id="pricing">
-    <div class="glass-section-inner">
+  <section class="cine-section" id="pricing">
+    <div class="cine-section-inner">
 
-      <div class="glass-section-head anim-blur">
-        <div class="glass-eyebrow">// Pricing</div>
-        <h2 class="glass-h2">Start free.<br/>Upgrade when ready.</h2>
+      <div class="cine-section-head reveal-blur">
+        <div class="cine-eyebrow">// Pricing</div>
+        <h2 class="cine-h2">Start free.<br/>Upgrade when ready.</h2>
       </div>
 
-      <div class="glass-pricing">
-        <div class="glass-price-card anim-blur" style="animation-delay:.1s">
+      <div class="cine-pricing">
+        <div class="cine-price-card reveal-blur" data-tilt data-delay="0.05">
           <h3>Free</h3>
-          <div class="glass-price">$0<span>/forever</span></div>
+          <div class="cine-price">$0<span>/forever</span></div>
           <ul>
             <li>All services — unlimited</li>
             <li>Notes &amp; tasks</li>
@@ -226,22 +257,23 @@
           <a href="app.html?try=1">Start free</a>
         </div>
 
-        <div class="glass-price-card glass-price-highlight anim-blur" style="animation-delay:.2s">
-          <span class="glass-ribbon">Most popular</span>
+        <div class="cine-price-card cine-price-highlight reveal-blur" data-tilt data-delay="0.15">
+          <span class="cine-ribbon">Most popular</span>
           <h3>Pro</h3>
-          <div class="glass-price">$5<span>/month</span></div>
+          <div class="cine-price">$5<span>/month</span></div>
           <ul>
             <li>Everything in Free</li>
             <li>Cloud sync</li>
             <li>Focus, calendar, water, workout</li>
+            <li>Pill reminders + health guide</li>
             <li>Ask Flaren AI</li>
           </ul>
           <a href="app.html?try=1">Choose Pro</a>
         </div>
 
-        <div class="glass-price-card anim-blur" style="animation-delay:.3s">
+        <div class="cine-price-card reveal-blur" data-tilt data-delay="0.25">
           <h3>Team</h3>
-          <div class="glass-price">$15<span>/month</span></div>
+          <div class="cine-price">$15<span>/month</span></div>
           <ul>
             <li>Everything in Pro</li>
             <li>Shared dashboards</li>
@@ -256,50 +288,85 @@
   </section>
 
   <!-- FAQ -->
-  <section class="glass-section" id="faq">
-    <div class="glass-section-inner">
+  <section class="cine-section" id="faq">
+    <div class="cine-section-inner">
 
-      <div class="glass-section-head anim-blur">
-        <div class="glass-eyebrow">// FAQ</div>
-        <h2 class="glass-h2">Questions?<br/>Answered.</h2>
+      <div class="cine-section-head reveal-blur">
+        <div class="cine-eyebrow">// FAQ</div>
+        <h2 class="cine-h2">Questions?<br/>Answered.</h2>
       </div>
 
-      <div class="glass-faq">
-        <details><summary>Do I need an account?</summary><p>No. The free version works entirely in your browser. Your data stays on your device.</p></details>
-        <details><summary>Where is my data stored?</summary><p>In your browser's local storage. If you sign in, it's also backed up on our server.</p></details>
-        <details><summary>Can I back up my data?</summary><p>Yes. Settings → Export data. Save the file. Import it later on any device.</p></details>
-        <details><summary>What is the workout tracker?</summary><p>Six levels from Beginner to Elite. Pick your level, log what you did, and grow a flame. Honest streaks — miss a day and it resets.</p></details>
-        <details><summary>Will you steal my passwords?</summary><p>Never. Flaren only stores links. It never asks for passwords. It only opens the official service in a new tab.</p></details>
+      <div class="cine-faq">
+        <details class="reveal-blur"><summary>Do I need an account?</summary><p>No. The free version works entirely in your browser. Your data stays on your device.</p></details>
+        <details class="reveal-blur" data-delay="0.05"><summary>Where is my data stored?</summary><p>In your browser's local storage. If you sign in, it's also backed up on our server.</p></details>
+        <details class="reveal-blur" data-delay="0.1"><summary>Can I back up my data?</summary><p>Yes. Settings → Export data. Save the file. Import it later on any device.</p></details>
+        <details class="reveal-blur" data-delay="0.15"><summary>What is the workout tracker?</summary><p>Six levels from Beginner to Elite. Pick your level, log what you did, and grow a flame. Honest streaks — miss a day and it resets.</p></details>
+        <details class="reveal-blur" data-delay="0.2"><summary>Does the pill reminder replace my doctor?</summary><p>No. It is a reminder tool, not medical advice. Always follow your doctor's instructions and never stop or change medication without consulting a physician.</p></details>
+        <details class="reveal-blur" data-delay="0.25"><summary>Will you steal my passwords?</summary><p>Never. Flaren only stores links. It never asks for passwords. It only opens the official service in a new tab.</p></details>
       </div>
 
     </div>
   </section>
 
   <!-- FOOTER -->
-  <footer class="glass-footer">
+  <footer class="cine-footer">
     <img src="images/logo.png" alt="Flaren" />
     <strong>Flaren</strong>
     <span>·</span>
-    <span>© <span id="year2"></span> Flaren</span>
+    <span>© <span id="year"></span> — One workspace for everything.</span>
     <a href="app.html?try=1">Try Flaren ↗</a>
   </footer>
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
-    document.getElementById("year2").textContent = new Date().getFullYear();
 
-    /* Reveal on scroll */
+    /* ============ SCROLL REVEAL (blur + rise) ============ */
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add("in-view"); io.unobserve(e.target); }
+        if (e.isIntersecting) {
+          const d = e.target.dataset.delay ? parseFloat(e.target.dataset.delay) : 0;
+          e.target.style.animationDelay = d + "s";
+          e.target.classList.add("in-view");
+          io.unobserve(e.target);
+        }
       });
     }, { threshold: 0.12 });
-    document.querySelectorAll(".glass-card, .glass-feature, .glass-price-card, .glass-section-head, .glass-faq details").forEach(el => {
-      el.classList.add("reveal");
-      io.observe(el);
+    document.querySelectorAll(".reveal-blur").forEach(el => io.observe(el));
+
+    /* ============ MOUSE TILT ============ */
+    document.querySelectorAll("[data-tilt]").forEach(el => {
+      el.addEventListener("mousemove", (ev) => {
+        const r = el.getBoundingClientRect();
+        const x = (ev.clientX - r.left) / r.width - 0.5;
+        const y = (ev.clientY - r.top) / r.height - 0.5;
+        el.style.transform = `perspective(900px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateY(-3px)`;
+      });
+      el.addEventListener("mouseleave", () => {
+        el.style.transform = "";
+      });
     });
 
-    /* PWA */
+    /* ============ COUNT-UP NUMBERS ============ */
+    const counterIO = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        const target = parseInt(el.dataset.count || "0", 10);
+        const start = performance.now();
+        const dur = 1400;
+        const tick = (now) => {
+          const p = Math.min((now - start) / dur, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(target * eased);
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+        counterIO.unobserve(el);
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll(".cine-counter-num").forEach(el => counterIO.observe(el));
+
+    /* ============ PWA ============ */
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(()=>{}));
     }
