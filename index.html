@@ -304,14 +304,6 @@
     }, { threshold: 0.4 });
     document.querySelectorAll(".cine-counter-num").forEach(el => counterIO.observe(el));
 
-    /* ============ ORBIT RADIUS (responsive) ============ */
-    function fitOrbit() {
-      const ring = document.querySelector(".orbit-ring");
-      if (!ring) return;
-      const isMobile = window.innerWidth < 720;
-      const r = isMobile ? ring.dataset.radiusMobile : ring.dataset.radiusDesktop;
-      ring.style.setProperty("--r", r + "px");
-    }
     fitOrbit();
     window.addEventListener("resize", fitOrbit);
 
