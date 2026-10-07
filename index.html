@@ -310,21 +310,21 @@
     }, { threshold: 0.4 });
     document.querySelectorAll(".cine-counter-num").forEach(el => counterIO.observe(el));
 
-   /* ============ GRAB-TO-SPIN WHEEL ============ */
+   /* ============ GRAB-TO-SPIN WHEEL (with physics) ============ */
 (function () {
   const scene = document.getElementById("wheelScene");
   const ring  = document.getElementById("wheelRing");
   if (!scene || !ring) return;
 
+  let rotation = 0;
+  let velocity = 0;                 /* degrees per frame */
+  const AUTO = 0.35;                /* base auto-spin */
+  const MAX_V = 42;                 /* max spin velocity */
   let dragging = false;
   let startAngle = 0;
   let startRotation = 0;
-  let currentRotation = 0;
-
-  function readRotation() {
-    const m = new DOMMatrixReadOnly(getComputedStyle(ring).transform);
-    return Math.atan2(m.b, m.a) * 180 / Math.PI;
-  }
+  let lastMoveTime = 0;
+  let lastMoveAngle = 0;
 
   function center() {
     const r = scene.getBoundingClientRect();
@@ -339,40 +339,61 @@
     dragging = true;
     scene.classList.add("grabbing");
     startAngle = angleFromPoint(x, y);
-    startRotation = readRotation();
-    currentRotation = startRotation;
-    ring.style.animation = "none";
-    ring.style.transform = `rotate(${currentRotation}deg)`;
-    ring.querySelectorAll(".wheel-chip").forEach(c => {
-      c.style.animation = "none";
-      c.style.rotate = `${-currentRotation}deg`;
-    });
+    startRotation = rotation;
+    lastMoveTime = performance.now();
+    lastMoveAngle = startAngle;
   }
 
   function move(x, y) {
     if (!dragging) return;
     const a = angleFromPoint(x, y);
-    const delta = a - startAngle;
-    currentRotation = startRotation + delta;
-    ring.style.transform = `rotate(${currentRotation}deg)`;
-    ring.querySelectorAll(".wheel-chip").forEach(c => {
-      c.style.rotate = `${-currentRotation}deg`;
-    });
+    let delta = a - startAngle;
+    if (delta > 180) delta -= 360;
+    if (delta < -180) delta += 360;
+    rotation = startRotation + delta;
+
+    /* measure instantaneous velocity */
+    const now = performance.now();
+    const dt = Math.max(1, now - lastMoveTime);
+    const dAngle = a - lastMoveAngle;
+    let vDelta = dAngle;
+    if (vDelta > 180) vDelta -= 360;
+    if (vDelta < -180) vDelta += 360;
+    velocity = Math.max(-MAX_V, Math.min(MAX_V, vDelta / dt * 16));
+
+    lastMoveTime = now;
+    lastMoveAngle = a;
   }
 
   function end() {
     if (!dragging) return;
     dragging = false;
     scene.classList.remove("grabbing");
-    setTimeout(() => {
-      if (dragging) return;
-      ring.style.animation = "";
-      ring.style.transform = "";
-      ring.querySelectorAll(".wheel-chip").forEach(c => {
-        c.style.animation = "";
-        c.style.rotate = "";
-      });
-    }, 1200);
+  }
+
+  /* ---- Main loop: apply physics every frame ---- */
+  function frame() {
+    if (!dragging) {
+      /* friction — decays over ~8 seconds */
+      velocity *= 0.995;
+      /* gentle pull back to auto-spin */
+      velocity += (AUTO - velocity) * 0.008;
+      rotation += velocity;
+    }
+    ring.style.transform = `rotate(${rotation}deg)`;
+
+    /* update --spin: 0 at rest, 1 at half-speed max */
+    const speed = Math.min(1, Math.abs(velocity) / 15);
+    scene.style.setProperty("--spin", speed.toFixed(3));
+
+    /* counter-rotate chips so emojis stay upright */
+    const chips = ring.querySelectorAll(".wheel-chip");
+    const angleToCancel = -rotation;
+    chips.forEach(c => { c.style.rotate = `${angleToCancel}deg`; });
+
+    /* particles + streaks already use --spin via CSS */
+
+    requestAnimationFrame(frame);
   }
 
   scene.addEventListener("mousedown", e => { e.preventDefault(); start(e.clientX, e.clientY); });
@@ -390,6 +411,11 @@
     move(t.clientX, t.clientY);
   }, { passive: true });
   scene.addEventListener("touchend", end);
+
+  /* disable the CSS auto-spin animation — JS drives rotation now */
+  ring.style.animation = "none";
+
+  frame();
 })();
 
     /* ============ PWA ============ */
