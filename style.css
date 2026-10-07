@@ -5260,10 +5260,11 @@ textarea:focus-visible, select:focus-visible {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 120px 20px 40px;
+  padding: 120px 20px 60px;
   text-align: center;
-  gap: 30px;
+  gap: 40px;
   position: relative;
+  overflow: visible;
 }
 
 /* =========================================================
@@ -5306,15 +5307,19 @@ textarea:focus-visible, select:focus-visible {
 
 .wheel-scene {
   --r: 148px;
-  --spin: 0;              /* 0..1 — set by JS, drives effect intensity */
+  --spin: 0;
   position: relative;
   width: 340px;
   height: 340px;
+  /* ADD this — gives the chips breathing room so the top two aren't clipped */
+  padding: 40px;
+  margin: -40px;
   cursor: grab;
   user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
   touch-action: none;
+  box-sizing: content-box;
 }
 .wheel-scene.grabbing { cursor: grabbing; }
 
