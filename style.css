@@ -5501,13 +5501,6 @@ textarea:focus-visible, select:focus-visible {
 .wheel-chip:nth-child(7) { transform: rotate(270deg) translateY(-148px) rotate(-270deg); }
 .wheel-chip:nth-child(8) { transform: rotate(315deg) translateY(-148px) rotate(-315deg); }
 
-.wheel-ring:not(.paused) .wheel-chip {
-  animation: chipCounterSpin 32s linear infinite;
-}
-@keyframes chipCounterSpin {
-  from { rotate: 0deg; }
-  to   { rotate: -360deg; }
-}
 
 .wheel-chip:hover {
   box-shadow:
