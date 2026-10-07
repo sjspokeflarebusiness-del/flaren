@@ -1697,10 +1697,15 @@ function showOnboarding() {
   });
 }
 
-/* =========================================================
-   BOOT
-   ========================================================= */
+/* ---------- BOOT ---------- */
 setUser(loadStoredUser());
+
+/* Guest shortcut: if URL contains ?try=1, skip login and enter as guest */
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get("try") === "1" && !signedIn()) {
+  localStorage.setItem("flaren_guest", "1");
+  setUser(null);
+}
 
 if (signedIn()) {
   renderShell();
