@@ -72,9 +72,11 @@
         <span class="wheel-hint-dot"></span> Grab and spin
       </div>
 
-      <div class="wheel-scene" id="wheelScene">
+        <div class="wheel-scene" id="wheelScene">
         <div class="wheel-halo"></div>
         <div class="wheel-glow"></div>
+        <div class="wheel-flash" id="wheelFlash"></div>
+        <div class="wheel-sparks" id="wheelSparks"></div>
 
         <div class="wheel-ring" id="wheelRing">
           <button class="wheel-chip" data-label="Services">🧩<span>Services</span></button>
@@ -272,35 +274,49 @@
     }, { threshold: 0.4 });
     document.querySelectorAll(".cine-counter-num").forEach(el => counterIO.observe(el));
 
-   /* ============ GRAB-TO-SPIN WHEEL (with physics) ============ */
-/* ============ WHEEL — simple JS placement ============ */
+/* ============ WHEEL — dial spin + chakra cracker light ============ */
 (function () {
-  const scene = document.getElementById("wheelScene");
-  const ring  = document.getElementById("wheelRing");
+  const scene  = document.getElementById("wheelScene");
+  const ring   = document.getElementById("wheelRing");
+  const flash  = document.getElementById("wheelFlash");
+  const sparks = document.getElementById("wheelSparks");
+  const hint   = document.querySelector(".wheel-hint");
+  const center = document.querySelector(".wheel-center");
   if (!scene || !ring) return;
 
   const chips = Array.from(ring.querySelectorAll(".wheel-chip"));
   const N = chips.length;
+  const COLORS = ["c1","c2","c3","c4","c5","c6","c7","c8"];
+
   let rotation = 0;
-  let velocity = 0.3;
-  const AUTO = 0.3;
+  let velocity = 0.35;
+  const AUTO = 0.35;
+  const MAX_V = 30;
   let dragging = false;
   let startAngle = 0;
   let startRotation = 0;
 
- function radius() {
-  const w = window.innerWidth;
-  if (w <= 480) return 118;
-  if (w <= 720) return 128;
-  return 132;
-}
+  /* Fast thresholds */
+  const FAST_THRESHOLD = 1.6;    // deg/frame — when to show sparks
+  const BURST_THRESHOLD = 4.5;   // deg/frame — when to flash
+  let lastBurstTime = 0;
+  let lastSparkTime = 0;
+  let lastHintState = false;
+  let lastFastState = false;
 
-  function center() {
+  function radius() {
+    const w = window.innerWidth;
+    if (w <= 480) return 118;
+    if (w <= 720) return 128;
+    return 132;
+  }
+
+  function centerPos() {
     const r = scene.getBoundingClientRect();
     return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
   }
   function angleAt(x, y) {
-    const c = center();
+    const c = centerPos();
     return Math.atan2(y - c.y, x - c.x) * 180 / Math.PI;
   }
 
@@ -314,16 +330,71 @@
     }
   }
 
+  /* ---- Sparks ---- */
+  function spawnSparks(count, outer) {
+    const R = radius();
+    for (let i = 0; i < count; i++) {
+      const s = document.createElement("span");
+      const colorClass = COLORS[Math.floor(Math.random() * COLORS.length)];
+      s.className = "wheel-spark " + colorClass + (outer ? " outer" : "");
+      const angle = Math.random() * Math.PI * 2;
+      const dist = R * (outer ? 1.9 + Math.random() * 0.7 : 1.2 + Math.random() * 0.6);
+      const sx = Math.cos(angle) * dist;
+      const sy = Math.sin(angle) * dist;
+      s.style.setProperty("--sx", sx + "px");
+      s.style.setProperty("--sy", sy + "px");
+      s.style.animationDelay = (Math.random() * 0.1) + "s";
+      sparks.appendChild(s);
+      setTimeout(() => s.remove(), 1100);
+    }
+  }
+
+  function triggerFlash() {
+    flash.classList.remove("active");
+    void flash.offsetWidth;
+    flash.classList.add("active");
+  }
+
+  /* ---- Frame loop ---- */
   function frame() {
     if (!dragging) {
-      velocity *= 0.995;
+      velocity *= 0.996;
       velocity += (AUTO - velocity) * 0.01;
       rotation += velocity;
     }
+
+    const speed = Math.abs(velocity);
+
+    /* Light emission when spinning fast */
+    if (speed > FAST_THRESHOLD) {
+      const now = performance.now();
+      if (now - lastSparkTime > 80) {
+        spawnSparks(3, false);
+        lastSparkTime = now;
+      }
+    }
+    if (speed > BURST_THRESHOLD) {
+      const now = performance.now();
+      if (now - lastBurstTime > 180) {
+        spawnSparks(14, true);
+        triggerFlash();
+        lastBurstTime = now;
+      }
+    }
+
+    /* Toggle visual states */
+    const fast = speed > FAST_THRESHOLD;
+    if (fast !== lastFastState) {
+      center?.classList.toggle("fast", fast);
+      hint?.classList.toggle("fast", fast);
+      lastFastState = fast;
+    }
+
     draw();
     requestAnimationFrame(frame);
   }
 
+  /* ---- Drag handlers ---- */
   function down(x, y) {
     dragging = true;
     scene.classList.add("grabbing");
@@ -336,6 +407,9 @@
     if (d > 180) d -= 360;
     if (d < -180) d += 360;
     rotation = startRotation + d;
+
+    /* track instantaneous velocity for when the user releases */
+    velocity = Math.max(-MAX_V, Math.min(MAX_V, d * 0.15));
     draw();
   }
   function up() {
