@@ -18,13 +18,14 @@
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
   window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
- await OneSignal.init({
-  appId: "98c56f52-d557-4b34-9f4b-5c78a08a6889",
-  serviceWorkerParam: { scope: "/flaren/" },
-  serviceWorkerPath: "/flaren/OneSignalSDKWorker.js",
-});
+ OneSignalDeferred.push(async function(OneSignal) {
+  await OneSignal.init({
+    appId: "98c56f52-d557-4b34-9f4b-5c78a08a6889",
+    serviceWorkerParam: { scope: "/flaren/" },
+    serviceWorkerPath: "/flaren/OneSignalSDKWorker.js",
+    serviceWorkerUpdaterPath: "/flaren/OneSignalSDKUpdaterWorker.js",
   });
+});
 </script>
 
 <script defer src="https://cloud.umami.is/script.js" data-website-id="323ddd38-4d0a-4665-8b9a-eb2e2bde48c3"></script>
