@@ -19,6 +19,7 @@ ONESIGNAL_REST_KEY = os.environ.get("ONESIGNAL_REST_KEY", "")
 
 def send_onesignal_push(user_id, title, body, url=None):
     """Send a real push via OneSignal to one user (by external ID)."""
+    print("[onesignal] using key len:", len(ONESIGNAL_REST_KEY), "prefix:", ONESIGNAL_REST_KEY[:8])
     if not ONESIGNAL_REST_KEY:
         print("[onesignal] REST key not set — skipping")
         return False
