@@ -66,70 +66,33 @@
       </div>
     </div>
 
-    <!-- MIDDLE: The spin wheel -->
- <div class="wheel-wrap">
-  <div class="wheel-hint">
-    <span class="wheel-hint-dot"></span> Grab and spin
-  </div>
+       <!-- MIDDLE: The spin wheel -->
+    <div class="wheel-wrap">
+      <div class="wheel-hint">
+        <span class="wheel-hint-dot"></span> Grab and spin
+      </div>
 
-  <div class="wheel-scene" id="wheelScene">
-    <div class="wheel-halo"></div>
-    <div class="wheel-glow"></div>
+      <div class="wheel-scene" id="wheelScene">
+        <div class="wheel-halo"></div>
+        <div class="wheel-glow"></div>
 
-    <div class="wheel-ring" id="wheelRing">
-      <button class="wheel-chip" data-label="Services">🧩<span>Services</span></button>
-      <button class="wheel-chip" data-label="Notes">📝<span>Notes</span></button>
-      <button class="wheel-chip" data-label="Focus">⏱<span>Focus</span></button>
-      <button class="wheel-chip" data-label="Calendar">📅<span>Calendar</span></button>
-      <button class="wheel-chip" data-label="Water">💧<span>Water</span></button>
-      <button class="wheel-chip" data-label="Workout">🔥<span>Workout</span></button>
-      <button class="wheel-chip" data-label="Pills">💊<span>Pills</span></button>
-      <button class="wheel-chip" data-label="Health">🥗<span>Health</span></button>
-    </div>
-   <div class="wheel-center">          
-    <img src="images/logo.png" />
-  </div>
-</div>
+        <div class="wheel-ring" id="wheelRing">
+          <button class="wheel-chip" data-label="Services">🧩<span>Services</span></button>
+          <button class="wheel-chip" data-label="Notes">📝<span>Notes</span></button>
+          <button class="wheel-chip" data-label="Focus">⏱<span>Focus</span></button>
+          <button class="wheel-chip" data-label="Calendar">📅<span>Calendar</span></button>
+          <button class="wheel-chip" data-label="Water">💧<span>Water</span></button>
+          <button class="wheel-chip" data-label="Workout">🔥<span>Workout</span></button>
+          <button class="wheel-chip" data-label="Pills">💊<span>Pills</span></button>
+          <button class="wheel-chip" data-label="Health">🥗<span>Health</span></button>
+        </div>
 
-       <!-- The rotating ring of chips -->
-<div class="wheel-ring" id="wheelRing">
-  <button class="wheel-chip" data-label="Services" data-index="0">
-    <span class="chip-emoji">🧩</span>
-    <span class="chip-label">Services</span>
-  </button>
-  <button class="wheel-chip" data-label="Notes" data-index="1">
-    <span class="chip-emoji">📝</span>
-    <span class="chip-label">Notes</span>
-  </button>
-  <button class="wheel-chip" data-label="Focus" data-index="2">
-    <span class="chip-emoji">⏱</span>
-    <span class="chip-label">Focus</span>
-  </button>
-  <button class="wheel-chip" data-label="Calendar" data-index="3">
-    <span class="chip-emoji">📅</span>
-    <span class="chip-label">Calendar</span>
-  </button>
-  <button class="wheel-chip" data-label="Water" data-index="4">
-    <span class="chip-emoji">💧</span>
-    <span class="chip-label">Water</span>
-  </button>
-  <button class="wheel-chip" data-label="Workout" data-index="5">
-    <span class="chip-emoji">🔥</span>
-    <span class="chip-label">Workout</span>
-  </button>
-  <button class="wheel-chip" data-label="Pills" data-index="6">
-    <span class="chip-emoji">💊</span>
-    <span class="chip-label">Pills</span>
-  </button>
-  <button class="wheel-chip" data-label="Health" data-index="7">
-    <span class="chip-emoji">🥗</span>
-    <span class="chip-label">Health</span>
-  </button>
-</div>
-
-      
+        <div class="wheel-center">
+          <img src="images/logo.png" alt="Flaren" />
+        </div>
       </div>
     </div>
+
 
     <!-- BOTTOM: Marquee -->
     <div class="cine-marquee reveal-blur" data-delay="1.2">
@@ -325,7 +288,12 @@
   let startAngle = 0;
   let startRotation = 0;
 
-  function radius() { return window.innerWidth <= 720 ? 108 : 132; }
+ function radius() {
+  const w = window.innerWidth;
+  if (w <= 480) return 118;
+  if (w <= 720) return 128;
+  return 132;
+}
 
   function center() {
     const r = scene.getBoundingClientRect();
