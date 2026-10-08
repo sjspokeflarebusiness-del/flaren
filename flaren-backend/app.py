@@ -26,7 +26,7 @@ def send_onesignal_push(user_id, title, body, url=None):
         r = requests.post(
             "https://api.onesignal.com/notifications",
             headers={
-                "Authorization": f"Basic {ONESIGNAL_REST_KEY}",
+                "Authorization": f"Key {ONESIGNAL_REST_KEY}",
                 "Content-Type": "application/json",
             },
             json={
