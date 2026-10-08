@@ -218,9 +218,11 @@ def check_reminders():
             if not due_date:
                 continue
 
-            try:
+             try:
+                from datetime import timedelta
                 dt = datetime.strptime(f"{due_date} {due_time}", "%Y-%m-%d %H:%M")
-                dt = dt.replace(tzinfo=timezone.utc)
+                ist = timezone(timedelta(hours=5, minutes=30))
+                dt = dt.replace(tzinfo=ist)
                 due_ts = int(dt.timestamp())
             except Exception:
                 continue
