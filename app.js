@@ -324,17 +324,17 @@ function getOrCreateNtfyTopic() {
   return topic;
 }
 
-async function registerNtfyPush() {
+async function registerOneSignalUser() {
   if (!signedIn() || !currentUser) return null;
-  const topic = getOrCreateNtfyTopic();
   try {
-      await window.FlarenAPI.ntfyRegister(topic);
-    return topic;
+    await window.FlarenAPI.onesignalSubscribe();
+    console.log("Backend registered OneSignal user:", currentUser.id);
+    return true;
   } catch (err) {
-    console.warn("ntfy register failed:", err);
+    console.warn("OneSignal backend registration failed:", err);
     return null;
   }
-}
+}}
 
 
 function showNotification(title, body) {
@@ -658,6 +658,7 @@ function renderAuth() {
         }
 
         await pullSyncIfAvailable();
+        await registerOneSignalUser();
 
         toast("Welcome back, " + (res.user.username || "user"));
         enterApp();
@@ -699,6 +700,8 @@ function renderAuth() {
             } catch (e) { console.warn("OneSignal login failed:", e); }
           });
         }
+
+        await registerOneSignalUser();
 
         toast("Account created. Welcome, " + (res.user.username || "user"));
         enterApp();
@@ -1623,36 +1626,7 @@ function renderSettings(el) {
         <button class="btn btn-secondary" id="testNotif">Send test notification</button>
       </div>
 
-      <!-- NEW: The Guide for Closed-App Notifications -->
-      <div style="margin-top:20px; padding:16px; background:rgba(34,211,238,.06); border:1px solid rgba(34,211,238,.25); border-radius:12px;">
-        <p style="font-size:13px; font-weight:700; margin:0 0 8px; color:var(--text);">📲 Get alerts even when Flaren is closed:</p>
-        <p style="font-size:12px; color:var(--muted); margin:0 0 12px;">To receive reminders on your phone when the app is shut, install the free <strong>ntfy</strong> app and subscribe to your personal code.</p>
 
-        <p style="font-size:12px; font-weight:600; margin:0 0 6px;">Your code:</p>
-        <div style="display:flex; gap:8px; align-items:center; margin-bottom:14px;">
-          <code id="ntfyTopicCode" style="flex:1; padding:10px; background:rgba(0,0,0,.4); border-radius:8px; font-size:13px; overflow:hidden; text-overflow:ellipsis; color:var(--cyan-1); font-weight:700;">Loading…</code>
-          <button class="btn btn-small btn-secondary" id="copyNtfy">Copy</button>
-        </div>
-
-        <p style="font-size:12px; font-weight:600; margin:0 0 6px;">1. Get the app:</p>
-        <div style="display:flex; gap:8px; margin-bottom:12px;">
-          <a href="https://play.google.com/store/apps/details?id=io.heckel.ntfy" target="_blank" class="btn btn-small btn-secondary" style="flex:1; justify-content:center;">Android</a>
-          <a href="https://apps.apple.com/us/app/ntfy/id1625396347" target="_blank" class="btn btn-small btn-secondary" style="flex:1; justify-content:center;">iPhone</a>
-        </div>
-
-        <p style="font-size:12px; font-weight:600; margin:0 0 6px;">2. Open ntfy, tap +, paste your code.</p>
-        <p style="font-size:12px; color:var(--muted); margin:0;">3. Done. Test it by creating a task due in 2 minutes.</p>
-      </div>
-
-      <p style="color:var(--muted-2);font-size:12px;margin-top:14px">
-         Flaren must send the notification through ntfy for it to arrive when the app is closed.
-      </p>
-    </div>
-
-    <div style="margin-top:22px; display:flex; gap:10px;">
-      <button class="btn btn-primary btn-lg" id="saveSettings">Save settings</button>
-    </div>
-  `;
 
   const enableBtn = document.getElementById("enableNotif");
   if (enableBtn) {
@@ -1669,26 +1643,6 @@ function renderSettings(el) {
     playNotificationSound();
   });
 
-     /* --- Show the ntfy topic code --- */
-  const topicEl = document.getElementById("ntfyTopicCode");
-  if (topicEl) {
-    const topic = getOrCreateNtfyTopic();
-    topicEl.textContent = topic;
-    if (signedIn()) registerNtfyPush();
-  }
-
-  /* --- Copy topic button --- */
-  const copyBtn = document.getElementById("copyNtfy");
-  if (copyBtn) {
-    copyBtn.addEventListener("click", () => {
-      const topic = getOrCreateNtfyTopic();
-      navigator.clipboard.writeText(topic).then(() => {
-        toast("Code copied to clipboard");
-      }).catch(() => {
-        toast("Copy failed — please copy manually");
-      });
-    });
-  }
 
 
   $("#saveSettings").addEventListener("click", () => {
