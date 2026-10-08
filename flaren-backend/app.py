@@ -5,6 +5,7 @@ from functools import wraps
 import requests
 import time
 
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -13,6 +14,36 @@ from flask_cors import CORS
 
 import database
 import auth
+ONESIGNAL_APP_ID = os.environ.get("ONESIGNAL_APP_ID", "98c56f52-d557-4b34-9f4b-5c78a08a6889")
+ONESIGNAL_REST_KEY = os.environ.get("ONESIGNAL_REST_KEY", "")
+
+def send_onesignal_push(user_id, title, body, url=None):
+    """Send a real push via OneSignal to one user (by external ID)."""
+    if not ONESIGNAL_REST_KEY:
+        print("[onesignal] REST key not set — skipping")
+        return False
+    try:
+        r = requests.post(
+            "https://api.onesignal.com/notifications",
+            headers={
+                "Authorization": f"Basic {ONESIGNAL_REST_KEY}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "app_id": ONESIGNAL_APP_ID,
+                "include_aliases": {"external_id": [str(user_id)]},
+                "target_channel": "push",
+                "headings": {"en": title},
+                "contents": {"en": body},
+                "url": url or "https://sjspokeflarebusiness-del.github.io/flaren/app.html",
+            },
+            timeout=8,
+        )
+        print("[onesignal]", r.status_code, r.text[:200])
+        return r.status_code == 200
+    except Exception as e:
+        print("[onesignal] failed:", e)
+        return False
 
 app = Flask(__name__)
 
@@ -177,8 +208,15 @@ def pill_reminder(uid):
             },
             timeout=5
         )
-    except Exception as e:
+       except Exception as e:
         print("pill ntfy send failed:", e)
+
+    # ALSO send via OneSignal (real browser push)
+    send_onesignal_push(
+        user_id=uid,
+        title="💊 " + pill_name,
+        body=f"{dose or 'Take now'} — scheduled for {time_str}",
+    )
 
     return jsonify({"ok": True})
 
@@ -249,6 +287,13 @@ def check_reminders():
                     )
                     database.mark_reminder_sent(reminder_key)
                     sent += 1
+
+                    # OneSignal push (browser subscription)
+                    send_onesignal_push(
+                        user_id=user_id,
+                        title="⏰ " + task.get("title", "Task"),
+                        body=task.get("description") or "Task reminder from Flaren",
+                    )
                 except Exception as e:
                     print("ntfy send error:", e)
 
