@@ -19,11 +19,11 @@
 <script>
   window.OneSignalDeferred = window.OneSignalDeferred || [];
   OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "98c56f52-d557-4b34-9f4b-5c78a08a6889",
-      notifyButton: { enable: false },
-      allowLocalhostAsSecureOrigin: true,
-    });
+ await OneSignal.init({
+  appId: "98c56f52-d557-4b34-9f4b-5c78a08a6889",
+  serviceWorkerParam: { scope: "/flaren/" },
+  serviceWorkerPath: "/flaren/OneSignalSDKWorker.js",
+});
   });
 </script>
 
