@@ -1,4 +1,4 @@
-F"""Flaren backend — Flask API."""
+"""Flaren backend — Flask API."""
 import os
 import json
 from functools import wraps
@@ -208,10 +208,9 @@ def pill_reminder(uid):
             },
             timeout=5
         )
-       except Exception as e:
+    except Exception as e:
         print("pill ntfy send failed:", e)
 
-    # ALSO send via OneSignal (real browser push)
     send_onesignal_push(
         user_id=uid,
         title="💊 " + pill_name,
