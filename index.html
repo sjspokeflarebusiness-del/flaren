@@ -17,7 +17,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css" />
-  <script defer src="https://cloud.umami.is/script.js" data-website-id="323ddd38-4d0a-4665-8b9a-eb2e2bde48c3"></script>
+
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "98c56f52-d557-4b34-9f4b-5c78a08a6889",
+      notifyButton: { enable: false },
+      allowLocalhostAsSecureOrigin: true,
+    });
+  });
+</script>
+
+<script defer src="https://cloud.umami.is/script.js" data-website-id="323ddd38-4d0a-4665-8b9a-eb2e2bde48c3"></script>
 </head>
 <body class="landing-body glass-landing">
 
