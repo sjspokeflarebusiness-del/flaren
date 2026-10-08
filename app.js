@@ -247,6 +247,14 @@ function signOut() {
   window.FlarenToken.clear();
   localStorage.removeItem("flaren_guest");
   setUser(null);
+
+  // Tell OneSignal to forget this user
+  if (window.OneSignalDeferred) {
+    window.OneSignalDeferred.push(async function(OneSignal) {
+      try { await OneSignal.logout(); } catch (e) {}
+    });
+  }
+
   renderAuth();
 }
 
@@ -639,6 +647,16 @@ function renderAuth() {
         setUser(res.user);
         localStorage.removeItem("flaren_guest");
 
+        // Identify user to OneSignal so backend can push to them
+        if (window.OneSignalDeferred) {
+          window.OneSignalDeferred.push(async function(OneSignal) {
+            try {
+              await OneSignal.login(String(res.user.id));
+              console.log("OneSignal identified:", res.user.id);
+            } catch (e) { console.warn("OneSignal login failed:", e); }
+          });
+        }
+
         await pullSyncIfAvailable();
 
         toast("Welcome back, " + (res.user.username || "user"));
@@ -672,6 +690,16 @@ function renderAuth() {
         window.FlarenToken.set(res.token);
         setUser(res.user);
         localStorage.removeItem("flaren_guest");
+
+        // Identify user to OneSignal
+        if (window.OneSignalDeferred) {
+          window.OneSignalDeferred.push(async function(OneSignal) {
+            try {
+              await OneSignal.login(String(res.user.id));
+            } catch (e) { console.warn("OneSignal login failed:", e); }
+          });
+        }
+
         toast("Account created. Welcome, " + (res.user.username || "user"));
         enterApp();
       } catch (err) {
