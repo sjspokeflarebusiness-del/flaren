@@ -163,28 +163,10 @@ def push_token(uid):
         return jsonify({"error": "token required"}), 400
     database.save_push_token(uid, token)
     return jsonify({"ok": True})
-
-
-# =========================================================
-# NTFY PUSH NOTIFICATIONS
-# =========================================================
-
-@app.post("/api/ntfy/register")
-@require_auth
-def ntfy_register(uid):
-    data = request.get_json(silent=True) or {}
-    topic = (data.get("topic") or "").strip()
-    if not topic or len(topic) < 6 or len(topic) > 64:
-        return jsonify({"error": "topic must be 6-64 chars"}), 400
-    if not all(c.isalnum() or c in "-_" for c in topic):
-        return jsonify({"error": "topic can only contain letters, numbers, - and _"}), 400
-    database.save_ntfy_topic(uid, topic)
-    return jsonify({"ok": True, "topic": topic})
-
 @app.post("/api/pill-reminder")
 @require_auth
 def pill_reminder(uid):
-    """Called by the frontend when a pill is due — sends an ntfy push."""
+    """Frontend calls this when a pill is due — sends OneSignal push."""
     data = request.get_json(silent=True) or {}
     pill_name = (data.get("pillName") or "").strip()
     dose = (data.get("dose") or "").strip()
@@ -192,54 +174,30 @@ def pill_reminder(uid):
     if not pill_name:
         return jsonify({"error": "pillName required"}), 400
 
-    topic = database.get_ntfy_topic(uid)
-    if not topic:
-        return jsonify({"ok": False, "reason": "no topic registered"}), 200
-
-    try:
-        requests.post(
-            f"https://ntfy.sh/{topic}",
-            data=(f"{dose or 'Take now'} — scheduled for {time_str}".encode("utf-8")),
-            headers={
-                "Title": "💊 " + pill_name,
-                "Priority": "high",
-                "Tags": "pill",
-                "Click": "https://sjspokeflarebusiness-del.github.io/flaren/app.html"
-            },
-            timeout=5
-        )
-    except Exception as e:
-        print("pill ntfy send failed:", e)
-
-    send_onesignal_push(
+    ok = send_onesignal_push(
         user_id=uid,
         title="💊 " + pill_name,
         body=f"{dose or 'Take now'} — scheduled for {time_str}",
     )
+    return jsonify({"ok": ok})
 
-    return jsonify({"ok": True})
 
 @app.route("/api/check-reminders", methods=["GET", "POST"])
 def check_reminders():
     """
-    Called by cron-job.org or UptimeRobot every 1-5 minutes.
-    Checks all users' tasks with reminders that are now due,
-    and sends push notifications via ntfy.sh.
+    Called by cron-job.org every 1-5 minutes.
+    Loops over OneSignal subscribers, finds due reminders, sends push.
     """
     import json
     from datetime import datetime, timezone
 
     now_ts = int(time.time())
     sent = 0
-    checked_users = 0
 
-    topics = database.get_all_ntfy_topics()
-    checked_users = len(topics)
+    user_ids = database.get_all_onesignal_users()
+    checked_users = len(user_ids)
 
-    for row in topics:
-        user_id = row["user_id"]
-        topic = row["topic"]
-
+    for user_id in user_ids:
         sync = database.get_sync(user_id)
         if not sync:
             continue
@@ -272,32 +230,16 @@ def check_reminders():
                 if database.was_reminder_sent(reminder_key):
                     continue
 
-                try:
-                    requests.post(
-                        f"https://ntfy.sh/{topic}",
-                        data=(task.get("description") or "Task reminder from Flaren").encode("utf-8"),
-                        headers={
-                            "Title": "⏰ " + task.get("title", "Task"),
-                            "Priority": "high",
-                            "Tags": "alarm_clock",
-                            "Click": "https://sjspokeflarebusiness-del.github.io/flaren/app.html"
-                        },
-                        timeout=5
-                    )
+                ok = send_onesignal_push(
+                    user_id=user_id,
+                    title="⏰ " + task.get("title", "Task"),
+                    body=task.get("description") or "Task reminder from Flaren",
+                )
+                if ok:
                     database.mark_reminder_sent(reminder_key)
                     sent += 1
 
-                    # OneSignal push (browser subscription)
-                    send_onesignal_push(
-                        user_id=user_id,
-                        title="⏰ " + task.get("title", "Task"),
-                        body=task.get("description") or "Task reminder from Flaren",
-                    )
-                except Exception as e:
-                    print("ntfy send error:", e)
-
     return jsonify({"sent": sent, "users_checked": checked_users, "at": now_ts})
-
 
 
 @app.errorhandler(404)
@@ -308,6 +250,14 @@ def not_found(e):
 @app.errorhandler(500)
 def server_error(e):
     return jsonify({"error": "Server error"}), 500
+@app.post("/api/onesignal/subscribe")
+@require_auth
+def onesignal_subscribe(uid):
+    """Frontend calls this after OneSignal.login(user_id) succeeds."""
+    database.save_onesignal_user(uid)
+    return jsonify({"ok": True})
+
+
 
 
 if __name__ == "__main__":
