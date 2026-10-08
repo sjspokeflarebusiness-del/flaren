@@ -5329,7 +5329,107 @@ textarea:focus-visible, select:focus-visible {
   0%,100% { transform: scale(.9); opacity: .6; }
   50%     { transform: scale(1.1); opacity: 1; }
 }
+/* =========================================================
+   WHEEL — colourful spark burst when spinning fast
+   ========================================================= */
+.wheel-sparks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  overflow: visible;
+}
 
+.wheel-spark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  opacity: 0;
+  transform: translate(0, 0) scale(0.4);
+  will-change: transform, opacity;
+  box-shadow: 0 0 12px currentColor, 0 0 24px currentColor;
+}
+
+/* Colour palette — chakra cracker */
+.wheel-spark.c1 { color: #FF7A18; background: #FF7A18; }
+.wheel-spark.c2 { color: #FFB347; background: #FFB347; }
+.wheel-spark.c3 { color: #EC4899; background: #EC4899; }
+.wheel-spark.c4 { color: #22D3EE; background: #22D3EE; }
+.wheel-spark.c5 { color: #A855F7; background: #A855F7; }
+.wheel-spark.c6 { color: #22C55E; background: #22C55E; }
+.wheel-spark.c7 { color: #FACC15; background: #FACC15; }
+.wheel-spark.c8 { color: #F43F5E; background: #F43F5E; }
+
+/* Burst animation triggered by JS */
+.wheel-spark.burst {
+  animation: sparkBurst 0.95s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+@keyframes sparkBurst {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(0.4);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--sx), var(--sy)) scale(0.1);
+  }
+}
+
+/* A second ring of sparks — the big outer burst */
+.wheel-spark.outer {
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+}
+
+/* Chromatic ring flash around the whole wheel */
+.wheel-flash {
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  background: conic-gradient(from 0deg,
+    #FF7A18, #FFB347, #FACC15, #22C55E, #22D3EE, #A855F7, #EC4899, #F43F5E, #FF7A18);
+  filter: blur(28px);
+  mix-blend-mode: screen;
+}
+.wheel-flash.active {
+  animation: chromaticFlash 0.85s ease-out forwards;
+}
+@keyframes chromaticFlash {
+  0%   { opacity: 0;   transform: scale(0.85) rotate(0deg); }
+  20%  { opacity: 0.9; transform: scale(1.05) rotate(30deg); }
+  60%  { opacity: 0.6; transform: scale(1.1) rotate(180deg); }
+  100% { opacity: 0;   transform: scale(1.15) rotate(360deg); }
+}
+
+/* The centre flame flickers brighter on fast spin */
+.wheel-center.fast .wheel-center-img,
+.wheel-center.fast img {
+  animation: centerSurge 0.7s ease-in-out infinite alternate;
+}
+@keyframes centerSurge {
+  0%   { filter: drop-shadow(0 0 14px rgba(255,122,24,.85)); }
+  100% { filter: drop-shadow(0 0 30px rgba(255,179,71,1))
+                drop-shadow(0 0 50px rgba(236,72,153,.7)); }
+}
+
+/* Hint glows when the wheel is spinning fast */
+.wheel-hint.fast {
+  color: #FFB347;
+  border-color: rgba(255,122,24,.5);
+  box-shadow: 0 0 18px rgba(255,122,24,.35);
+}
 .wheel-glow {
   position: absolute;
   inset: 30px;
