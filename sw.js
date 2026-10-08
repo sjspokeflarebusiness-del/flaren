@@ -1,6 +1,6 @@
 /* Flaren service worker — installable + offline + notification relay */
-
-const CACHE_NAME = "flaren-v47";
+importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js");
+const CACHE_NAME = "flaren-v48";
 const ASSETS = [
   "./",
   "./index.html",
