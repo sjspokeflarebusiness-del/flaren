@@ -72,7 +72,7 @@ const FlarenAPI = {
   pushSync:  (payload)         => api("/api/sync",     { method: "POST", body: { payload }, auth: true }),
   pullSync:  ()                => api("/api/sync",     { auth: true }),
   pushToken: (token)           => api("/api/push-token", { method: "POST", body: { token }, auth: true }),
-  ntfyRegister: (topic)        => api("/api/ntfy/register", { method: "POST", body: { topic }, auth: true })
+  onesignalSubscribe: ()       => api("/api/onesignal/subscribe", { method: "POST", body: {}, auth: true })
 };
 
 window.FlarenAPI = FlarenAPI;
