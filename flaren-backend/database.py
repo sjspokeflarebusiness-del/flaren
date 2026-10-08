@@ -44,6 +44,10 @@ SCHEMA_SQLITE = """
         reminder_key TEXT PRIMARY KEY,
         sent_at      INTEGER NOT NULL
     );
+    CREATE TABLE IF NOT EXISTS onesignal_users (
+        user_id     INTEGER PRIMARY KEY,
+        created_at  BIGINT NOT NULL
+    );
 """
 
 SCHEMA_POSTGRES = """
@@ -73,6 +77,10 @@ SCHEMA_POSTGRES = """
     CREATE TABLE IF NOT EXISTS reminder_log (
         reminder_key TEXT PRIMARY KEY,
         sent_at      INTEGER NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS onesignal_users (
+        user_id     INTEGER PRIMARY KEY,
+        created_at  BIGINT NOT NULL
     );
 """
 
@@ -287,3 +295,40 @@ def mark_reminder_sent(key):
                 INSERT OR IGNORE INTO reminder_log (reminder_key, sent_at)
                 VALUES (?, ?)
             """, (key, int(time.time())))
+# ---------- OneSignal subscribers ----------
+def save_onesignal_user(user_id):
+    with get_db() as db:
+        if USE_POSTGRES:
+            cur = db.cursor()
+            cur.execute("""
+                INSERT INTO onesignal_users (user_id, created_at)
+                VALUES (%s, %s)
+                ON CONFLICT (user_id) DO NOTHING
+            """, (user_id, int(time.time())))
+        else:
+            db.execute("""
+                INSERT OR REPLACE INTO onesignal_users (user_id, created_at)
+                VALUES (?, ?)
+            """, (user_id, int(time.time())))
+
+
+def get_all_onesignal_users():
+    with get_db() as db:
+        if USE_POSTGRES:
+            cur = db.cursor()
+            cur.execute("SELECT user_id FROM onesignal_users")
+            return [r["user_id"] for r in cur.fetchall()]
+        else:
+            rows = db.execute("SELECT user_id FROM onesignal_users").fetchall()
+            return [r["user_id"] for r in rows]
+
+
+def has_onesignal_user(user_id):
+    with get_db() as db:
+        if USE_POSTGRES:
+            cur = db.cursor()
+            cur.execute("SELECT 1 FROM onesignal_users WHERE user_id = %s", (user_id,))
+            return cur.fetchone() is not None
+        else:
+            row = db.execute("SELECT 1 FROM onesignal_users WHERE user_id = ?", (user_id,)).fetchone()
+            return row is not None
