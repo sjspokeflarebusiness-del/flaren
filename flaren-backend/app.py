@@ -189,10 +189,11 @@ def check_reminders():
     Loops over OneSignal subscribers, finds due reminders, sends push.
     """
     import json
-    from datetime import datetime, timezone
+    from datetime import datetime, timezone, timedelta
 
     now_ts = int(time.time())
     sent = 0
+    ist = timezone(timedelta(hours=5, minutes=30))
 
     user_ids = database.get_all_onesignal_users()
     checked_users = len(user_ids)
@@ -218,10 +219,8 @@ def check_reminders():
             if not due_date:
                 continue
 
-             try:
-                from datetime import timedelta
+            try:
                 dt = datetime.strptime(f"{due_date} {due_time}", "%Y-%m-%d %H:%M")
-                ist = timezone(timedelta(hours=5, minutes=30))
                 dt = dt.replace(tzinfo=ist)
                 due_ts = int(dt.timestamp())
             except Exception:
@@ -242,7 +241,6 @@ def check_reminders():
                     sent += 1
 
     return jsonify({"sent": sent, "users_checked": checked_users, "at": now_ts})
-
 
 @app.errorhandler(404)
 def not_found(e):
