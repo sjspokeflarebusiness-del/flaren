@@ -334,7 +334,7 @@ async function registerOneSignalUser() {
     console.warn("OneSignal backend registration failed:", err);
     return null;
   }
-}}
+}
 
 
 function showNotification(title, body) {
@@ -1617,16 +1617,19 @@ function renderSettings(el) {
       </label>
     </div>
 
-        <div class="list-item">
+          <div class="list-item">
       <h4>Notifications</h4>
       <p style="color:var(--muted);font-size:13px;margin:8px 0 12px">Status: ${permLabel}</p>
-
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         ${perm !== "granted" && perm !== "unsupported" ? `<button class="btn btn-primary" id="enableNotif">Enable notifications</button>` : ""}
         <button class="btn btn-secondary" id="testNotif">Send test notification</button>
       </div>
+    </div>
 
-
+    <div style="margin-top:22px; display:flex; gap:10px;">
+      <button class="btn btn-primary btn-lg" id="saveSettings">Save settings</button>
+    </div>
+  `;
 
   const enableBtn = document.getElementById("enableNotif");
   if (enableBtn) {
@@ -1643,8 +1646,6 @@ function renderSettings(el) {
     playNotificationSound();
   });
 
-
-
   $("#saveSettings").addEventListener("click", () => {
     state.settings.username = $("#setName").value.trim() || "User";
     state.settings.theme = $("#setTheme").value;
@@ -1653,7 +1654,6 @@ function renderSettings(el) {
     saveData(); applyTheme(); toast("Settings saved");
   });
 }
-
 /* =========================================================
    ONBOARDING
    ========================================================= */
