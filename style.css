@@ -5265,7 +5265,12 @@ textarea:focus-visible, select:focus-visible {
   gap: 32px;
   position: relative;
 }
-
+@media (max-width: 720px) {
+  .cine-hero {
+    padding: 90px 16px 40px;
+    gap: 22px;
+  }
+}
 /* =========================================================
    SPIN WHEEL v3 — physics + shakram mode + particles
    ========================================================= */
